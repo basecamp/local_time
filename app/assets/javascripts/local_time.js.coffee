@@ -148,12 +148,12 @@ class RelativeTimeAgo
 
 
 update = (callback) ->
-  document.addEventListener "DOMContentLoaded", callback
   document.addEventListener "time:elapse", callback
 
   if Turbolinks?.supported
     document.addEventListener "page:update", callback
   else
+    document.addEventListener "DOMContentLoaded", callback
     window.addEventListener "popstate", callback
 
     jQuery?(document).on "ajaxSuccess", (event, xhr) ->
