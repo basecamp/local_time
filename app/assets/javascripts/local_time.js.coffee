@@ -173,7 +173,7 @@ process "time[data-local]:not([data-localized])", (element) ->
 
   element.innerText =
     switch local
-      when "time", "date"
+      when "time"
         element.setAttribute "data-localized", true
         strftime time, format
       when "time-ago"

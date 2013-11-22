@@ -4,9 +4,8 @@ module LocalTimeHelper
     time_tag time, time.strftime(format), data: { local: :time, format: format }
   end
 
-  def local_date(date, format = '%B %e, %Y')
-    date = utc_time(date).to_date
-    time_tag date, date.strftime(format), data: { local: :date, format: format }
+  def local_date(time, format = '%B %e, %Y')
+    local_time time, format
   end
 
   def local_time_ago(time)

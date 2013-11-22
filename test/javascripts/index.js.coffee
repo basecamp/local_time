@@ -4,24 +4,36 @@
 #= require_self
 
 test "local time", ->
-  assertLocalTime "one"
-  assertLocalTime "two"
+  assertLocalized "one"
+  assertLocalized "two"
 
 test "local time in the past", ->
-  assertLocalTime "past"
+  assertLocalized "past"
 
 test "local time in the future", ->
-  assertLocalTime "future"
+  assertLocalized "future"
 
-assertLocalTime = (id) ->
+test "local date", ->
+  assertLocalized "date", "date"
+
+
+assertLocalized = (id, type = "time") ->
+  switch type
+    when "time"
+      momentFormat = "MMMM D, YYYY h:mma"
+      compare = "toString"
+    when "date"
+      momentFormat = "MMMM D, YYYY"
+      compare = "dayOfYear"
+
   el = document.getElementById id
 
   ok datetime = el.getAttribute "datetime"
   ok local = el.innerText
 
   datetimeParsed = moment datetime
-  localParsed = moment local, "MMMM D, YYYY h:mma"
+  localParsed = moment local, momentFormat
 
   ok datetimeParsed.isValid()
   ok localParsed.isValid()
-  equal datetimeParsed.toString(), localParsed.toString()
+  equal datetimeParsed[compare](), localParsed[compare]()

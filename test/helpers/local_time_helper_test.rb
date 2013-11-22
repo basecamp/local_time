@@ -46,13 +46,13 @@ class LocalTimeHelperTest < Minitest::Test
   end
 
   def test_local_date
-    expected = %Q(<time data-format="%B %e, %Y" data-local="date" datetime="#{@date}">November 21, 2013</time>)
+    expected = %Q(<time data-format="%B %e, %Y" data-local="time" datetime="#{@time_js}">November 21, 2013</time>)
     assert_equal expected, local_date(@time)
     assert_equal expected, local_date(@time.to_date)
   end
 
   def test_local_date_with_format
-    expected = %Q(<time data-format="%b %e" data-local="date" datetime="#{@date}">Nov 21</time>)
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_equal expected, local_date(@time, '%b %e')
   end
 
