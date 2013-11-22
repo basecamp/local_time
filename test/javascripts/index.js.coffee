@@ -3,7 +3,7 @@
 #= require local_time
 #= require_self
 
-test "local time ", ->
+test "local time", ->
   assertLocalTime "one"
   assertLocalTime "two"
 
@@ -13,7 +13,7 @@ test "local time in the past", ->
 test "local time in the future", ->
   assertLocalTime "future"
 
-assertLocalTime = (id, date = false) ->
+assertLocalTime = (id) ->
   el = document.getElementById id
 
   ok datetime = el.getAttribute "datetime"
@@ -24,4 +24,4 @@ assertLocalTime = (id, date = false) ->
 
   ok datetimeParsed.isValid()
   ok localParsed.isValid()
-  equal datetimeParsed.toString(), localParsed.toString(), local
+  equal datetimeParsed.toString(), localParsed.toString()
