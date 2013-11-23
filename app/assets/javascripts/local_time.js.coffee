@@ -79,7 +79,7 @@ class CalendarDate
       (@date - date.date) / (1000 * 60 * 60 * 24)
 
   daysPassed: ->
-    @constructor.today().daysSince @date
+    @constructor.today().daysSince @
 
 
 class RelativeTimeAgo
