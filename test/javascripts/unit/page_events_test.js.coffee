@@ -18,7 +18,7 @@ test "window popstate", ->
 test "document page:update with Turbolinks on", ->
   el = addTimeEl()
   triggerEvent "page:update"
-  equal el.innerText, ""
+  ok not el.innerText
 
   original = window.Turbolinks
   window.Turbolinks = { supported: true }
