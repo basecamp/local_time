@@ -47,8 +47,3 @@ assertTimeAgo = (string, unit, amount) ->
   el.setAttribute "datetime", moment().subtract(unit, amount).utc().toISOString()
   run()
   equal el.innerText, string
-
-run = ->
-  event = document.createEvent "Events"
-  event.initEvent "time:elapse", true, true
-  document.dispatchEvent event

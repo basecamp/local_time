@@ -147,14 +147,19 @@ class RelativeTimeAgo
     strftime @date, '%l:%M%P'
 
 
+domLoaded = false
+
 update = (callback) ->
+  callback() if domLoaded
+
   document.addEventListener "time:elapse", callback
 
   if Turbolinks?.supported
     document.addEventListener "page:update", callback
   else
-    document.addEventListener "DOMContentLoaded", callback
-    window.addEventListener "popstate", callback
+    setTimeout ->
+      window.addEventListener "popstate", callback
+    , 1
 
     jQuery?(document).on "ajaxSuccess", (event, xhr) ->
       callback() if jQuery.trim xhr.responseText
@@ -164,22 +169,24 @@ process = (selector, callback) ->
     for element in document.querySelectorAll selector
       callback element
 
-process "time[data-local]:not([data-localized])", (element) ->
-  datetime = element.getAttribute "datetime"
-  format   = element.getAttribute "data-format"
-  local    = element.getAttribute "data-local"
-
-  time = new Date Date.parse datetime
-
-  element.innerText =
-    switch local
-      when "time"
-        element.setAttribute "data-localized", true
-        strftime time, format
-      when "time-ago"
-        RelativeTimeAgo.generate time
-
 document.addEventListener "DOMContentLoaded", ->
+  domLoaded = true
+
+  process "time[data-local]:not([data-localized])", (element) ->
+    datetime = element.getAttribute "datetime"
+    format   = element.getAttribute "data-format"
+    local    = element.getAttribute "data-local"
+
+    time = new Date Date.parse datetime
+
+    element.innerText =
+      switch local
+        when "time"
+          element.setAttribute "data-localized", true
+          strftime time, format
+        when "time-ago"
+          RelativeTimeAgo.generate time
+
   setInterval ->
     event = document.createEvent "Events"
     event.initEvent "time:elapse", true, true
