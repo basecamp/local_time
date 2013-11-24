@@ -1,3 +1,5 @@
+module "time ago"
+
 test "a second ago", ->
   assertTimeAgo "a second ago", "seconds", 9
 

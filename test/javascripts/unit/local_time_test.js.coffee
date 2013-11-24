@@ -1,3 +1,5 @@
+module "localized"
+
 test "local time", ->
   assertLocalized "one"
   assertLocalized "two"
