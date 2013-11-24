@@ -1,16 +1,10 @@
 module "localized"
 
-test "local time", ->
-  assertLocalized "one"
-  assertLocalized "two"
+for id in ["one", "two", "past", "future"]
+  test id, ->
+    assertLocalized id
 
-test "local time in the past", ->
-  assertLocalized "past"
-
-test "local time in the future", ->
-  assertLocalized "future"
-
-test "local date", ->
+test "date", ->
   assertLocalized "date", "date"
 
 
