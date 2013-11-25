@@ -14,10 +14,11 @@ namespace :test do
     puts "# Running JavaScript tests:"
     puts
 
-    pid = spawn "rackup -D test/javascripts/config.ru"
+    pid = spawn "rackup test/javascripts/config.ru"
     sleep 2
     result = system "phantomjs vendor/run-qunit.coffee http://localhost:9292"
     Process.kill "INT", pid
+    Process.waitpid pid
     exit result ? 0 : 1
   end
 end
