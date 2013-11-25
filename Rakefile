@@ -10,21 +10,29 @@ namespace :test do
   end
 
   task :javascripts do
-    puts
-    puts "# Running JavaScript tests:"
-    puts
+    puts "\n# Running JavaScript tests:\n\n"
 
-    pid = spawn "rackup test/javascripts/config.ru"
-    sleep 2
+    pass    = true
+    command = "phantomjs vendor/run-qunit.coffee http://localhost:9292"
+    zones   = %w( US/Eastern Pacific/Auckland UTC )
 
-    pass = true
-    %w( US/Eastern Pacific/Auckland UTC ).each do |tz|
-      unless system "TZ=#{tz} phantomjs vendor/run-qunit.coffee http://localhost:9292"
-        pass = false
+    with_js_server do
+      zones.each do |tz|
+        pass = false unless system "TZ=#{tz} #{command}"
       end
     end
+
+    exit pass ? 0 : 1
+  end
+end
+
+def with_js_server
+  begin
+    pid = spawn "rackup test/javascripts/config.ru"
+    sleep 2
+    yield
+  ensure
     Process.kill "INT", pid
     Process.waitpid pid
-    exit pass ? 0 : 1
   end
 end
