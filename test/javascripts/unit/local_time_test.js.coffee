@@ -7,6 +7,12 @@ for id in ["one", "two", "past", "future"]
 test "date", ->
   assertLocalized "date", "date"
 
+test "unparseable time", ->
+  el = addTimeEl "%Y", ":("
+  el.innerText = "2013"
+  run()
+  equal el.innerText, "2013"
+
 
 assertLocalized = (id, type = "time") ->
   switch type

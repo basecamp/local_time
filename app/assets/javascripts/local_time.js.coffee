@@ -178,6 +178,7 @@ document.addEventListener "DOMContentLoaded", ->
     local    = element.getAttribute "data-local"
 
     time = new Date Date.parse datetime
+    return if isNaN time
 
     element.innerText =
       switch local
