@@ -12,6 +12,8 @@ deferTimeout = ->
     phantom.exit 1
   , 3000
 
+console.log "Local time: #{new Date}"
+
 page.open phantom.args[0], ->
   deferTimeout()
 

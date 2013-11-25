@@ -16,9 +16,15 @@ namespace :test do
 
     pid = spawn "rackup test/javascripts/config.ru"
     sleep 2
-    result = system "phantomjs vendor/run-qunit.coffee http://localhost:9292"
+
+    pass = true
+    %w( US/Eastern Pacific/Auckland UTC ).each do |tz|
+      unless system "TZ=#{tz} phantomjs vendor/run-qunit.coffee http://localhost:9292"
+        pass = false
+      end
+    end
     Process.kill "INT", pid
     Process.waitpid pid
-    exit result ? 0 : 1
+    exit pass ? 0 : 1
   end
 end
