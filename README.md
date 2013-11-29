@@ -30,11 +30,11 @@ And immediately transforms to local time with JavaScript:
 #### Time and date helpers
 
 ```erb
-Pass a time and an optional strftime format
-<%= local_time(time, format = '%B %e, %Y %l:%M%P') %>
+Pass a time and an optional strftime format (default format shown here)
+<%= local_time(time, format: '%B %e, %Y %l:%M%P') %>
 
 Alias for local_time with a month-formatted default
-<%= local_date(time, format = '%B %e, %Y') %>
+<%= local_date(time, format: '%B %e, %Y') %>
 ```
 
 Note: The included strftime JavaScript implementation is not 100% complete. It supports the following directives: `%a %A %b %B %c %d %e %H %I %l %m %M %p %P %S %w %y %Y`

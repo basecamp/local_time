@@ -1,11 +1,17 @@
 module LocalTimeHelper
-  def local_time(time, format = '%B %e, %Y %l:%M%P')
-    time = utc_time(time)
-    time_tag time, time.strftime(format), data: { local: :time, format: format }
+  def local_time(time, options = {})
+    time   = utc_time(time)
+    format = options.delete(:format).presence || '%B %e, %Y %l:%M%P'
+
+    options[:data] ||= {}
+    options[:data].merge! local: :time, format: format
+
+    time_tag time, time.strftime(format), options
   end
 
-  def local_date(time, format = '%B %e, %Y')
-    local_time time, format
+  def local_date(time, options = {})
+    options.reverse_merge! format: '%B %e, %Y'
+    local_time time, options
   end
 
   def local_time_ago(time)
