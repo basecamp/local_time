@@ -4,7 +4,7 @@ require 'action_view'
 require 'minitest/autorun'
 
 
-class LocalTimeHelperTest < Minitest::Test
+class LocalTimeHelperTest < MiniTest::Unit::TestCase
   include ActionView::Helpers::DateHelper, ActionView::Helpers::TagHelper
   include LocalTimeHelper
 

@@ -10,4 +10,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "coffee-rails"
+
+  s.add_development_dependency "rails"
 end
