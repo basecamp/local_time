@@ -6,8 +6,8 @@ momentMap =
   "%b": "MMM"
   "%B": "MMMM"
   "%c": "toString()"
-  "%d": "D"
-  "%e": "DD"
+  "%d": "DD"
+  "%e": "D"
   "%H": "HH"
   "%I": "hh"
   "%l": "h"
@@ -20,18 +20,21 @@ momentMap =
   "%y": "YY"
   "%Y": "YYYY"
 
-for hour in [0..24] by 6
-  do (hour) ->
-    for format, momentFormat of momentMap
-      do (format, momentFormat) ->
-        test "#{format} (+#{hour} hours)", ->
-          now = moment().add "hours", hour
-          el  = addTimeEl format, now.toISOString()
-          run()
+for day in [0..30] by 6
+  do (day) ->
+    for hour in [0..24] by 6
+      do (hour) ->
+        for format, momentFormat of momentMap
+          do (format, momentFormat) ->
 
-          equal el.innerText,
-            if func = momentFormat.match(/(\w+)\(\)/)?[1]
-              now.toDate()[func]()
-            else
-              now.format momentFormat
+            test "#{format} (+#{day} days, #{hour} hours)", ->
+              now = moment().add("days", day).add("hours", hour)
+              el  = addTimeEl format, now.toISOString()
+              run()
+
+              equal el.innerText,
+                if func = momentFormat.match(/(\w+)\(\)/)?[1]
+                  now.toDate()[func]()
+                else
+                  now.format momentFormat
 
