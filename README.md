@@ -64,3 +64,9 @@ Displays the relative amount of time passed. With age, the descriptions transiti
 #### JavaScript events and library compatibility
 
 The included JavaScript does not depend on any frameworks or libraries, and listens for a `DOMContentLoaded` event to run initially. It also listens on `document` for `page:update` if you're using Turbolinks and `ajaxSuccess` if you're using jQuery. This should catch most cases where new `<time>` elements have been added to the DOM and process them automatically. If you're adding new elements in another context, trigger `time:elapse` to process them.
+
+#### Version History
+
+**0.1.0** (November 29, 2013)
+
+* Initial release.
