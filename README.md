@@ -1,4 +1,6 @@
-Local Time is a Rails engine with helpers and JavaScript for displaying times and dates to users in their local time. The helpers render a `<time>` element in UTC and the JavaScript swoops in to convert and format. Because the `<time>` element is only rendered in one timezone (UTC), it is ideal for caching.
+Local Time is a Rails engine with helpers and JavaScript for displaying times and dates to users in their local time. The helpers render a `<time>` element in UTC and the JavaScript swoops in to convert and format. Because the `<time>` element is only rendered in one timezone, it is ideal for caching.
+
+---
 
 ####Example
 
@@ -8,7 +10,7 @@ Assuming the time zone is EST and `Time.now` is `2013-11-27 18:43:22 -0500`:
 <%= local_time(Time.now) # index.html.erb %>
 ```
 
-Renders:
+Renders in UTC time:
 
 ```html
 <time data-format="%B %e, %Y %l:%M%P"
@@ -16,7 +18,7 @@ Renders:
       datetime="2013-11-27T23:43:22Z">November 27, 2013 11:43pm</time>
 ```
 
-And immediately transforms to local time with JavaScript:
+Then immediately converts to local time and strftime formats with JavaScript:
 
 ```html
 <time data-format="%B %e, %Y %l:%M%P"
@@ -25,7 +27,7 @@ And immediately transforms to local time with JavaScript:
       data-localized="true">November 27, 2013 6:43pm</time>
 ```
 
-*(Linebreaks added for readability)*
+*(Line breaks added for readability)*
 
 #### Time and date helpers
 
@@ -45,7 +47,7 @@ Note: The included strftime JavaScript implementation is not 100% complete. It s
 <%= local_time_ago(time) %>
 ```
 
-Displays the relative amount of time passed. With age, the descriptions transition from specific quantities to general dates. The `<time>` elements are updated every 60 seconds. Examples:
+Displays the relative amount of time passed. With age, the descriptions transition from specific quantities to general dates. The `<time>` elements are updated every 60 seconds. Examples (in quotes):
 
 * Recent: "a second ago", "32 seconds ago", "an hour ago", "14 hours ago"
 * Yesterday: "yesterday at 5:22pm"
@@ -61,6 +63,4 @@ Displays the relative amount of time passed. With age, the descriptions transiti
 
 #### JavaScript events and library compatibility
 
-The included JavaScript does not depend on any frameworks or libraries and listens for a `DOMContentLoaded` event to run initially. It also listens on `document` for `page:update` if you're using Turbolinks and `ajaxSuccess` if you're using jQuery. This should catch most cases where new `<time>` elements have been added to the DOM and process them automatically.
-
-If the above events don't catch new elements, you can trigger `time:elapse` to process them. The internal timer triggers the same event every 60 seconds to update all `local_time_ago` generated elements.
+The included JavaScript does not depend on any frameworks or libraries, and listens for a `DOMContentLoaded` event to run initially. It also listens on `document` for `page:update` if you're using Turbolinks and `ajaxSuccess` if you're using jQuery. This should catch most cases where new `<time>` elements have been added to the DOM and process them automatically. If you're adding new elements in another context, trigger `time:elapse` to process them.
