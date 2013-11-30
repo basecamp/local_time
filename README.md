@@ -4,13 +4,11 @@ Local Time is a Rails engine with helpers and JavaScript for displaying times an
 
 ####Example
 
-Assuming the time zone is EST and `Time.now` is `2013-11-27 18:43:22 -0500`:
-
 ```erb
-<%= local_time(Time.now) # index.html.erb %>
+<%= local_time(comment.created_at) # comment.created_at => Wed, 27 Nov 2013 18:43:22 EST -0500 %>
 ```
 
-Renders in UTC time:
+Renders:
 
 ```html
 <time data-format="%B %e, %Y %l:%M%P"
@@ -18,7 +16,7 @@ Renders in UTC time:
       datetime="2013-11-27T23:43:22Z">November 27, 2013 11:43pm</time>
 ```
 
-Then immediately converts to local time and strftime formats with JavaScript:
+When the DOM loads, the content is immediately replaced with a local, formatted time:
 
 ```html
 <time data-format="%B %e, %Y %l:%M%P"
