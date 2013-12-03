@@ -14,9 +14,13 @@ module LocalTimeHelper
     local_time time, options
   end
 
-  def local_time_ago(time)
+  def local_time_ago(time, options = {})
     time = utc_time(time)
-    time_tag time, time.strftime('%B %e, %Y %l:%M%P'), data: { local: 'time-ago' }
+
+    options[:data] ||= {}
+    options[:data].merge! local: 'time-ago'
+
+    time_tag time, time.strftime('%B %e, %Y %l:%M%P'), options
   end
 
   def utc_time(time_or_date)

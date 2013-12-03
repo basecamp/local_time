@@ -65,4 +65,9 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
     expected = %Q(<time data-local="time-ago" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
     assert_equal expected, local_time_ago(@time)
   end
+
+  def test_local_time_ago_with_options
+    expected = %Q(<time class="date-time" data-local="time-ago" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    assert_equal expected, local_time_ago(@time, class: "date-time")
+  end
 end
