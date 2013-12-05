@@ -45,6 +45,12 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
     assert_equal expected, local_time(@time, format: '%b %e')
   end
 
+  def test_local_time_with_format_symbol
+    Time::DATE_FORMATS[:simple] = "%b %e"
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
+    assert_equal expected, local_time(@time, format: :simple)
+  end
+
   def test_local_time_with_options
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}" style="display:none">Nov 21</time>)
     assert_equal expected, local_time(@time, format: '%b %e', style: 'display:none')

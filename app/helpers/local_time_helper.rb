@@ -2,6 +2,9 @@ module LocalTimeHelper
   def local_time(time, options = {})
     time   = utc_time(time)
     format = options.delete(:format).presence || '%B %e, %Y %l:%M%P'
+    if format.kind_of?(Symbol)
+      format = Time::DATE_FORMATS[format]
+    end
 
     options[:data] ||= {}
     options[:data].merge! local: :time, format: format
