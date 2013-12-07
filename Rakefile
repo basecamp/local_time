@@ -18,7 +18,7 @@ namespace :test do
 
     with_js_server do
       zones.each do |tz|
-        pass = false unless system "TZ=#{tz} #{command}"
+        pass = false unless system "TZ='#{tz}' #{command}"
       end
     end
 
