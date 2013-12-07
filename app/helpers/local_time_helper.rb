@@ -23,6 +23,15 @@ module LocalTimeHelper
     time_tag time, time.strftime('%B %e, %Y %l:%M%P'), options
   end
 
+  def local_compact(time, options = {})
+    time = utc_time(time)
+
+    options[:data] ||= {}
+    options[:data].merge! local: 'compact'
+
+    time_tag time, time.strftime('%b %e'), options
+  end
+
   def utc_time(time_or_date)
     if time_or_date.respond_to?(:in_time_zone)
       time_or_date.in_time_zone.utc
