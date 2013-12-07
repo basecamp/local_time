@@ -71,8 +71,7 @@ When the DOM loads, the content is immediately replaced with a compact, local-fo
 
 ```html
 <time data-local="compact"
-      datetime="2013-11-27T23:43:22Z"
-      data-localized="true">11:43pm</time>
+      datetime="2013-11-27T23:43:22Z">11:43pm</time>
 ```
 
 The compact datetime representation changes based on the relative amount of time passed:
