@@ -51,6 +51,24 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
     assert_equal expected, local_time(@time, format: :simple)
   end
 
+  def test_local_time_with_format_symbol_and_i18n
+    I18n.backend.store_translations(:en, {:time => {:formats => {:simple => "%b %e"}}})
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
+    assert_equal expected, local_time(@time, format: :simple)
+  end
+
+  def test_local_time_with_fomrat_symbol_defaults_when_proc
+    Time::DATE_FORMATS[:proc] = proc {|time| "nope" }
+    expected = %Q(<time data-format="%B %e, %Y %l:%M%P" data-local="time" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    assert_equal expected, local_time(@time, format: :proc)
+  end
+
+  def test_local_time_with_fomrat_symbol_defaults_when_proc_i18n
+    I18n.backend.store_translations(:en, {:time => {:formats => proc {|time| "nope" } }})
+    expected = %Q(<time data-format="%B %e, %Y %l:%M%P" data-local="time" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    assert_equal expected, local_time(@time, format: :proc)
+  end
+
   def test_local_time_with_options
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}" style="display:none">Nov 21</time>)
     assert_equal expected, local_time(@time, format: '%b %e', style: 'display:none')
