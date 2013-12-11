@@ -65,6 +65,11 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### Version History
 
+**0.2.0** (December 10, 2013)
+
+* Prefer `textContent` over `innerText` for Firefox compatibility
+* Added `options` argument to `local_time_ago` helper
+
 **0.1.0** (November 29, 2013)
 
 * Initial release.
