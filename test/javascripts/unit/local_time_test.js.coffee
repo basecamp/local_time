@@ -9,9 +9,9 @@ test "date", ->
 
 test "unparseable time", ->
   el = addTimeEl "%Y", ":("
-  el.innerText = "2013"
+  setText el, "2013"
   run()
-  equal el.innerText, "2013"
+  equal getText(el), "2013"
 
 
 assertLocalized = (id, type = "time") ->
@@ -26,7 +26,7 @@ assertLocalized = (id, type = "time") ->
   el = document.getElementById id
 
   ok datetime = el.getAttribute "datetime"
-  ok local = el.innerText
+  ok local = getText el
 
   datetimeParsed = moment datetime
   localParsed = moment local, momentFormat

@@ -171,6 +171,7 @@ process = (selector, callback) ->
 
 document.addEventListener "DOMContentLoaded", ->
   domLoaded = true
+  textProperty = if "textContent" of document.body then "textContent" else "innerText"
 
   process "time[data-local]:not([data-localized])", (element) ->
     datetime = element.getAttribute "datetime"
@@ -180,7 +181,7 @@ document.addEventListener "DOMContentLoaded", ->
     time = new Date Date.parse datetime
     return if isNaN time
 
-    element.innerText =
+    element[textProperty] =
       switch local
         when "time"
           element.setAttribute "data-localized", true

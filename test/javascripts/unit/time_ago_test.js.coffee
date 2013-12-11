@@ -46,4 +46,4 @@ assertTimeAgo = (string, unit, amount) ->
   el.setAttribute "data-local", "time-ago"
   el.setAttribute "datetime", moment().subtract(unit, amount).utc().toISOString()
   run()
-  equal el.innerText, string
+  equal getText(el), string

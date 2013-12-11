@@ -32,7 +32,7 @@ for day in [0..30] by 6
               el  = addTimeEl format, now.toISOString()
               run()
 
-              equal el.innerText,
+              equal getText(el),
                 if func = momentFormat.match(/(\w+)\(\)/)?[1]
                   now.toDate()[func]()
                 else

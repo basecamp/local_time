@@ -12,6 +12,15 @@
   document.body.appendChild el
   el
 
+@setText = (el, text) ->
+  textProperty = if "textContent" of el then "textContent" else "innerText"
+  el[textProperty] = text
+
+@getText = (el) ->
+  # innerHTML works in all browsers so using it ensures we're
+  # reading the text content, not a potentially arbitrary property.
+  el.innerHTML
+
 @triggerEvent = (name, el = document) ->
   event = document.createEvent "Events"
   event.initEvent name, true, true
