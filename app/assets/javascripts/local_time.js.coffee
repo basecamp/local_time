@@ -81,6 +81,9 @@ class CalendarDate
   daysPassed: ->
     @constructor.today().daysSince @
 
+  isToday: ->
+    @date.getTime() is @constructor.today().date.getTime()
+
 
 class RelativeTimeAgo
   @generate: (date) ->
@@ -147,6 +150,25 @@ class RelativeTimeAgo
     strftime @date, '%l:%M%P'
 
 
+# Mar 23 or Mar 22 '12
+dateShortFormat = (date) ->
+  # if this year, omit the year
+  if CalendarDate.fromDate(date).occursThisYear()
+    strftime date, '%b %e'
+
+  # return the month, day, and abbreviated year
+  else
+    strftime date, "%b %e, '%y"
+
+
+# 11:12am, Mar 23 or Mar 22 '12
+compactFormat = (date) ->
+  if CalendarDate.fromDate(date).isToday()
+    strftime date, '%l:%M%P'
+  else
+    dateShortFormat(date)
+
+
 domLoaded = false
 
 update = (callback) ->
@@ -188,6 +210,9 @@ document.addEventListener "DOMContentLoaded", ->
           strftime time, format
         when "time-ago"
           RelativeTimeAgo.generate time
+        when "compact"
+          compactFormat time
+
 
   setInterval ->
     event = document.createEvent "Events"
