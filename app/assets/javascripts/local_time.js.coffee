@@ -161,8 +161,8 @@ update = (callback) ->
       window.addEventListener "popstate", callback
     , 1
 
-    jQuery?(document).on "ajaxSuccess", (event, xhr) ->
-      callback() if jQuery.trim xhr.responseText
+  jQuery?(document).on "ajaxSuccess", (event, xhr) ->
+    callback() if jQuery.trim xhr.responseText
 
 process = (selector, callback) ->
   update ->
