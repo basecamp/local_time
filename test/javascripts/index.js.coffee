@@ -1,5 +1,6 @@
 #= require qunit
 #= require moment
+#= require sinon-timers
 #= require local_time
 #= require_directory ./unit
 #= require_self
