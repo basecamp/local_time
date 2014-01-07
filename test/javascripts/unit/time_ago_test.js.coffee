@@ -29,10 +29,10 @@ test "last week", ->
 
   assertTimeAgo "#{day} at #{time}", "days", 5
 
-test "this year", ->
-  # This will fail on the first 7 days of the year.
-  # Not sure how to test without somehow stubbing Date.
-  if moment().dayOfYear() > 7
+# This will fail on the first 7 days of the year.
+# Not sure how to test without somehow stubbing Date.
+if moment().dayOfYear() > 7
+  test "this year", ->
     date = moment().subtract("days", 7).format "MMM D"
     assertTimeAgo "on #{date}", "days", 7
 
