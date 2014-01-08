@@ -29,13 +29,12 @@ test "last week", ->
 
   assertTimeAgo "#{day} at #{time}", "days", 5
 
-# This will fail on the first 7 days of the year.
-# Not sure how to test without somehow stubbing Date.
-if moment().dayOfYear() > 7
-  test "this year", ->
-    date = moment().subtract("days", 7).format "MMM D"
-    assertTimeAgo "on #{date}", "days", 7
-
+test "this year", ->
+  clock = sinon.useFakeTimers(new Date(2013,11,11,11,11).getTime(), "Date")
+  date = moment().subtract("days", 7).format "MMM D"
+  assertTimeAgo "on #{date}", "days", 7
+  clock.restore()
+  
 test "last year", ->
   date = moment().subtract("days", 366).format "MMM D, YYYY"
   assertTimeAgo "on #{date}", "days", 366
