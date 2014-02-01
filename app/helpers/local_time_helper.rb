@@ -35,10 +35,14 @@ module LocalTimeHelper
 
   def time_format(format, default = '%B %e, %Y %l:%M%P')
     return default unless format
-    str = I18n.t("time.formats.#{format}",
-                 default: [:"date.formats.#{format}", '']).presence
-    str ||= Time::DATE_FORMATS[format].presence ||
-              Date::DATE_FORMATS[format].presence
-    str || format.presence || default
+
+    i18n_format = I18n.t("time.formats.#{format}",
+                      default: [:"date.formats.#{format}", '']).presence
+    unless i18n_format
+      date_format = Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format]
+      format = date_format = nil if date_format.is_a?(Proc)
+    end
+
+    i18n_format || date_format || format.to_s.presence || default
   end
 end

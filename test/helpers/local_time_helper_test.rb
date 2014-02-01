@@ -58,9 +58,15 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
     assert_equal expected, local_time(@time, format: 'simple_time')
   end
 
-  def test_local_time_with_time_date_formats_constant_format
+  def test_local_time_with_date_formats_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_equal expected, local_time(@time, format: :time_formats_simple_time)
+  end
+
+  def test_local_time_with_date_formats_proc_format
+    Time::DATE_FORMATS[:proc] = proc { |time| "nope" }
+    expected = %Q(<time data-format="%B %e, %Y %l:%M%P" data-local="time" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    assert_equal expected, local_time(@time, format: :proc)
   end
 
   def test_local_time_with_options
@@ -85,7 +91,7 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
     assert_equal expected, local_date(@time, format: 'simple_date')
   end
 
-  def test_local_date_with_date_formats_constant_format
+  def test_local_date_with_date_formats_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_equal expected, local_date(@time, format: :date_formats_simple_date)
   end
