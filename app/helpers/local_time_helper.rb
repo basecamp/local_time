@@ -1,7 +1,7 @@
 module LocalTimeHelper
   def local_time(time, options = {})
     time   = utc_time(time)
-    format = options.delete(:format).presence || '%B %e, %Y %l:%M%P'
+    format = time_format(options.delete(:format))
 
     options[:data] ||= {}
     options[:data].merge! local: :time, format: format
@@ -29,5 +29,16 @@ module LocalTimeHelper
     else
       time_or_date.to_time.utc
     end
+  end
+
+  private
+
+  def time_format(format, default = '%B %e, %Y %l:%M%P')
+    return default unless format
+    str = I18n.t("time.formats.#{format}",
+                 default: [:"date.formats.#{format}", '']).presence
+    str ||= Time::DATE_FORMATS[format].presence ||
+              Date::DATE_FORMATS[format].presence
+    str || format.presence || default
   end
 end

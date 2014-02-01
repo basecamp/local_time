@@ -3,6 +3,8 @@ require 'active_support/all'
 require 'action_view'
 require 'minitest/autorun'
 
+I18n.enforce_available_locales = false
+
 
 class LocalTimeHelperTest < MiniTest::Unit::TestCase
   include ActionView::Helpers::DateHelper, ActionView::Helpers::TagHelper
@@ -11,6 +13,11 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
   def setup
     @original_zone = Time.zone
     Time.zone = ActiveSupport::TimeZone["Central Time (US & Canada)"]
+    I18n.backend.store_translations(:en, {
+      time: { formats: { simple_time: "%b %e" } },
+      date: { formats: { simple_date: "%b %e" } } })
+    Time::DATE_FORMATS[:time_formats_simple_time] = '%b %e'
+    Date::DATE_FORMATS[:date_formats_simple_date] = '%b %e'
 
     @date = "2013-11-21"
     @time = Time.zone.parse(@date)
@@ -45,6 +52,17 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
     assert_equal expected, local_time(@time, format: '%b %e')
   end
 
+  def test_local_time_with_i18n_format
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
+    assert_equal expected, local_time(@time, format: :simple_time)
+    assert_equal expected, local_time(@time, format: 'simple_time')
+  end
+
+  def test_local_time_with_time_date_formats_constant_format
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
+    assert_equal expected, local_time(@time, format: :time_formats_simple_time)
+  end
+
   def test_local_time_with_options
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}" style="display:none">Nov 21</time>)
     assert_equal expected, local_time(@time, format: '%b %e', style: 'display:none')
@@ -59,6 +77,17 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
   def test_local_date_with_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_equal expected, local_date(@time, format: '%b %e')
+  end
+
+  def test_local_date_with_i18n_format
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
+    assert_equal expected, local_date(@time, format: :simple_date)
+    assert_equal expected, local_date(@time, format: 'simple_date')
+  end
+
+  def test_local_date_with_date_formats_constant_format
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
+    assert_equal expected, local_date(@time, format: :date_formats_simple_date)
   end
 
   def test_local_time_ago
