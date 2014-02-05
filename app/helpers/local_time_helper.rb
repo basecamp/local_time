@@ -36,8 +36,7 @@ module LocalTimeHelper
       case
       when format.blank?
         default
-      when i18n_format = I18n.t("time.formats.#{format}",
-                                default: [:"date.formats.#{format}", '']).presence
+      when i18n_format = I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", '']).presence
         i18n_format
       when date_format = Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format]
         if date_format.is_a?(Proc)
