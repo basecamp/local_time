@@ -29,14 +29,21 @@ When the DOM loads, the content is immediately replaced with a local, formatted 
 
 #### Time and date helpers
 
-You can define the date format to be displayed in a variety of ways. Each of these ways is detailed below, but the overall priority of where the format string will be drawn from is:
+You can define the date format to be displayed in a variety of ways. Each is detailed below, but the overall priority of where the format string will be drawn from is:
 
-* I18n `"time.formats.#{format}"`
-* I18n `"date.formats.#{format}"`
-* Time::DATE_FORMATS[format]
-* Date::DATE_FORMATS[format]
+* If format is a symbol:
+    * I18n `"time.formats.#{format.to_s}"`
+    * I18n `"date.formats.#{format.to_s}"`
+    * `Time::DATE_FORMATS[format]`
+    * `Date::DATE_FORMATS[format]`
 * Custom strftime format string
 * Otherwise, the default format (`'%B %e, %Y %l:%M%P'`) is used
+
+The general usage is:
+
+```erb
+<%= local_time(time, format: <a symbol or string>) %>
+```
 
 ##### I18n
 
@@ -52,14 +59,14 @@ en:
       slash_date: "%m/%d/%Y"
 ```
 
-You can utilize any such defined formats by passing a symbol or string identifying the format name above. (Do not scope the format name.)
+You can utilize I18n formats by passing a *symbol* identifying the format. (Do not scope the format name.)
 
 Note: If the format name exists in both `date.formats` and `time.formats`, then the one defined in `time.formats` wins out.
 
 ```erb
-Pass an I18n time or date format as a symbol or a string
+Pass an I18n time or date format as a symbol
 <%= local_time(time, format: :slash_date) %>
-<%= local_time(date, format: "long") %>
+<%= local_time(date, format: :long) %>
 ```
 
 ##### Time::DATE_FORMATS and Date::DATE_FORMATS
@@ -73,12 +80,12 @@ Time::DATE_FORMATS[:month_and_day] = "%B %d"
 Date::DATE_FORMATS[:year] = "%Y"
 ```
 
-You can utilize any of the above DATE_FORMATS styles by sending the corresponding key to the `format` option.
+You can utilize any of the above DATE_FORMATS styles by sending the corresponding *symbol* to the `format` option.
 
 Note: If the format name exists in both `Time::DATE_FORMATS` and `Date::DATE_FORMATS`, then the one defined in `Time::DATE_FORMATS` wins out.
 
 ```erb
-Pass a DATE_FORMATS key
+Pass a DATE_FORMATS symbol
 <%= local_time(time, format: :month_and_day) %>
 <%= local_time(date, format: :year) %>
 ```

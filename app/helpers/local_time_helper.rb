@@ -33,21 +33,16 @@ module LocalTimeHelper
 
   private
     def time_format(format, default = '%B %e, %Y %l:%M%P')
-      case
-      when format.blank?
-        default
-      when i18n_format = I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", '']).presence
-        i18n_format
-      when date_format = Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format]
-        if date_format.is_a?(Proc)
-          default
+      if format.is_a?(Symbol)
+        if (i18n_format = I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", ''])).present?
+          i18n_format
+        elsif (date_format = Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format])
+          date_format.is_a?(Proc) ? default : date_format
         else
-          date_format
+          default
         end
-      when format.present?
-        format
       else
-        default
+        format.presence || default
       end
     end
 end

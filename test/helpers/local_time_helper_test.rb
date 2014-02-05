@@ -54,12 +54,16 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
   def test_local_time_with_i18n_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_equal expected, local_time(@time, format: :simple_time)
-    assert_equal expected, local_time(@time, format: 'simple_time')
   end
 
   def test_local_time_with_date_formats_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_equal expected, local_time(@time, format: :time_formats_simple_time)
+  end
+
+  def test_local_time_with_missing_i18n_and_date_formats_format
+    expected = %Q(<time data-format="%B %e, %Y %l:%M%P" data-local="time" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    assert_equal expected, local_time(@time, format: :missing_format)
   end
 
   def test_local_time_with_date_formats_proc_format
@@ -81,18 +85,22 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
 
   def test_local_date_with_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
-    assert_equal expected, local_date(@time, format: '%b %e')
+    assert_equal expected, local_date(@time.to_date, format: '%b %e')
   end
 
   def test_local_date_with_i18n_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
-    assert_equal expected, local_date(@time, format: :simple_date)
-    assert_equal expected, local_date(@time, format: 'simple_date')
+    assert_equal expected, local_date(@time.to_date, format: :simple_date)
   end
 
   def test_local_date_with_date_formats_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
-    assert_equal expected, local_date(@time, format: :date_formats_simple_date)
+    assert_equal expected, local_date(@time.to_date, format: :date_formats_simple_date)
+  end
+
+  def test_local_date_with_missing_i18n_and_date_formats_format
+    expected = %Q(<time data-format="%B %e, %Y %l:%M%P" data-local="time" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    assert_equal expected, local_date(@time.to_date, format: :missing_date_format)
   end
 
   def test_local_time_ago
