@@ -32,8 +32,8 @@ When the DOM loads, the content is immediately replaced with a local, formatted 
 You can define the date format to be displayed in a variety of ways. Each is detailed below, but the overall priority of where the format string will be drawn from is:
 
 * If format is a symbol:
-    * I18n `"time.formats.#{format.to_s}"`
-    * I18n `"date.formats.#{format.to_s}"`
+    * I18n `"time.formats.#{format}"`
+    * I18n `"date.formats.#{format}"`
     * `Time::DATE_FORMATS[format]`
     * `Date::DATE_FORMATS[format]`
 * Custom strftime format string
@@ -50,6 +50,8 @@ The general usage is:
 Given:
 
 ```yml
+# config/locales/en.yml
+
 en:
   date:
     formats:
