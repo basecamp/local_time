@@ -70,6 +70,18 @@ Displays the relative amount of time passed. With age, the descriptions transiti
 
 The included JavaScript does not depend on any frameworks or libraries, and listens for a `DOMContentLoaded` event to run initially. It also listens on `document` for `page:update` if you're using Turbolinks and `ajaxSuccess` if you're using jQuery. This should catch most cases where new `<time>` elements have been added to the DOM and process them automatically. If you're adding new elements in another context, trigger `time:elapse` to process them.
 
+#### JavaScript API
+
+`strftime` and `relativeTimeAgo` are available via the global `LocalTime` object.
+
+```js
+> LocalTime.strftime(new Date, "%B %e, %Y %l:%M%P")
+"February 9, 2014 12:55pm"
+
+> LocalTime.relativeTimeAgo(new Date(new Date - 60 * 1000 * 5))
+"5 minutes ago"
+```
+
 #### Version History
 
 **0.2.0** (December 10, 2013)

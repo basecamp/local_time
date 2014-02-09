@@ -83,9 +83,6 @@ class CalendarDate
 
 
 class RelativeTimeAgo
-  @generate: (date) ->
-    new this(date).toString()
-
   constructor: (@date) ->
     @calendarDate = CalendarDate.fromDate @date
 
@@ -146,6 +143,8 @@ class RelativeTimeAgo
   formatTime: ->
     strftime @date, '%l:%M%P'
 
+relativeTimeAgo = (date) ->
+  new RelativeTimeAgo(date).toString()
 
 domLoaded = false
 
@@ -187,10 +186,13 @@ document.addEventListener "DOMContentLoaded", ->
           element.setAttribute "data-localized", true
           strftime time, format
         when "time-ago"
-          RelativeTimeAgo.generate time
+          relativeTimeAgo time
 
   setInterval ->
     event = document.createEvent "Events"
     event.initEvent "time:elapse", true, true
     document.dispatchEvent event
   , 60 * 1000
+
+# Public API
+@LocalTime = {strftime, relativeTimeAgo}
