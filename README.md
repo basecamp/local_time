@@ -29,71 +29,6 @@ When the DOM loads, the content is immediately replaced with a local, formatted 
 
 #### Time and date helpers
 
-You can define the date format to be displayed in a variety of ways. Each is detailed below, but the overall priority of where the format string will be drawn from is:
-
-* If format is a symbol:
-    * I18n `"time.formats.#{format}"`
-    * I18n `"date.formats.#{format}"`
-    * `Time::DATE_FORMATS[format]`
-    * `Date::DATE_FORMATS[format]`
-* Custom strftime format string
-* Otherwise, the default format (`'%B %e, %Y %l:%M%P'`) is used
-
-The general usage is:
-
-```erb
-<%= local_time(time, format: <a symbol or string>) %>
-```
-
-##### I18n
-
-Given:
-
-```yml
-# config/locales/en.yml
-
-en:
-  date:
-    formats:
-      long: "%B %d, %Y"
-  time:
-    formats:
-      slash_date: "%m/%d/%Y"
-```
-
-You can utilize I18n formats by passing a *symbol* identifying the format. (Do not scope the format name.)
-
-Note: If the format name exists in both `date.formats` and `time.formats`, then the one defined in `time.formats` wins out.
-
-```erb
-Pass an I18n time or date format as a symbol
-<%= local_time(time, format: :slash_date) %>
-<%= local_time(date, format: :long) %>
-```
-
-##### Time::DATE_FORMATS and Date::DATE_FORMATS
-
-Given:
-
-```ruby
-# config/initializers/date_formats.rb
-
-Time::DATE_FORMATS[:month_and_day] = "%B %d"
-Date::DATE_FORMATS[:year] = "%Y"
-```
-
-You can utilize any of the above DATE_FORMATS styles by sending the corresponding *symbol* to the `format` option.
-
-Note: If the format name exists in both `Time::DATE_FORMATS` and `Date::DATE_FORMATS`, then the one defined in `Time::DATE_FORMATS` wins out.
-
-```erb
-Pass a DATE_FORMATS symbol
-<%= local_time(time, format: :month_and_day) %>
-<%= local_time(date, format: :year) %>
-```
-
-##### Custom strftime format string
-
 ```erb
 Pass a time and an optional strftime format (default format shown here)
 <%= local_time(time, format: '%B %e, %Y %l:%M%P') %>
@@ -101,6 +36,13 @@ Pass a time and an optional strftime format (default format shown here)
 Alias for local_time with a month-formatted default
 <%= local_date(time, format: '%B %e, %Y') %>
 ```
+
+To use a strftime format already defined in your app, pass a symbol as the format.
+```erb
+<%= local_time(date, format: :long) %>
+```
+
+`I18n.t("time.formats.#{format}")`, `I18n.t("date.formats.#{format}")`, `Time::DATE_FORMATS[format]`, and `Date::DATE_FORMATS[format]` will be scanned (in that order) for your format.
 
 Note: The included strftime JavaScript implementation is not 100% complete. It supports the following directives: `%a %A %b %B %c %d %e %H %I %l %m %M %p %P %S %w %y %Y`
 
