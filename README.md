@@ -84,6 +84,11 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### Version History
 
+**0.3.0** (February 9, 2014)
+
+* Allow :format option lookup in I18n or DATE_FORMATS hashes [Paul Dobbins]
+* Expose public API to JavaScript helpers
+
 **0.2.0** (December 10, 2013)
 
 * Prefer `textContent` over `innerText` for Firefox compatibility
