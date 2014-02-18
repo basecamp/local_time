@@ -30,7 +30,7 @@ strftime = (time, formatString) ->
   minute = time.getMinutes()
   second = time.getSeconds()
 
-  formatString.replace /%([%aAbBcdeHIlmMpPSwyY])/g, ([match, modifier]) ->
+  formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
     switch modifier
       when '%' then '%'
       when 'a' then weekdays[day].slice 0, 3
@@ -51,6 +51,7 @@ strftime = (time, formatString) ->
       when 'w' then day
       when 'y' then pad year % 100
       when 'Y' then year
+      when 'Z' then time.toString().match(/\((\w+)\)$/)?[1] ? ''
 
 
 class CalendarDate
