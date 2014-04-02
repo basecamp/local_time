@@ -33,6 +33,15 @@ module LocalTimeHelper
     end
   end
 
+  def local_time_count_down(time, options = {})
+    time = utc_time(time)
+
+    options[:data] ||= {}
+    options[:data].merge! local: 'time-count-down'
+
+    time_tag time, time.strftime(DEFAULT_FORMAT), options
+  end
+
   private
     def time_format(format)
       if format.is_a?(Symbol)
