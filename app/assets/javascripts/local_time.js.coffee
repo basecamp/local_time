@@ -143,8 +143,65 @@ class RelativeTimeAgo
   formatTime: ->
     strftime @date, '%l:%M%P'
 
+class RelativeTimeCountdown
+  constructor: (@date) ->
+    @calendarDate = CalendarDate.fromDate @date
+
+  toString: ->
+    current = new Date().getTime()
+    startDate = @date.getTime()
+
+    if current > startDate
+      @timePastGap()
+    else
+      @timeFutureGap()
+
+  timePastGap: ->
+    ms  = @date.getTime() -  new Date().getTime()
+    diff = Math.round ms  / 1000
+    seconds = diff % 60
+    minutes = ( ( diff - seconds ) / 60 ) % 60
+    hours = ( ( ( ( diff - ( minutes * 60 ) ) - seconds ) / 60 ) / 60 ) % 24
+
+    seconds = Math.abs(seconds)
+    minutes = Math.abs(minutes)
+    hours = Math.abs(hours)
+
+    @timeGap(diff, hours, minutes, seconds)
+
+  timeFutureGap: ->
+    ms  = @date.getTime() -  new Date().getTime()
+    diff = Math.round ms  / 1000
+    seconds = diff % 60
+    minutes = ( ( diff - seconds ) / 60 ) % 60
+    hours = ( ( ( ( diff - ( minutes * 60 ) ) - seconds ) / 60 ) / 60 ) % 24
+
+    @timeGap(diff, hours, minutes, seconds)
+
+  timeGap: (diff, hours, minutes, seconds) ->
+    if diff < 0
+      suffix = " ago"
+      diff = -diff
+    else
+      suffix = ""
+
+    result =
+      if diff > 3600 and minutes != 0
+        "#{hours}h#{minutes}m"
+      else if diff >= 3600 and minutes == 0
+        "#{hours}h"
+      else if diff >= 60
+        "#{minutes}m"
+      else
+        "#{seconds}s"
+
+    result += suffix
+
 relativeTimeAgo = (date) ->
   new RelativeTimeAgo(date).toString()
+
+relativeTimeCountdown = (date) ->
+  new RelativeTimeCountdown(date).toString()
 
 domLoaded = false
 
@@ -187,12 +244,14 @@ document.addEventListener "DOMContentLoaded", ->
           strftime time, format
         when "time-ago"
           relativeTimeAgo time
+        when "time-count-down"
+          relativeTimeCountdown time
 
   setInterval ->
     event = document.createEvent "Events"
     event.initEvent "time:elapse", true, true
     document.dispatchEvent event
-  , 60 * 1000
+  , 1000
 
 # Public API
 @LocalTime = {strftime, relativeTimeAgo}
