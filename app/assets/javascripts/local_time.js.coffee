@@ -167,14 +167,7 @@ class RelativeTimeCountdown
     minutes = Math.abs(minutes)
     hours = Math.abs(hours)
 
-    if diff > -60
-      "#{seconds}s ago"
-    else if diff > -3600
-      "#{minutes}m ago"
-    else if diff <= -3600 and minutes == 0
-      "#{hours}h ago"
-    else if diff < -3600 and minutes != 0
-      "#{hours}h#{minutes}m ago"
+    @timeGap(diff, hours, minutes, seconds)
 
   timeFutureGap: ->
     ms  = @date.getTime() -  new Date().getTime()
@@ -183,14 +176,26 @@ class RelativeTimeCountdown
     minutes = ( ( diff - seconds ) / 60 ) % 60
     hours = ( ( ( ( diff - ( minutes * 60 ) ) - seconds ) / 60 ) / 60 ) % 24
 
-    if diff > 3600 and minutes != 0
-      "#{hours}h#{minutes}m"
-    else if diff >= 3600 and minutes == 0
-      "#{hours}h"
-    else if diff >= 60
-      "#{minutes}m"
-    else if diff > -60
-      "#{seconds}s"
+    @timeGap(diff, hours, minutes, seconds)
+
+  timeGap: (diff, hours, minutes, seconds) ->
+    if diff < 0
+      suffix = " ago"
+      diff = -diff
+    else
+      suffix = ""
+
+    result =
+      if diff > 3600 and minutes != 0
+        "#{hours}h#{minutes}m"
+      else if diff >= 3600 and minutes == 0
+        "#{hours}h"
+      else if diff >= 60
+        "#{minutes}m"
+      else
+        "#{seconds}s"
+
+    result += suffix
 
 relativeTimeAgo = (date) ->
   new RelativeTimeAgo(date).toString()
