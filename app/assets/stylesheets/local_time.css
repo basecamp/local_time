@@ -1,0 +1,9 @@
+/*style could be change and override*/
+time[data-local]{
+  display: block;
+}
+
+time[tear-down="close-soon-L1"] {
+  background: #784e99;
+  color: white;
+}
