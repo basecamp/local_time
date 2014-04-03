@@ -160,13 +160,13 @@ class RelativeTimeCountdown
     ms  = @date.getTime() -  new Date().getTime()
     diff = Math.round ms  / 1000
 
-  setAttribute: ->
+  tearDown : ->
     #5min/15min
     if @gap() > 0
       if  @gap() < 300
-        'close-soon-L1'
+        'close-soon'
       else if @gap() < 900
-        'close-in-minutes-L2'
+        'close-in-minutes'
       else
         ''
     else
@@ -183,7 +183,7 @@ class RelativeTimeCountdown
     minutes = Math.abs(minutes)
     hours = Math.abs(hours)
 
-    @timePrint(diff, hours, minutes, seconds)
+    @formatDiff(diff, hours, minutes, seconds)
 
   timeFutureGap: ->
     ms  = @date.getTime() -  new Date().getTime()
@@ -192,9 +192,9 @@ class RelativeTimeCountdown
     minutes = ( ( diff - seconds ) / 60 ) % 60
     hours = ( ( ( ( diff - ( minutes * 60 ) ) - seconds ) / 60 ) / 60 ) % 24
 
-    @timePrint(diff, hours, minutes, seconds)
+    @formatDiff(diff, hours, minutes, seconds)
 
-  timePrint: (diff, hours, minutes, seconds) ->
+  formatDiff: (diff, hours, minutes, seconds) ->
     if diff < 0
       suffix = " ago"
       diff = -diff
@@ -220,7 +220,7 @@ relativeTimeCountdown = (date) ->
   new RelativeTimeCountdown(date).toString()
 
 relativeTimeSetAttribute = (date) ->
-  new RelativeTimeCountdown(date).setAttribute()
+  new RelativeTimeCountdown(date).tearDown()
 
 domLoaded = false
 

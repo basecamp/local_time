@@ -48,10 +48,10 @@ assertTimeCountDownFuture = (string, unit, amount) ->
 #highlight
 
 test "close in 9s", ->
-  assertTimeCountDownHighlight "close-soon-L1", "seconds", 9
+  assertTimeCountDownHighlight "close-soon", "seconds", 9
 
 test "close in 5m10s", ->
-  assertTimeCountDownHighlight "close-in-minutes-L2", "seconds", 310
+  assertTimeCountDownHighlight "close-in-minutes", "seconds", 310
 
 test "close in 16m", ->
   assertTimeCountDownHighlight "", "minutes", 16

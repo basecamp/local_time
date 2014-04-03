@@ -3,7 +3,8 @@ time[data-local]{
   display: block;
 }
 
-time[tear-down="close-soon-L1"] {
+time[tear-down="close-soon"] {
   background: #784e99;
+  font-weight: 600;
   color: white;
 }
