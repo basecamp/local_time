@@ -156,6 +156,22 @@ class RelativeTimeCountdown
     else
       @timeFutureGap()
 
+  gap: ->
+    ms  = @date.getTime() -  new Date().getTime()
+    diff = Math.round ms  / 1000
+
+  tearDown : ->
+    #5min/15min
+    if @gap() > 0
+      if  @gap() < 300
+        'close-soon'
+      else if @gap() < 900
+        'close-in-minutes'
+      else
+        ''
+    else
+      ''
+
   timePastGap: ->
     ms  = @date.getTime() -  new Date().getTime()
     diff = Math.round ms  / 1000
@@ -167,7 +183,7 @@ class RelativeTimeCountdown
     minutes = Math.abs(minutes)
     hours = Math.abs(hours)
 
-    @timeGap(diff, hours, minutes, seconds)
+    @formatDiff(diff, hours, minutes, seconds)
 
   timeFutureGap: ->
     ms  = @date.getTime() -  new Date().getTime()
@@ -176,9 +192,9 @@ class RelativeTimeCountdown
     minutes = ( ( diff - seconds ) / 60 ) % 60
     hours = ( ( ( ( diff - ( minutes * 60 ) ) - seconds ) / 60 ) / 60 ) % 24
 
-    @timeGap(diff, hours, minutes, seconds)
+    @formatDiff(diff, hours, minutes, seconds)
 
-  timeGap: (diff, hours, minutes, seconds) ->
+  formatDiff: (diff, hours, minutes, seconds) ->
     if diff < 0
       suffix = " ago"
       diff = -diff
@@ -202,6 +218,9 @@ relativeTimeAgo = (date) ->
 
 relativeTimeCountdown = (date) ->
   new RelativeTimeCountdown(date).toString()
+
+relativeTimeSetAttribute = (date) ->
+  new RelativeTimeCountdown(date).tearDown()
 
 domLoaded = false
 
@@ -245,7 +264,8 @@ document.addEventListener "DOMContentLoaded", ->
         when "time-ago"
           relativeTimeAgo time
         when "time-count-down"
-          relativeTimeCountdown time
+          element.setAttribute("tear-down", relativeTimeSetAttribute(time))
+          relativeTimeCountdown(time)
 
   setInterval ->
     event = document.createEvent "Events"

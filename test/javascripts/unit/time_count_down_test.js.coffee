@@ -31,7 +31,6 @@ test "1h", ->
 test "1h5m", ->
   assertTimeCountDownFuture "1h5m", "minutes", 65
   
-
 assertTimeCountDownPast = (string, unit, amount) ->
   el = document.getElementById "count-down"
   el.setAttribute "data-local", "time-count-down"
@@ -45,3 +44,21 @@ assertTimeCountDownFuture = (string, unit, amount) ->
   el.setAttribute "datetime", moment().add(unit, amount).utc().toISOString()
   run()
   equal getText(el), string
+
+#highlight
+
+test "close in 9s", ->
+  assertTimeCountDownHighlight "close-soon", "seconds", 9
+
+test "close in 5m10s", ->
+  assertTimeCountDownHighlight "close-in-minutes", "seconds", 310
+
+test "close in 16m", ->
+  assertTimeCountDownHighlight "", "minutes", 16
+
+assertTimeCountDownHighlight = (string, unit, amount) ->
+  el = document.getElementById "count-down"
+  el.setAttribute "data-local", "time-count-down"
+  el.setAttribute "datetime", moment().add(unit, amount).utc().toISOString()
+  run()
+  equal el.getAttribute('tear-down'), string
