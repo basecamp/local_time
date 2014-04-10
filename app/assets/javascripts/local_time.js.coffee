@@ -68,6 +68,16 @@ class CalendarDate
     @year = @date.getUTCFullYear()
     @month = @date.getUTCMonth() + 1
     @day = @date.getUTCDate()
+    @value = @date.getTime()
+
+  equals: (calendarDate) ->
+    calendarDate?.value is @value
+
+  is: (calendarDate) ->
+    @equals calendarDate
+
+  isToday: ->
+    @is @constructor.today()
 
   occursOnSameYearAs: (date) ->
     @year is date?.year
@@ -83,7 +93,7 @@ class CalendarDate
     @constructor.today().daysSince @
 
 
-class RelativeTimeAgo
+class RelativeTime
   constructor: (@date) ->
     @calendarDate = CalendarDate.fromDate @date
 
@@ -100,6 +110,12 @@ class RelativeTimeAgo
     # Older: "Saved on Dec 15"
     else
       "on #{@formatDate()}"
+
+  toTimeOrDateString: ->
+    if @calendarDate.isToday()
+      @formatTime()
+    else
+      @formatDate()
 
   timeElapsed: ->
     ms  = new Date().getTime() - @date.getTime()
@@ -145,7 +161,17 @@ class RelativeTimeAgo
     strftime @date, '%l:%M%P'
 
 relativeTimeAgo = (date) ->
-  new RelativeTimeAgo(date).toString()
+  new RelativeTime(date).toString()
+
+relativeWeekday = (date) ->
+  if day = new RelativeTime(date).relativeWeekday()
+    day.charAt(0).toUpperCase() + day.substring(1)
+
+relativeDate = (date) ->
+  new RelativeTime(date).formatDate()
+
+relativeTimeOrDate = (date) ->
+  new RelativeTime(date).toTimeOrDateString()
 
 domLoaded = false
 
@@ -186,14 +212,22 @@ document.addEventListener "DOMContentLoaded", ->
         when "time"
           element.setAttribute "data-localized", true
           strftime time, format
+        when "date"
+          element.setAttribute "data-localized", true
+          relativeDate time
+        when "time-or-date"
+          relativeTimeOrDate time
         when "time-ago"
           relativeTimeAgo time
+        when "weekday"
+          relativeWeekday(time) ? ""
 
-  setInterval ->
-    event = document.createEvent "Events"
-    event.initEvent "time:elapse", true, true
-    document.dispatchEvent event
-  , 60 * 1000
+run = ->
+  event = document.createEvent "Events"
+  event.initEvent "time:elapse", true, true
+  document.dispatchEvent event
+
+setInterval run, 60 * 1000
 
 # Public API
-@LocalTime = {strftime, relativeTimeAgo}
+@LocalTime = {strftime, relativeTimeAgo, run}

@@ -18,9 +18,10 @@ module LocalTimeHelper
 
   def local_time_ago(time, options = {})
     time = utc_time(time)
+    format = options.delete(:format) || 'time-ago'
 
     options[:data] ||= {}
-    options[:data].merge! local: 'time-ago'
+    options[:data].merge! local: format
 
     time_tag time, time.strftime(DEFAULT_FORMAT), options
   end
