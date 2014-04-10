@@ -29,7 +29,7 @@ for day in [0..30] by 6
           do (format, momentFormat) ->
             test "#{format} (+#{day} days, #{hour} hours)", ->
               now = moment().add("days", day).add("hours", hour)
-              el  = addTimeEl format, now.toISOString()
+              el  = addTimeEl {format, datetime: now.toISOString()}
               run()
 
               equal getText(el),
@@ -40,7 +40,7 @@ for day in [0..30] by 6
 
         test "%Z Timezone (+#{day} days, #{hour} hours)", ->
           now = moment().add("days", day).add("hours", hour)
-          el  = addTimeEl "%Z", now.toISOString()
+          el  = addTimeEl format: "%Z", datetime: now.toISOString()
           run()
 
           text = getText el

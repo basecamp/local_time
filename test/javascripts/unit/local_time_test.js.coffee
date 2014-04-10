@@ -8,7 +8,7 @@ test "date", ->
   assertLocalized "date", "date"
 
 test "unparseable time", ->
-  el = addTimeEl "%Y", ":("
+  el = addTimeEl format: "%Y", datetime: ":("
   setText el, "2013"
   run()
   equal getText(el), "2013"
