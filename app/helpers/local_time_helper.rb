@@ -19,12 +19,12 @@ module LocalTimeHelper
   end
 
   def local_time_ago(time, args = nil)
-    options = extract_options(args)
+    options = extract_options(args, :type)
     time = utc_time(time)
-    format = options.delete(:format) || 'time-ago'
+    type = options.delete(:type) || 'time-ago'
 
     options[:data] ||= {}
-    options[:data].merge! local: format
+    options[:data].merge! local: type
 
     time_tag time, time.strftime(DEFAULT_FORMAT), options
   end
@@ -52,14 +52,14 @@ module LocalTimeHelper
       end
     end
 
-    def extract_options(options)
-      case options
+    def extract_options(args, default_key = :format)
+      case args
       when Hash
-        options
-      when String
-        { format: options }
-      else
+        args
+      when NilClass
         {}
+      else
+        { default_key => args }
       end
     end
 end
