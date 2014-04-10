@@ -31,3 +31,35 @@ test "before today", ->
   run()
 
   equal getText(el), before.format("MMM D")
+
+
+module "relative weekday"
+
+
+test "today", ->
+  now = moment()
+  el = addTimeEl type: "weekday", datetime: now.toISOString()
+  run()
+
+  equal getText(el), "Today"
+
+test "yesterday", ->
+  yesterday = moment().subtract("days", 1)
+  el = addTimeEl type: "weekday", datetime: yesterday.toISOString()
+  run()
+
+  equal getText(el), "Yesterday"
+
+test "this week", ->
+  recent = moment().subtract("days", 3)
+  el = addTimeEl type: "weekday", datetime: recent.toISOString()
+  run()
+
+  equal getText(el), recent.format("dddd")
+
+test "before this week", ->
+  before = moment().subtract("days", 8)
+  el = addTimeEl type: "weekday", datetime: before.toISOString()
+  run()
+
+  equal getText(el), ""
