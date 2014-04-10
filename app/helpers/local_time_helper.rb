@@ -1,9 +1,10 @@
 module LocalTimeHelper
   DEFAULT_FORMAT = '%B %e, %Y %l:%M%P'
 
-  def local_time(time, options = {})
-    time   = utc_time(time)
-    format = time_format(options.delete(:format))
+  def local_time(time, args = nil)
+    options = extract_options(args)
+    time    = utc_time(time)
+    format  = time_format(options.delete(:format))
 
     options[:data] ||= {}
     options[:data].merge! local: :time, format: format
@@ -11,12 +12,14 @@ module LocalTimeHelper
     time_tag time, time.strftime(format), options
   end
 
-  def local_date(time, options = {})
+  def local_date(time, args = nil)
+    options = extract_options(args)
     options.reverse_merge! format: '%B %e, %Y'
     local_time time, options
   end
 
-  def local_time_ago(time, options = {})
+  def local_time_ago(time, args = nil)
+    options = extract_options(args)
     time = utc_time(time)
     format = options.delete(:format) || 'time-ago'
 
@@ -46,6 +49,17 @@ module LocalTimeHelper
         end
       else
         format.presence || DEFAULT_FORMAT
+      end
+    end
+
+    def extract_options(options)
+      case options
+      when Hash
+        options
+      when String
+        { format: options }
+      else
+        {}
       end
     end
 end

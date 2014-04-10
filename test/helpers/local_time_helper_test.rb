@@ -51,6 +51,11 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
     assert_equal expected, local_time(@time, format: '%b %e')
   end
 
+  def test_local_time_with_format_as_string
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
+    assert_equal expected, local_time(@time, '%b %e')
+  end
+
   def test_local_time_with_i18n_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_equal expected, local_time(@time, format: :simple_time)
@@ -86,6 +91,11 @@ class LocalTimeHelperTest < MiniTest::Unit::TestCase
   def test_local_date_with_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_equal expected, local_date(@time.to_date, format: '%b %e')
+  end
+
+  def test_local_date_with_format_as_string
+    expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
+    assert_equal expected, local_date(@time.to_date, '%b %e')
   end
 
   def test_local_date_with_i18n_format
