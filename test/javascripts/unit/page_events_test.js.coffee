@@ -10,11 +10,6 @@ test "document time:elapse", ->
   triggerEvent "time:elapse"
   ok getText el
 
-test "window popstate", ->
-  el = addTimeEl()
-  triggerEvent "popstate", window
-  ok getText el
-
 test "document page:update with Turbolinks on", ->
   el = addTimeEl()
   triggerEvent "page:update"

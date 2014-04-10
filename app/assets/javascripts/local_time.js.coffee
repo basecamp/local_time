@@ -183,10 +183,6 @@ update = (callback) ->
   if Turbolinks?.supported
     document.addEventListener "page:update", callback
   else
-    setTimeout ->
-      window.addEventListener "popstate", callback
-    , 1
-
     jQuery?(document).on "ajaxSuccess", (event, xhr) ->
       callback() if jQuery.trim xhr.responseText
 
