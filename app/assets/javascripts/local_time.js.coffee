@@ -207,6 +207,9 @@ document.addEventListener "DOMContentLoaded", ->
     time = new Date Date.parse datetime
     return if isNaN time
 
+    unless element.hasAttribute("title")
+      element.setAttribute("title", time)
+
     element[textProperty] =
       switch local
         when "time"
