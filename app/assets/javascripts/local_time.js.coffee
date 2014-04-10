@@ -208,7 +208,7 @@ document.addEventListener "DOMContentLoaded", ->
     return if isNaN time
 
     unless element.hasAttribute("title")
-      element.setAttribute("title", time)
+      element.setAttribute "title", strftime(time, "%B %e, %Y at %l:%M%P %Z")
 
     element[textProperty] =
       switch local
