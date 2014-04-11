@@ -5,7 +5,7 @@ module LocalTimeHelper
     time = utc_time(time)
 
     options, format = extract_options_and_value(options, :format)
-    format = time_format(format)
+    format = find_time_format(format)
 
     options[:data] ||= {}
     options[:data].merge! local: :time, format: format
@@ -44,7 +44,7 @@ module LocalTimeHelper
   end
 
   private
-    def time_format(format)
+    def find_time_format(format)
       if format.is_a?(Symbol)
         if (i18n_format = I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", ''])).present?
           i18n_format
