@@ -19,14 +19,20 @@ module LocalTimeHelper
     local_time time, options
   end
 
-  def local_time_ago(time, options = nil)
+  def local_relative_time(time, options = nil)
     time = utc_time(time)
     options, type = extract_options_and_value(options, :type)
 
     options[:data] ||= {}
-    options[:data].merge! local: type || 'time-ago'
+    options[:data].merge! local: type
 
     time_tag time, time.strftime(DEFAULT_FORMAT), options
+  end
+
+  def local_time_ago(time, options = nil)
+    options, type = extract_options_and_value(options, :type)
+    options[:type] = 'time-ago'
+    local_relative_time time, options
   end
 
   def utc_time(time_or_date)
