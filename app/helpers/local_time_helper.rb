@@ -1,10 +1,11 @@
 module LocalTimeHelper
   DEFAULT_FORMAT = '%B %e, %Y %l:%M%P'
 
-  def local_time(time, args = nil)
-    options = extract_options(args)
-    time    = utc_time(time)
-    format  = time_format(options.delete(:format))
+  def local_time(time, options = nil)
+    time = utc_time(time)
+
+    options, format = extract_options_and_value(options, :format)
+    format = time_format(format)
 
     options[:data] ||= {}
     options[:data].merge! local: :time, format: format
@@ -12,19 +13,18 @@ module LocalTimeHelper
     time_tag time, time.strftime(format), options
   end
 
-  def local_date(time, args = nil)
-    options = extract_options(args)
-    options.reverse_merge! format: '%B %e, %Y'
+  def local_date(time, options = nil)
+    options, format = extract_options_and_value(options, :format)
+    options[:format] = format || '%B %e, %Y'
     local_time time, options
   end
 
-  def local_time_ago(time, args = nil)
-    options = extract_options(args, :type)
+  def local_time_ago(time, options = nil)
     time = utc_time(time)
-    type = options.delete(:type) || 'time-ago'
+    options, type = extract_options_and_value(options, :type)
 
     options[:data] ||= {}
-    options[:data].merge! local: type
+    options[:data].merge! local: type || 'time-ago'
 
     time_tag time, time.strftime(DEFAULT_FORMAT), options
   end
@@ -52,14 +52,15 @@ module LocalTimeHelper
       end
     end
 
-    def extract_options(args, default_key = :format)
-      case args
+    def extract_options_and_value(options, value_key = nil)
+      case options
       when Hash
-        args
+        value = options.delete(value_key)
+        [ options, value ]
       when NilClass
-        {}
+        [ {} ]
       else
-        { default_key => args }
+        [ {}, options ]
       end
     end
 end
