@@ -88,7 +88,8 @@ Examples (in quotes):
 Preset time and date formats that vary with age. The available types are `date`, `time-ago`, `time-or-date`, and `weekday`. Like the `local_time` helper, `:type` can be passed a string or in an options hash.
 
 ```erb
-<%= local_relative_time(time, 'weekday') %> or <%= local_relative_time(time, type: 'weekday') %>
+<%= local_relative_time(time, 'weekday') %>
+<%= local_relative_time(time, type: 'time-or-date') %>
 ```
 
 **Available `:type` options**
@@ -131,6 +132,7 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 * Allow `:format` (and `:type`) option as a bare string or value in hash
 * Added `relativeDate`, `relativeTimeOrDate`, `relativeWeekday` and `run` to the API
 * Dropped ineffective `popstate` event listener
+* Now in use at [Basecamp](https://basecamp.com/)
 
 **0.3.0** (February 9, 2014)
 
