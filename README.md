@@ -22,7 +22,10 @@ When the DOM loads, the content is immediately replaced with a local, formatted 
 <time data-format="%B %e, %Y %l:%M%P"
       data-local="time"
       datetime="2013-11-27T23:43:22Z"
+      title="November 27, 2013 6:43pm EDT"
       data-localized="true">November 27, 2013 6:43pm</time>
+
+      April 11, 2014 at 4:00pm EDT
 ```
 
 *(Line breaks added for readability)*
@@ -31,20 +34,25 @@ When the DOM loads, the content is immediately replaced with a local, formatted 
 
 ```erb
 Pass a time and an optional strftime format (default format shown here)
-<%= local_time(time, format: '%B %e, %Y %l:%M%P') %>
+<%= local_time(time, '%B %e, %Y %l:%M%P') %>
 
 Alias for local_time with a month-formatted default
-<%= local_date(time, format: '%B %e, %Y') %>
+<%= local_date(time, '%B %e, %Y') %>
+```
+
+To set attributes on the time tag, pass a hash as the second argument with a `:format` key and your attributes.
+```erb
+<%= local_time(time, format: '%B %e, %Y %l:%M%P', class: 'my-time') %>
 ```
 
 To use a strftime format already defined in your app, pass a symbol as the format.
 ```erb
-<%= local_time(date, format: :long) %>
+<%= local_time(date, :long) %>
 ```
 
 `I18n.t("time.formats.#{format}")`, `I18n.t("date.formats.#{format}")`, `Time::DATE_FORMATS[format]`, and `Date::DATE_FORMATS[format]` will be scanned (in that order) for your format.
 
-Note: The included strftime JavaScript implementation is not 100% complete. It supports the following directives: `%a %A %b %B %c %d %e %H %I %l %m %M %p %P %S %w %y %Y`
+Note: The included strftime JavaScript implementation is not 100% complete. It supports the following directives: `%a %A %b %B %c %d %e %H %I %l %m %M %p %P %S %w %y %Y %Z`
 
 #### Time ago helper
 
@@ -60,6 +68,21 @@ Displays the relative amount of time passed. With age, the descriptions transiti
 * This year: "on Nov 17"
 * Last year: "on Jan 31, 2012"
 
+#### Relative time helper
+
+A few preset time and date formats that vary based on distance from the current time. The available types are `date`, `time-or-date`, `time-ago`, and `weekday`. The `:type` can be passed a string or in an options hash.
+
+```erb
+<%= local_relative_time(time, 'weekday') %> or <%= local_relative_time(time, type: 'weekday') %>
+```
+
+**Available `:type` options**
+
+* `date` Inlcudes the year unless it's current. "Apr 11" or "Apr 11, 2013"
+* `time-or-date` Displays the time if it's todday. Displays time otherwise. "3:26pm" or "Apr 11"
+* `time-ago` See above. `local_time_ago` calls `local_relative_time` with this `:type` option.
+* `weekday` Displays "Today", "Yesterday", or the weekday (e.g. Wednesday) if the time is within a week of today.
+
 #### Installation
 
 1. Add `gem 'local_time'` to your Gemfile.
@@ -72,7 +95,7 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### JavaScript API
 
-`strftime` and `relativeTimeAgo` are available via the global `LocalTime` object.
+`strftime` and `relativeTimeAgo` and `run` are available via the global `LocalTime` object.
 
 ```js
 > LocalTime.strftime(new Date, "%B %e, %Y %l:%M%P")
@@ -80,9 +103,18 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 > LocalTime.relativeTimeAgo(new Date(new Date - 60 * 1000 * 5))
 "5 minutes ago"
+
+// Process <time> tags. Equivalent to dispatching a "time:elapse" Event.
+> LocalTime.run()
 ```
 
 #### Version History
+
+**1.0.0**
+
+* Added `local_relative_time` helper with several built in types
+* Allow `:format` (and `:type`) option as a bare string or value in hash
+* Added `LocalTime.run()` to the API
 
 **0.3.0** (February 9, 2014)
 
