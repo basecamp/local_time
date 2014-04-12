@@ -126,7 +126,7 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### Version History
 
-**1.0.0**
+**1.0.0** (April 12, 2014)
 
 * Added `local_relative_time` helper with several built in types
 * Allow `:format` (and `:type`) option as a bare string or value in hash
