@@ -1,11 +1,16 @@
-Local Time is a Rails engine with helpers and JavaScript for displaying times and dates to users in their local time. The helpers render a `<time>` element in UTC and the JavaScript swoops in to convert and format. Because the `<time>` element is only rendered in one timezone, it is ideal for caching.
+Local Time is a Rails engine with helpers and JavaScript for displaying times and dates to users in their local time. The helpers render a `<time>` element and the JavaScript swoops in to convert and format. The helper output is ideal for caching since it's always in UTC time.
 
 ---
 
 ####Example
 
+```ruby
+> comment.created_at
+"Wed, 27 Nov 2013 18:43:22 EST -0500"
+```
+
 ```erb
-<%= local_time(comment.created_at) # comment.created_at => Wed, 27 Nov 2013 18:43:22 EST -0500 %>
+<%= local_time(comment.created_at) %>
 ```
 
 Renders:
@@ -24,8 +29,6 @@ When the DOM loads, the content is immediately replaced with a local, formatted 
       datetime="2013-11-27T23:43:22Z"
       title="November 27, 2013 6:43pm EDT"
       data-localized="true">November 27, 2013 6:43pm</time>
-
-      April 11, 2014 at 4:00pm EDT
 ```
 
 *(Line breaks added for readability)*
@@ -33,19 +36,29 @@ When the DOM loads, the content is immediately replaced with a local, formatted 
 #### Time and date helpers
 
 ```erb
-Pass a time and an optional strftime format (default format shown here)
-<%= local_time(time, '%B %e, %Y %l:%M%P') %>
+<%= local_time(time) %>
+```
 
-Alias for local_time with a month-formatted default
+Format with a strftime string (default format shown here)
+
+```erb
+<%= local_time(time, '%B %e, %Y %l:%M%P') %>
+```
+
+Alias for `local_time` with a month-formatted default
+
+```erb
 <%= local_date(time, '%B %e, %Y') %>
 ```
 
 To set attributes on the time tag, pass a hash as the second argument with a `:format` key and your attributes.
+
 ```erb
 <%= local_time(time, format: '%B %e, %Y %l:%M%P', class: 'my-time') %>
 ```
 
 To use a strftime format already defined in your app, pass a symbol as the format.
+
 ```erb
 <%= local_time(date, :long) %>
 ```
@@ -60,7 +73,9 @@ Note: The included strftime JavaScript implementation is not 100% complete. It s
 <%= local_time_ago(time) %>
 ```
 
-Displays the relative amount of time passed. With age, the descriptions transition from specific quantities to general dates. The `<time>` elements are updated every 60 seconds. Examples (in quotes):
+Displays the relative amount of time passed. With age, the descriptions transition from {quantity of seconds, minutes, or hours} to {date + time} to {date}. The `<time>` elements are updated every 60 seconds.
+
+Examples (in quotes):
 
 * Recent: "a second ago", "32 seconds ago", "an hour ago", "14 hours ago"
 * Yesterday: "yesterday at 5:22pm"
@@ -70,7 +85,7 @@ Displays the relative amount of time passed. With age, the descriptions transiti
 
 #### Relative time helper
 
-A few preset time and date formats that vary based on distance from the current time. The available types are `date`, `time-ago`, `time-or-date`, and `weekday`. The `:type` can be passed a string or in an options hash.
+Preset time and date formats that vary with age. The available types are `date`, `time-ago`, `time-or-date`, and `weekday`. Like the `local_time` helper, `:type` can be passed a string or in an options hash.
 
 ```erb
 <%= local_relative_time(time, 'weekday') %> or <%= local_relative_time(time, type: 'weekday') %>
