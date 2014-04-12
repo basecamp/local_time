@@ -70,7 +70,7 @@ Displays the relative amount of time passed. With age, the descriptions transiti
 
 #### Relative time helper
 
-A few preset time and date formats that vary based on distance from the current time. The available types are `date`, `time-or-date`, `time-ago`, and `weekday`. The `:type` can be passed a string or in an options hash.
+A few preset time and date formats that vary based on distance from the current time. The available types are `date`, `time-ago`, `time-or-date`, and `weekday`. The `:type` can be passed a string or in an options hash.
 
 ```erb
 <%= local_relative_time(time, 'weekday') %> or <%= local_relative_time(time, type: 'weekday') %>
@@ -79,8 +79,8 @@ A few preset time and date formats that vary based on distance from the current 
 **Available `:type` options**
 
 * `date` Inlcudes the year unless it's current. "Apr 11" or "Apr 11, 2013"
-* `time-or-date` Displays the time if it's todday. Displays time otherwise. "3:26pm" or "Apr 11"
 * `time-ago` See above. `local_time_ago` calls `local_relative_time` with this `:type` option.
+* `time-or-date` Displays the time if it's todday. Displays time otherwise. "3:26pm" or "Apr 11"
 * `weekday` Displays "Today", "Yesterday", or the weekday (e.g. Wednesday) if the time is within a week of today.
 
 #### Installation
@@ -95,17 +95,17 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### JavaScript API
 
-`strftime`, `relativeTimeAgo`, `relativeDate`, `relativeTimeOrDate`, `relativeWeekday`, and `run` methods are available on the global `LocalTime` object.
+`relativeDate`, `relativeTimeAgo`, `relativeTimeOrDate`, `relativeWeekday`, `run`, and `strftime` methods are available on the global `LocalTime` object.
 
 ```js
-> LocalTime.strftime(new Date, "%B %e, %Y %l:%M%P")
-"February 9, 2014 12:55pm"
-
 > LocalTime.relativeTimeAgo(new Date(new Date - 60 * 1000 * 5))
 "5 minutes ago"
 
 // Process <time> tags. Equivalent to dispatching a "time:elapse" Event.
 > LocalTime.run()
+
+> LocalTime.strftime(new Date, "%B %e, %Y %l:%M%P")
+"February 9, 2014 12:55pm"
 ```
 
 #### Version History
@@ -114,7 +114,7 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 * Added `local_relative_time` helper with several built in types
 * Allow `:format` (and `:type`) option as a bare string or value in hash
-* Added `LocalTime.run()` to the API
+* Added `relativeDate`, `relativeTimeOrDate`, `relativeWeekday` and `run` to the API
 
 **0.3.0** (February 9, 2014)
 

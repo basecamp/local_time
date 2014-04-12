@@ -160,18 +160,19 @@ class RelativeTime
   formatTime: ->
     strftime @date, '%l:%M%P'
 
+relativeDate = (date) ->
+  new RelativeTime(date).formatDate()
+
 relativeTimeAgo = (date) ->
   new RelativeTime(date).toString()
+
+relativeTimeOrDate = (date) ->
+  new RelativeTime(date).toTimeOrDateString()
 
 relativeWeekday = (date) ->
   if day = new RelativeTime(date).relativeWeekday()
     day.charAt(0).toUpperCase() + day.substring(1)
 
-relativeDate = (date) ->
-  new RelativeTime(date).formatDate()
-
-relativeTimeOrDate = (date) ->
-  new RelativeTime(date).toTimeOrDateString()
 
 domLoaded = false
 
@@ -208,16 +209,16 @@ document.addEventListener "DOMContentLoaded", ->
 
     element[textProperty] =
       switch local
-        when "time"
-          element.setAttribute "data-localized", true
-          strftime time, format
         when "date"
           element.setAttribute "data-localized", true
           relativeDate time
-        when "time-or-date"
-          relativeTimeOrDate time
+        when "time"
+          element.setAttribute "data-localized", true
+          strftime time, format
         when "time-ago"
           relativeTimeAgo time
+        when "time-or-date"
+          relativeTimeOrDate time
         when "weekday"
           relativeWeekday(time) ? ""
 
@@ -229,4 +230,4 @@ run = ->
 setInterval run, 60 * 1000
 
 # Public API
-@LocalTime = {strftime, relativeTimeAgo, relativeTimeOrDate, relativeDate, relativeWeekday, run}
+@LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, run, strftime}
