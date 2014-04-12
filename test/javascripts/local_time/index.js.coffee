@@ -1,9 +1,10 @@
-#= require qunit
-#= require moment
-#= require sinon-timers
+#= require vendor/qunit
+#= require vendor/moment
+#= require vendor/sinon-timers
 #= require local_time
-#= require_directory ./unit
+
 #= require_self
+#= require_directory .
 
 @addTimeEl = ({format, type, datetime} = {}) ->
   format ?= "%Y"

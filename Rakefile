@@ -13,7 +13,7 @@ namespace :test do
     puts "\n# Running JavaScript tests:\n\n"
 
     pass    = true
-    command = "phantomjs vendor/run-qunit.coffee http://localhost:9292"
+    command = "phantomjs test/javascripts/vendor/run-qunit.coffee http://localhost:9292"
     zones   = %w( US/Eastern Pacific/Auckland UTC )
 
     with_js_server do
@@ -28,7 +28,7 @@ end
 
 def with_js_server
   begin
-    pid = spawn "rackup test/javascripts/config.ru"
+    pid = spawn "rackup test/javascripts/runner/config.ru"
     sleep 2
     yield
   ensure
