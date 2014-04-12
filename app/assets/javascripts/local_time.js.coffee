@@ -229,4 +229,4 @@ run = ->
 setInterval run, 60 * 1000
 
 # Public API
-@LocalTime = {strftime, relativeTimeAgo, run}
+@LocalTime = {strftime, relativeTimeAgo, relativeTimeOrDate, relativeDate, relativeWeekday, run}

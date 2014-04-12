@@ -95,7 +95,7 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### JavaScript API
 
-`strftime` and `relativeTimeAgo` and `run` are available via the global `LocalTime` object.
+`strftime`, `relativeTimeAgo`, `relativeDate`, `relativeTimeOrDate`, `relativeWeekday`, and `run` methods are available on the global `LocalTime` object.
 
 ```js
 > LocalTime.strftime(new Date, "%B %e, %Y %l:%M%P")
