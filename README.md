@@ -130,6 +130,7 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 * Added `local_relative_time` helper with several built in types
 * Allow `:format` (and `:type`) option as a bare string or value in hash
 * Added `relativeDate`, `relativeTimeOrDate`, `relativeWeekday` and `run` to the API
+* Dropped ineffective `popstate` event listener
 
 **0.3.0** (February 9, 2014)
 
