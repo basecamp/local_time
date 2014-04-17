@@ -1,7 +1,9 @@
 browserIsCompatible = ->
   document.querySelectorAll and document.addEventListener
 
-return unless browserIsCompatible()
+jQueryIsPresent = jQuery?
+
+return unless browserIsCompatible() or jQueryIsPresent
 
 # Older browsers do not support ISO8601 (JSON) timestamps in Date.parse
 if isNaN Date.parse "2011-01-01T12:00:00-05:00"
@@ -174,26 +176,47 @@ relativeWeekday = (date) ->
     day.charAt(0).toUpperCase() + day.substring(1)
 
 
-domLoaded = false
+DOM =
+  loaded: false
+
+  onReady: (callback) ->
+    callback() if @loaded
+
+    if jQueryIsPresent
+      jQuery callback
+    else
+      document.addEventListener "DOMContentLoaded", callback
+
+  onEvent: (element, eventName, callback) ->
+    if element.addEventListener
+      element.addEventListener eventName, callback
+    else if jQueryIsPresent
+      jQuery(element).on eventName, callback
+
+  getElements: (selector) ->
+    if document.querySelectorAll
+      document.querySelectorAll selector
+    else if jQueryIsPresent
+      jQuery(selector).toArray()
 
 update = (callback) ->
-  callback() if domLoaded
-
-  document.addEventListener "time:elapse", callback
+  DOM.onReady callback
+  DOM.onEvent document, "time:elapse", callback
 
   if Turbolinks?.supported
-    document.addEventListener "page:update", callback
+    DOM.onEvent document, "page:update", callback
   else
     jQuery?(document).on "ajaxSuccess", (event, xhr) ->
       callback() if jQuery.trim xhr.responseText
 
 process = (selector, callback) ->
   update ->
-    for element in document.querySelectorAll selector
+    for element in DOM.getElements selector
       callback element
 
-document.addEventListener "DOMContentLoaded", ->
-  domLoaded = true
+DOM.onReady ->
+  DOM.loaded = true
+
   textProperty = if "textContent" of document.body then "textContent" else "innerText"
 
   process "time[data-local]:not([data-localized])", (element) ->
