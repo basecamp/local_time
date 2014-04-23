@@ -16,8 +16,8 @@ if isNaN Date.parse "2011-01-01T12:00:00-05:00"
       dateString = "#{year}/#{month}/#{day} #{hour}:#{minute}:#{second} GMT#{[offset]}"
     parse dateString
 
-weekdays = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday".split " "
-months   = "January February March April May June July August September October November December".split " "
+weekdays = <%= I18n.t('date.day_names') %>
+months   = <%= I18n.t('date.month_names') %>
 
 pad = (num) -> ('0' + num).slice -2
 
