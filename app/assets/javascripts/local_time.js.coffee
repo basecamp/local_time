@@ -21,6 +21,13 @@ months   = "January February March April May June July August September October 
 
 pad = (num) -> ('0' + num).slice -2
 
+ordinal = (number) ->
+  switch number % 10
+    when 1 then 'st'
+    when 2 then 'nd'
+    when 3 then 'rd'
+    else 'th'
+
 strftime = (time, formatString) ->
   day    = time.getDay()
   date   = time.getDate()
@@ -30,7 +37,7 @@ strftime = (time, formatString) ->
   minute = time.getMinutes()
   second = time.getSeconds()
 
-  formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
+  formatString.replace /%([%aAbBcdeEHIlmMpPSwyYZ])/g, ([match, modifier]) ->
     switch modifier
       when '%' then '%'
       when 'a' then weekdays[day].slice 0, 3
@@ -40,6 +47,7 @@ strftime = (time, formatString) ->
       when 'c' then time.toString()
       when 'd' then pad date
       when 'e' then date
+      when 'E' then date + ordinal(date)
       when 'H' then pad hour
       when 'I' then pad strftime time, '%l'
       when 'l' then (if hour is 0 or hour is 12 then 12 else (hour + 12) % 12)
@@ -52,7 +60,6 @@ strftime = (time, formatString) ->
       when 'y' then pad year % 100
       when 'Y' then year
       when 'Z' then time.toString().match(/\((\w+)\)$/)?[1] ? ''
-
 
 class CalendarDate
   @fromDate: (date) ->
