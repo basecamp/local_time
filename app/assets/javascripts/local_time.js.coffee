@@ -56,7 +56,7 @@ strftime = (time, formatString) ->
 
 class CalendarDate
   @fromDate: (date) ->
-    new this date.getFullYear(), date.getMonth() + 1, date.getDate()
+    new this date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()
 
   @today: ->
     @fromDate new Date
