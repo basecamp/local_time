@@ -1,19 +1,19 @@
 module "time count down"
 
 test "9s ago", ->
-  assertTimeCountDownPast "9s ago", "seconds", 9
+  assertTimeCountDownPast "now", "seconds", 9
 
 test "1m ago", ->
-  assertTimeCountDownPast "1m ago", "seconds", 89
+  assertTimeCountDownPast "now", "seconds", 89
 
 test "59m ago", ->
-  assertTimeCountDownPast "59m ago", "minutes", 59
+  assertTimeCountDownPast "now", "minutes", 59
 
 test "1h ago", ->
-  assertTimeCountDownPast "1h ago", "minutes", 60
+  assertTimeCountDownPast "now", "minutes", 60
 
 test "1h5m ago", ->
-  assertTimeCountDownPast "1h5m ago", "minutes", 65
+  assertTimeCountDownPast "now", "minutes", 65
 
 
 test "9s", ->
@@ -55,6 +55,9 @@ test "close in 5m10s", ->
 
 test "close in 16m", ->
   assertTimeCountDownHighlight "", "minutes", 16
+
+test "closed", ->
+  assertTimeCountDownHighlight "closed", "minutes", -16
 
 assertTimeCountDownHighlight = (string, unit, amount) ->
   el = document.getElementById "count-down"
