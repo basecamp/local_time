@@ -264,8 +264,12 @@ document.addEventListener "DOMContentLoaded", ->
         when "time-ago"
           relativeTimeAgo time
         when "time-count-down"
-          element.setAttribute("tear-down", relativeTimeSetAttribute(time))
-          relativeTimeCountdown(time)
+          tearDown = relativeTimeSetAttribute(time)
+          element.setAttribute("tear-down", tearDown)
+          if tearDown == "closed"
+            "now"
+          else
+            relativeTimeCountdown(time)
 
   setInterval ->
     event = document.createEvent "Events"
