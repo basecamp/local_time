@@ -161,16 +161,16 @@ class RelativeTimeCountdown
     diff = Math.round ms  / 1000
 
   tearDown : ->
-    #5min/15min
+    #5min/10min
     if @gap() > 0
       if  @gap() < 300
         'close-soon'
-      else if @gap() < 900
+      else if @gap() < 600
         'close-in-minutes'
       else
         ''
     else
-      ''
+      'closed'
 
   timePastGap: ->
     ms  = @date.getTime() -  new Date().getTime()
