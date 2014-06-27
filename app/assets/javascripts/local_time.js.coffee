@@ -161,16 +161,16 @@ class RelativeTimeCountdown
     diff = Math.round ms  / 1000
 
   tearDown : ->
-    #5min/15min
+    #5min/10min
     if @gap() > 0
       if  @gap() < 300
         'close-soon'
-      else if @gap() < 900
+      else if @gap() < 600
         'close-in-minutes'
       else
         ''
     else
-      ''
+      'closed'
 
   timePastGap: ->
     ms  = @date.getTime() -  new Date().getTime()
@@ -264,8 +264,12 @@ document.addEventListener "DOMContentLoaded", ->
         when "time-ago"
           relativeTimeAgo time
         when "time-count-down"
-          element.setAttribute("tear-down", relativeTimeSetAttribute(time))
-          relativeTimeCountdown(time)
+          tearDown = relativeTimeSetAttribute(time)
+          element.setAttribute("tear-down", tearDown)
+          if tearDown == "closed"
+            "now"
+          else
+            relativeTimeCountdown(time)
 
   setInterval ->
     event = document.createEvent "Events"
