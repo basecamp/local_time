@@ -252,11 +252,12 @@ document.addEventListener "DOMContentLoaded", ->
     datetime = element.getAttribute "datetime"
     format   = element.getAttribute "data-format"
     local    = element.getAttribute "data-local"
+    prefix    = element.getAttribute( "data-prefix") || ''
 
     time = new Date Date.parse datetime
     return if isNaN time
 
-    element[textProperty] =
+    element[textProperty] = prefix +
       switch local
         when "time"
           element.setAttribute "data-localized", true

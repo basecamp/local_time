@@ -65,3 +65,22 @@ assertTimeCountDownHighlight = (string, unit, amount) ->
   el.setAttribute "datetime", moment().add(unit, amount).utc().toISOString()
   run()
   equal el.getAttribute('tear-down'), string
+
+
+test "prefixed in 9s ago", ->
+  assertTimeCountDownHighlightPrefixed "now", "seconds", -9
+
+test "prefixed in 9s", ->
+  assertTimeCountDownHighlightPrefixed "9s", "seconds", 9
+
+test "prefixed in 5m10s", ->
+  assertTimeCountDownHighlightPrefixed "59m", "minutes", 59
+
+assertTimeCountDownHighlightPrefixed = (string, unit, amount) ->
+  el = document.getElementById "count-down"
+  el.setAttribute "data-local", "time-count-down"
+  el.setAttribute "datetime", moment().add(unit, amount).utc().toISOString()
+  el.setAttribute "data-prefix", "R3 "
+  run()
+  equal getText(el), "R3 " + string
+
