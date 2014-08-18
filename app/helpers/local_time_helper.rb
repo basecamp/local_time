@@ -26,7 +26,7 @@ module LocalTimeHelper
     options[:data] ||= {}
     options[:data].merge! local: type
 
-    time_tag time, time.strftime(DEFAULT_FORMAT), options
+    time_tag time, time.strftime(DEFAULT_FORMAT), options[:data]
   end
 
   def local_time_ago(time, options = nil)
