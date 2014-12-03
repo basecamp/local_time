@@ -98,6 +98,7 @@ Preset time and date formats that vary with age. The available types are `date`,
 * `time-ago` See above. `local_time_ago` calls `local_relative_time` with this `:type` option.
 * `time-or-date` Displays the time if it occurs today or the date if not. "3:26pm" or "Apr 11"
 * `weekday` Displays "Today", "Yesterday", or the weekday (e.g. Wednesday) if the time is within a week of today.
+* `weekday-or-date` Displays the weekday if it occurs within a week or the date if not. "Yesterday" or "Apr 11"
 
 #### Installation
 
