@@ -127,6 +127,10 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### Version History
 
+**1.0.1** (December 3, 2014)
+
+* Added `weekday-or-date` option [Chew Choon Keat]
+
 **1.0.0** (April 12, 2014)
 
 * Added `local_relative_time` helper with several built in types
