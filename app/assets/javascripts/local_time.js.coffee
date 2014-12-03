@@ -221,6 +221,8 @@ document.addEventListener "DOMContentLoaded", ->
           relativeTimeOrDate time
         when "weekday"
           relativeWeekday(time) ? ""
+        when "weekday-or-date"
+          relativeWeekday(time) ? relativeDate(time)
 
 run = ->
   event = document.createEvent "Events"
