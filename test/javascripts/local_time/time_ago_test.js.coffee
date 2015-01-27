@@ -39,6 +39,9 @@ test "last year", ->
   date = moment().subtract("days", 366).format "MMM D, YYYY"
   assertTimeAgo "on #{date}", "days", 366
 
+test "next year", ->
+  date = moment().add("days", 366).format "MMM D, YYYY"
+  assertTimeAgo "on #{date}", "days", -366
 
 assertTimeAgo = (string, unit, amount) ->
   el = document.getElementById "ago"
