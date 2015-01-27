@@ -34,7 +34,7 @@ test "this year", ->
   date = moment().subtract("days", 7).format "MMM D"
   assertTimeAgo "on #{date}", "days", 7
   clock.restore()
-  
+
 test "last year", ->
   date = moment().subtract("days", 366).format "MMM D, YYYY"
   assertTimeAgo "on #{date}", "days", 366
