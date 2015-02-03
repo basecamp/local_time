@@ -127,6 +127,10 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### Version History
 
+**1.0.2** (February 3, 2015)
+
+* Fix displaying future relative dates [Cezary Baginski]
+
 **1.0.1** (December 3, 2014)
 
 * Added `weekday-or-date` option [Chew Choon Keat]
