@@ -141,16 +141,13 @@ class RelativeTime
       null
 
   relativeWeekday: ->
-    daysPassed = @calendarDate.daysPassed()
-
-    if daysPassed > 6
-      null
-    else if daysPassed is 0
-      "today"
-    else if daysPassed is 1
-      "yesterday"
-    else
-      strftime @date, "%A"
+    switch @calendarDate.daysPassed()
+      when 0
+        "today"
+      when 1
+        "yesterday"
+      when 2,3,4,5,6
+        strftime @date, "%A"
 
   formatDate: ->
     format = "%b %e"

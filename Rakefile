@@ -13,7 +13,7 @@ namespace :test do
     puts "\n# Running JavaScript tests:\n\n"
 
     pass    = true
-    command = "phantomjs test/javascripts/vendor/run-qunit.coffee http://localhost:9292"
+    command = "phantomjs test/javascripts/vendor/run-qunit.coffee http://localhost:9292/index.html"
     zones   = %w( US/Eastern Pacific/Auckland UTC )
 
     with_js_server do
