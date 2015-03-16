@@ -83,6 +83,14 @@ Examples (in quotes):
 * This year: "on Nov 17"
 * Last year: "on Jan 31, 2012"
 
+Time period in which time will be displayed relatively can be passed as an options hash.
+
+Example:
+
+```erb
+<%= local_time_ago(time, span: 48) %>
+```
+
 #### Relative time helper
 
 Preset time and date formats that vary with age. The available types are `date`, `time-ago`, `time-or-date`, and `weekday`. Like the `local_time` helper, `:type` can be passed a string or in an options hash.

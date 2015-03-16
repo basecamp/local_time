@@ -94,7 +94,7 @@ class CalendarDate
 
 
 class RelativeTime
-  constructor: (@date) ->
+  constructor: (@date, @span) ->
     @calendarDate = CalendarDate.fromDate @date
 
   toString: ->
@@ -135,7 +135,7 @@ class RelativeTime
       "#{min} minutes"
     else if min < 90
       "an hour"
-    else if hr < 24
+    else if hr < @span
       "#{hr} hours"
     else
       null
@@ -160,8 +160,8 @@ class RelativeTime
 relativeDate = (date) ->
   new RelativeTime(date).formatDate()
 
-relativeTimeAgo = (date) ->
-  new RelativeTime(date).toString()
+relativeTimeAgo = (date, span) ->
+  new RelativeTime(date, span).toString()
 
 relativeTimeOrDate = (date) ->
   new RelativeTime(date).toTimeOrDateString()
@@ -197,6 +197,7 @@ document.addEventListener "DOMContentLoaded", ->
     datetime = element.getAttribute "datetime"
     format   = element.getAttribute "data-format"
     local    = element.getAttribute "data-local"
+    span     = element.getAttribute "data-span"
 
     time = new Date Date.parse datetime
     return if isNaN time
@@ -213,7 +214,7 @@ document.addEventListener "DOMContentLoaded", ->
           element.setAttribute "data-localized", true
           strftime time, format
         when "time-ago"
-          relativeTimeAgo time
+          relativeTimeAgo time, parseInt(span)
         when "time-or-date"
           relativeTimeOrDate time
         when "weekday"
