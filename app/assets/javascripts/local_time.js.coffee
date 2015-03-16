@@ -147,7 +147,7 @@ class RelativeTime
       when 1
         "yesterday"
       when 2,3,4,5,6
-        strftime @date, "%A"
+        "on #{strftime @date, "%A"}"
 
   formatDate: ->
     format = "%b %e"
