@@ -125,22 +125,27 @@ class LocalTimeHelperTest < TestCase
   end
 
   def test_local_time_ago
-    expected = %Q(<time data-local="time-ago" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    expected = %Q(<time data-local="time-ago" data-span="24" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
     assert_dom_equal expected, local_time_ago(@time)
   end
 
   def test_local_time_ago_with_options
-    expected = %Q(<time class="date-time" data-local="time-ago" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    expected = %Q(<time class="date-time" data-local="time-ago" data-span="24" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
     assert_dom_equal expected, local_time_ago(@time, class: "date-time")
   end
 
+  def test_local_time_ago_with_custom_hours_span
+    expected = %Q(<time data-local="time-ago" data-span="48" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    assert_dom_equal expected, local_time_ago(@time, span: "48")
+  end
+
   def test_relative_time
-    expected = %Q(<time data-local="time-or-date" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    expected = %Q(<time data-local="time-or-date" data-span="24" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
     assert_dom_equal expected, local_relative_time(@time, type: "time-or-date")
   end
 
   def test_local_time_ago_with_type_as_string
-    expected = %Q(<time data-local="time-or-date" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    expected = %Q(<time data-local="time-or-date" data-span="24" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
     assert_dom_equal expected, local_relative_time(@time, "time-or-date")
   end
 end
