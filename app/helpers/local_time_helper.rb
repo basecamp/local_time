@@ -22,9 +22,11 @@ module LocalTimeHelper
   def local_relative_time(time, options = nil)
     time = utc_time(time)
     options, type = extract_options_and_value(options, :type)
+    options, span = extract_options_and_value(options, :span)
 
     options[:data] ||= {}
     options[:data].merge! local: type
+    options[:data].merge! span: span || 24
 
     time_tag time, time.strftime(DEFAULT_FORMAT), options
   end
