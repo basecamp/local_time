@@ -27,7 +27,7 @@ test "last week", ->
   day  = ago.format "dddd"
   time = ago.format "h:mma"
 
-  assertTimeAgo "#{day} at #{time}", "days", 5
+  assertTimeAgo "on #{day} at #{time}", "days", 5
 
 test "this year", ->
   clock = sinon.useFakeTimers(new Date(2013,11,11,11,11).getTime(), "Date")

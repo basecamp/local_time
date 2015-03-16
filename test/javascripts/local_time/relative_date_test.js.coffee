@@ -55,7 +55,7 @@ test "this week", ->
   el = addTimeEl type: "weekday", datetime: recent.toISOString()
   run()
 
-  equal getText(el), recent.format("dddd")
+  equal getText(el), "On #{recent.format("dddd")}"
 
 test "before this week", ->
   before = moment().subtract("days", 8)
@@ -86,7 +86,7 @@ test "this week", ->
   el = addTimeEl type: "weekday-or-date", datetime: recent.toISOString()
   run()
 
-  equal getText(el), recent.format("dddd")
+  equal getText(el), "On #{recent.format("dddd")}"
 
 test "before this week", ->
   before = moment().subtract("days", 8)
