@@ -10,29 +10,6 @@ namespace :test do
   end
 
   task :javascripts do
-    puts "\n# Running JavaScript tests:\n\n"
-
-    pass    = true
-    command = "phantomjs test/javascripts/vendor/run-qunit.coffee http://localhost:9292/index.html"
-    zones   = %w( US/Eastern Pacific/Auckland UTC )
-
-    with_js_server do
-      zones.each do |tz|
-        pass = false unless system "TZ='#{tz}' #{command}"
-      end
-    end
-
-    exit pass ? 0 : 1
-  end
-end
-
-def with_js_server
-  begin
-    pid = spawn "rackup test/javascripts/runner/config.ru"
-    sleep 2
-    yield
-  ensure
-    Process.kill "INT", pid
-    Process.waitpid pid
+    abort unless system "bin/blade ci"
   end
 end

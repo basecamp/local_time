@@ -1,0 +1,27 @@
+framework: qunit
+
+load_paths:
+  - app/assets/javascripts
+  - test/javascripts/src
+  - test/javascripts/vendor
+  - test/javascripts/fixtures
+
+
+logical_paths:
+  - local_time.js
+  - test.js
+
+ci:
+  plugins:
+    sauce_labs:
+      browsers:
+        - name: "Google Chrome"
+          platforms: ["Mac", "Windows"]
+        - name: "Safari"
+          platforms: ["Mac"]
+        - name: "Firefox"
+          platforms: ["Mac", "Windows"]
+        - name: "Internet Explorer"
+          platforms: ["Windows"]
+      test_config:
+        time_zone: "Central"

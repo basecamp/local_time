@@ -1,7 +1,5 @@
-#= require vendor/qunit
-#= require vendor/moment
-#= require vendor/sinon-timers
-#= require local_time
+#= require moment
+#= require sinon-timers
 
 #= require_self
 #= require_directory .
