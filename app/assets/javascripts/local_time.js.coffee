@@ -21,6 +21,15 @@ months   = "January February March April May June July August September October 
 
 pad = (num) -> ('0' + num).slice -2
 
+parseTimeZone = (time) ->
+  if name = time.toString().match(/\(([\w\s]+)\)$/)?[1]
+    if /\s/.test(name)
+      name.match(/\b(\w)/g).join("")
+    else
+      name
+  else
+    ""
+
 strftime = (time, formatString) ->
   day    = time.getDay()
   date   = time.getDate()
@@ -51,7 +60,7 @@ strftime = (time, formatString) ->
       when 'w' then day
       when 'y' then pad year % 100
       when 'Y' then year
-      when 'Z' then time.toString().match(/\((\w+)\)$/)?[1] ? ''
+      when 'Z' then parseTimeZone(time)
 
 
 class CalendarDate
