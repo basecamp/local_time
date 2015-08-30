@@ -127,6 +127,11 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 
 #### Version History
 
+**1.0.3**
+
+* Improve `%Z` time zone parsing
+* Use [Blade](https://github.com/javan/blade) runner for JavaScript tests
+
 **1.0.2** (February 3, 2015)
 
 * Fix displaying future relative dates [Cezary Baginski]
@@ -156,3 +161,9 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 **0.1.0** (November 29, 2013)
 
 * Initial release.
+
+---
+
+[![Build Status](https://travis-ci.org/basecamp/local_time.svg?branch=master)](https://travis-ci.org/basecamp/local_time)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/basecamp_local_time.svg)](https://saucelabs.com/u/basecamp_local_time)
