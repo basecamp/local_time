@@ -22,11 +22,21 @@ months   = "January February March April May June July August September October 
 pad = (num) -> ('0' + num).slice -2
 
 parseTimeZone = (time) ->
-  if name = time.toString().match(/\(([\w\s]+)\)$/)?[1]
+  string = time.toString()
+  # Sun Aug 30 2015 10:22:57 GMT-0400 (NAME)
+  if name = string.match(/\(([\w\s]+)\)$/)?[1]
     if /\s/.test(name)
+      # Sun Aug 30 2015 10:22:57 GMT-0400 (Eastern Daylight Time)
       name.match(/\b(\w)/g).join("")
     else
+      # Sun Aug 30 2015 10:22:57 GMT-0400 (EDT)
       name
+  # Sun Aug 30 10:22:57 EDT 2015
+  else if name = string.match(/(\w{3,4})\s\d{4}$/)?[1]
+    name
+  # "Sun Aug 30 10:22:57 UTC-0400 2015"
+  else if name = string.match(/(UTC[\+\-]\d+)/)?[1]
+    name
   else
     ""
 

@@ -44,4 +44,4 @@ for day in [0..30] by 6
           run()
 
           text = getText el
-          ok /^\w{3,4}$/.test(text), "#{text} doesn't look like a timezone"
+          ok /^(\w{3,4}|UTC[\+\-]\d+)$/.test(text), "'#{text}' doesn't look like a timezone. System date: '#{new Date}'"
