@@ -1,3 +1,6 @@
 language: ruby
 rvm:
   - 2.2.2
+before_install:
+  - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX1VTRVJOQU1FPWJhc2VjYW1wX2xvY2FsX3RpbWUK`
+  - true && `base64 --decode <<< ZXhwb3J0IFNBVUNFX0FDQ0VTU19LRVk9ZWM5Y2QyMjMtOTFjNS00NmRkLWJmNDktZWIyYmZiY2NjYzMzCg==`
