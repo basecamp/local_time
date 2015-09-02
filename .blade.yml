@@ -12,6 +12,7 @@ plugins:
   sauce_labs:
     test_config:
       time_zone: Central
+      max_duration: 300
     browsers:
       chrome:
         version: -2
