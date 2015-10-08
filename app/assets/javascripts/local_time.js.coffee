@@ -165,6 +165,8 @@ class RelativeTime
         "today"
       when 1
         "yesterday"
+      when -1
+        "tomorrow"
       when 2,3,4,5,6
         strftime @date, "%A"
 
