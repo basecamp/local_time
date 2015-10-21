@@ -1,11 +1,19 @@
 module "public API"
 
-for name, method of @LocalTime when name isnt "strftime"
-  do (name, method) ->
+for name in ["relativeDate", "relativeTimeAgo", "relativeTimeOrDate", "relativeWeekday"]
+  do (name) ->
+    method = LocalTime[name]
     test "##{name}", ->
       ok method(new Date())
 
-{strftime} = @LocalTime
+{strftime, updateElement} = LocalTime
 
 test "#strftime", =>
   ok strftime(new Date(), "%Y")
+
+test "#updateElement", =>
+  el = createTimeEl()
+  equal getText(el), ""
+
+  updateElement(el)
+  equal getText(el), "2013"

@@ -4,7 +4,7 @@
 #= require_self
 #= require_directory .
 
-@addTimeEl = ({format, type, datetime} = {}) ->
+@createTimeEl = ({format, type, datetime} = {}) ->
   format ?= "%Y"
   type ?= "time"
   datetime ?= "2013-11-12T12:13:00Z"
@@ -13,6 +13,10 @@
   el.setAttribute "data-local", type
   el.setAttribute "data-format", format
   el.setAttribute "datetime", datetime
+  el
+
+@addTimeEl = ->
+  el = createTimeEl.apply(this, arguments)
   document.body.appendChild el
   el
 
