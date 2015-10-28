@@ -14,17 +14,17 @@ plugins:
       time_zone: Central
       max_duration: 300
     browsers:
-      chrome:
+      Google Chrome:
         version: -2
         os: Mac, Windows, Linux
-      firefox:
+      Firefox:
         version: -2
         os: Mac, Windows, Linux
-      safari:
+      Safari:
         version: -2
-      ie:
+      Internet Explorer:
         version: -3
-      iphone:
+      iPhone:
         version: -2
-      android:
+      Motorola Droid 4 Emulator:
         version: -2
