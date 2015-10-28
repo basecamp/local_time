@@ -22,6 +22,10 @@ test "yesterday", ->
   time = moment().subtract("days", 1).format "h:mma"
   assertTimeAgo "yesterday at #{time}", "days", 1
 
+test "tomorrow", ->
+  time = moment().add("days", 1).format "h:mma"
+  assertTimeAgo "tomorrow at #{time}", "days", -1
+
 test "last week", ->
   ago  = moment().subtract "days", 5
   day  = ago.format "dddd"
