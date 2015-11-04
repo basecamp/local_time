@@ -3,11 +3,44 @@ browserIsCompatible = ->
 
 return unless browserIsCompatible()
 
+# Merge & tap functions from GIST: https://gist.github.com/sheldonh/6089299 
+merge = (xs...) ->
+  if xs?.length > 0
+    tap {}, (m) -> m[k] = v for k, v of x for x in xs
+tap = (o, fn) -> fn(o); o
+
+if not window.local_time?
+  window.local_time = {}
+
+# default value for strings (english)
+_local_time_i18n = 
+  weekdays: "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"
+  months: 'January February March April May June July August September Obtober November December'
+  time_format_weekday: "%{str_day} at %{formatted_time}"
+  time_format_ago: "%{relative_time} ago"
+  time_format_on: "on %{formatted_date}"
+  date_format_this_year: "%b %e"
+  date_format_default: "%b %e, %Y"
+  time_format_default: "%l:%M%P"
+  datetime_format_default: "%B %e, %Y at %l:%M%P %Z"
+  relative_time_ago_sec: "a second"
+  relative_time_ago_secs: "%{secs} seconds"
+  relative_time_ago_min: "a minute"
+  relative_time_ago_mins: "%{mins} minutes"
+  relative_time_ago_hour: "an hour"
+  relative_time_ago_hours: "%{hours} hours"
+  relative_time_weekdays_today: "today"
+  relative_time_weekdays_yesterday: "yesterday"
+  relative_time_weekdays_tomorrow: "tomorrow"
+  
+local_time.i18n = merge _local_time_i18n, window.local_time.i18n
+
+
 # Older browsers do not support ISO8601 (JSON) timestamps in Date.parse
 if isNaN Date.parse "2011-01-01T12:00:00-05:00"
   parse = Date.parse
   iso8601 = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|[-+]?[\d:]+)$/
-
+  
   Date.parse = (dateString) ->
     dateString = dateString.toString()
     if matches = dateString.match iso8601
@@ -15,9 +48,9 @@ if isNaN Date.parse "2011-01-01T12:00:00-05:00"
       offset = zone.replace(":", "") if zone isnt "Z"
       dateString = "#{year}/#{month}/#{day} #{hour}:#{minute}:#{second} GMT#{[offset]}"
     parse dateString
-
-weekdays = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday".split " "
-months   = "January February March April May June July August September October November December".split " "
+  
+weekdays = local_time.i18n.weekdays.split " "
+months   = local_time.i18n.months.split " "
 
 pad = (num) -> ('0' + num).slice -2
 
@@ -119,16 +152,16 @@ class RelativeTime
   toString: ->
     # Today: "Saved 5 hours ago"
     if ago = @timeElapsed()
-      "#{ago} ago"
+      local_time.i18n.time_format_ago.replace(/%{relative_time}/g, ago)
 
     # Yesterday: "Saved yesterday at 8:15am"
     # This week: "Saved Thursday at 8:15am"
     else if day = @relativeWeekday()
-      "#{day} at #{@formatTime()}"
+      local_time.i18n.time_format_weekday.replace(/%{str_day}/g, day).replace(/%{formatted_time}/g, @formatTime())
 
     # Older: "Saved on Dec 15"
     else
-      "on #{@formatDate()}"
+      local_time.i18n.time_format_on.replace(/%{formatted_date}/g, @formatDate()).replace(/%{formatted_time}/g, @formatTime())
 
   toTimeOrDateString: ->
     if @calendarDate.isToday()
@@ -145,38 +178,38 @@ class RelativeTime
     if ms < 0
       null
     else if sec < 10
-      "a second"
+      local_time.i18n.relative_time_ago_sec
     else if sec < 45
-      "#{sec} seconds"
+      local_time.i18n.relative_time_ago_secs.replace(/%{secs}/g, sec)
     else if sec < 90
-      "a minute"
+      local_time.i18n.relative_time_ago_min
     else if min < 45
-      "#{min} minutes"
+      local_time.i18n.relative_time_ago_mins.replace(/%{mins}/g, min)
     else if min < 90
-      "an hour"
+      local_time.i18n.relative_time_ago_hour
     else if hr < 24
-      "#{hr} hours"
+      local_time.i18n.relative_time_ago_hours.replace(/%{hours}/g, hr)
     else
       null
 
   relativeWeekday: ->
     switch @calendarDate.daysPassed()
       when 0
-        "today"
+        local_time.i18n.relative_time_weekdays_today
       when 1
-        "yesterday"
+        local_time.i18n.relative_time_weekdays_yesterday
       when -1
-        "tomorrow"
+        local_time.i18n.relative_time_weekdays_tomorrow
       when 2,3,4,5,6
         strftime @date, "%A"
 
   formatDate: ->
-    format = "%b %e"
-    format += ", %Y" unless @calendarDate.occursThisYear()
+    format = local_time.i18n.date_format_default
+    format = local_time.i18n.date_format_this_year if @calendarDate.occursThisYear()
     strftime @date, format
 
   formatTime: ->
-    strftime @date, '%l:%M%P'
+    strftime @date, local_time.i18n.time_format_default
 
 relativeDate = (date) ->
   new RelativeTime(date).formatDate()
@@ -223,7 +256,7 @@ document.addEventListener "DOMContentLoaded", ->
     return if isNaN time
 
     unless element.hasAttribute("title")
-      element.setAttribute "title", strftime(time, "%B %e, %Y at %l:%M%P %Z")
+      element.setAttribute "title", strftime(time, local_time.i18n.datetime_format_default)
 
     element[textProperty] =
       switch local

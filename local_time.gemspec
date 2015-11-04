@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "local_time"
-  s.version     = "1.0.3"
+  s.version     = "1.0.4"
   s.author      = ["Javan Makhmali", "Sam Stephenson"]
   s.email       = "javan@basecamp.com"
   s.summary     = "Rails engine for cache-friendly, client-side local time"
