@@ -15,7 +15,7 @@ if not window.local_time?
 # default value for strings (english)
 _local_time_i18n = 
   weekdays: "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"
-  months: 'January February March April May June July August September Obtober November December'
+  months: 'January February March April May June July August September October November December'
   time_format_weekday: "%{str_day} at %{formatted_time}"
   time_format_ago: "%{relative_time} ago"
   time_format_on: "on %{formatted_date}"
