@@ -3,6 +3,35 @@ browserIsCompatible = ->
 
 return unless browserIsCompatible()
 
+i18n =
+  weekdays: "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"
+  months: "January February March April May June July August September October November December"
+  timeFormatWeekday: "$1 at $2"
+  timeFormatAgo: "$1 ago"
+  timeFormatOn: "on $1"
+  dateFormatThisYear: "%b %e"
+  dateFormatDefault: "%b %e, %Y"
+  timeFormatDefault: "%l:%M%P"
+  datetimeFormatDefault: "%B %e, %Y at %l:%M%P %Z"
+  relativeTimeAgoSec: "a second"
+  relativeTimeAgoSecs: "$1 seconds"
+  relativeTimeAgoMin: "a minute"
+  relativeTimeAgoMins: "$1 minutes"
+  relativeTimeAgoHour: "an hour"
+  relativeTimeAgoHours: "$1 hours"
+  relativeTimeWeekdaysToday: "today"
+  relativeTimeWeekdaysYesterday: "yesterday"
+  relativeTimeWeekdaysTomorrow: "tomorrow"
+
+t = () ->
+  args = Array.prototype.slice.call(arguments);
+  format = args.splice(0, 1)
+  string = LocalTime.i18n[format]
+  for value, index in args
+    matcher = "$#{index + 1}"
+    string = string.replace("$#{index + 1}", value)
+  string
+
 # Older browsers do not support ISO8601 (JSON) timestamps in Date.parse
 if isNaN Date.parse "2011-01-01T12:00:00-05:00"
   parse = Date.parse
@@ -15,9 +44,6 @@ if isNaN Date.parse "2011-01-01T12:00:00-05:00"
       offset = zone.replace(":", "") if zone isnt "Z"
       dateString = "#{year}/#{month}/#{day} #{hour}:#{minute}:#{second} GMT#{[offset]}"
     parse dateString
-
-weekdays = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday".split " "
-months   = "January February March April May June July August September October November December".split " "
 
 pad = (num) -> ('0' + num).slice -2
 
@@ -52,10 +78,10 @@ strftime = (time, formatString) ->
   formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
     switch modifier
       when '%' then '%'
-      when 'a' then weekdays[day].slice 0, 3
-      when 'A' then weekdays[day]
-      when 'b' then months[month].slice 0, 3
-      when 'B' then months[month]
+      when 'a' then LocalTime.i18n.weekdays.split(" ")[day].slice 0, 3
+      when 'A' then LocalTime.i18n.weekdays.split(" ")[day]
+      when 'b' then LocalTime.i18n.months.split(" ")[month].slice 0, 3
+      when 'B' then LocalTime.i18n.months.split(" ")[month]
       when 'c' then time.toString()
       when 'd' then pad date
       when 'e' then date
@@ -119,16 +145,16 @@ class RelativeTime
   toString: ->
     # Today: "Saved 5 hours ago"
     if ago = @timeElapsed()
-      "#{ago} ago"
+      t('timeFormatAgo', ago)
 
     # Yesterday: "Saved yesterday at 8:15am"
     # This week: "Saved Thursday at 8:15am"
     else if day = @relativeWeekday()
-      "#{day} at #{@formatTime()}"
+      t('timeFormatWeekday', day, @formatTime())
 
     # Older: "Saved on Dec 15"
     else
-      "on #{@formatDate()}"
+      t('timeFormatOn', @formatDate())
 
   toTimeOrDateString: ->
     if @calendarDate.isToday()
@@ -145,38 +171,40 @@ class RelativeTime
     if ms < 0
       null
     else if sec < 10
-      "a second"
+      t('relativeTimeAgoSec')
     else if sec < 45
-      "#{sec} seconds"
+      t('relativeTimeAgoSecs', sec)
     else if sec < 90
-      "a minute"
+      t('relativeTimeAgoMin')
     else if min < 45
-      "#{min} minutes"
+      t('relativeTimeAgoMins', min)
     else if min < 90
-      "an hour"
+      t('relativeTimeAgoHour')
     else if hr < 24
-      "#{hr} hours"
+      t('relativeTimeAgoHours', hr)
     else
       null
 
   relativeWeekday: ->
     switch @calendarDate.daysPassed()
       when 0
-        "today"
+        t('relativeTimeWeekdaysToday')
       when 1
-        "yesterday"
+        t('relativeTimeWeekdaysYesterday')
       when -1
-        "tomorrow"
+        t('relativeTimeWeekdaysTomorrow')
       when 2,3,4,5,6
         strftime @date, "%A"
 
   formatDate: ->
-    format = "%b %e"
-    format += ", %Y" unless @calendarDate.occursThisYear()
+    if @calendarDate.occursThisYear()
+      format = t('dateFormatThisYear')
+    else
+      format = t('dateFormatDefault')
     strftime @date, format
 
   formatTime: ->
-    strftime @date, '%l:%M%P'
+    strftime @date, t('timeFormatDefault')
 
 relativeDate = (date) ->
   new RelativeTime(date).formatDate()
@@ -223,7 +251,7 @@ document.addEventListener "DOMContentLoaded", ->
     return if isNaN time
 
     unless element.hasAttribute("title")
-      element.setAttribute "title", strftime(time, "%B %e, %Y at %l:%M%P %Z")
+      element.setAttribute "title", strftime(time, t('datetimeFormatDefault'))
 
     element[textProperty] =
       switch local
@@ -250,4 +278,4 @@ run = ->
 setInterval run, 60 * 1000
 
 # Public API
-@LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, run, strftime}
+@LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, run, strftime, i18n}
