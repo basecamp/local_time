@@ -200,7 +200,8 @@ update = (callback) ->
   document.addEventListener "time:elapse", callback
 
   if Turbolinks?.supported
-    document.addEventListener "page:update", callback
+    for event in ["page:update", "turbolinks:load"]
+      document.addEventListener event, callback
   else
     jQuery?(document).on "ajaxSuccess", (event, xhr) ->
       callback() if jQuery.trim xhr.responseText
