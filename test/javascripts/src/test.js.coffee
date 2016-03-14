@@ -29,5 +29,5 @@
   event.initEvent name, true, true
   el.dispatchEvent event
 
-@run = ->
-  LocalTime.controller.processElements()
+@defer = (callback) ->
+  setTimeout(callback, 1)

@@ -10,7 +10,6 @@ test "date", ->
 test "unparseable time", ->
   el = addTimeEl format: "%Y", datetime: ":("
   setText el, "2013"
-  run()
   equal getText(el), "2013"
 
 

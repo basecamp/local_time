@@ -30,7 +30,7 @@ for day in [0..30] by 6
             test "#{format} (+#{day} days, #{hour} hours)", ->
               now = moment().add("days", day).add("hours", hour)
               el  = addTimeEl {format, datetime: now.toISOString()}
-              run()
+              LocalTime.controller.processElement(el)
 
               equal getText(el),
                 if func = momentFormat.match(/(\w+)\(\)/)?[1]
@@ -41,7 +41,7 @@ for day in [0..30] by 6
         test "%Z Timezone (+#{day} days, #{hour} hours)", ->
           now = moment().add("days", day).add("hours", hour)
           el  = addTimeEl format: "%Z", datetime: now.toISOString()
-          run()
+          LocalTime.controller.processElement(el)
 
           text = getText el
           ok /^(\w{3,4}|UTC[\+\-]\d+)$/.test(text), "'#{text}' doesn't look like a timezone. System date: '#{new Date}'"

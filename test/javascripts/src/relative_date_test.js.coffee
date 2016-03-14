@@ -1,96 +1,103 @@
 module "relative date"
 
-test "this year", ->
+test "this year", (assert) ->
+  done = assert.async()
   now = moment()
   el = addTimeEl type: "date", datetime: now.toISOString()
-  run()
+  defer ->
+    equal getText(el), now.format("MMM D")
+    done()
 
-  equal getText(el), now.format("MMM D")
-
-test "last year", ->
+test "last year", (assert) ->
+  done = assert.async()
   before = moment().subtract("years", 1).subtract("days", 1)
   el = addTimeEl type: "date", datetime: before.toISOString()
-  run()
-
-  equal getText(el), before.format("MMM D, YYYY")
-
+  defer ->
+    equal getText(el), before.format("MMM D, YYYY")
+    done()
 
 module "relative time or date"
 
-
-test "today", ->
+test "today", (assert) ->
+  done = assert.async()
   now = moment()
   el = addTimeEl type: "time-or-date", datetime: now.toISOString()
-  run()
+  defer ->
+    equal getText(el), now.format("h:mma")
+    done()
 
-  equal getText(el), now.format("h:mma")
-
-test "before today", ->
+test "before today", (assert) ->
+  done = assert.async()
   before = moment().subtract("days", 1)
   el = addTimeEl type: "time-or-date", datetime: before.toISOString()
-  run()
-
-  equal getText(el), before.format("MMM D")
-
+  defer ->
+    equal getText(el), before.format("MMM D")
+    done()
 
 module "relative weekday"
 
-
-test "today", ->
+test "today", (assert) ->
+  done = assert.async()
   now = moment()
   el = addTimeEl type: "weekday", datetime: now.toISOString()
-  run()
+  defer ->
+    equal getText(el), "Today"
+    done()
 
-  equal getText(el), "Today"
-
-test "yesterday", ->
+test "yesterday", (assert) ->
+  done = assert.async()
   yesterday = moment().subtract("days", 1)
   el = addTimeEl type: "weekday", datetime: yesterday.toISOString()
-  run()
+  defer ->
+    equal getText(el), "Yesterday"
+    done()
 
-  equal getText(el), "Yesterday"
-
-test "this week", ->
+test "this week", (assert) ->
+  done = assert.async()
   recent = moment().subtract("days", 3)
   el = addTimeEl type: "weekday", datetime: recent.toISOString()
-  run()
+  defer ->
+    equal getText(el), recent.format("dddd")
+    done()
 
-  equal getText(el), recent.format("dddd")
-
-test "before this week", ->
+test "before this week", (assert) ->
+  done = assert.async()
   before = moment().subtract("days", 8)
   el = addTimeEl type: "weekday", datetime: before.toISOString()
-  run()
-
-  equal getText(el), ""
+  defer ->
+    equal getText(el), ""
+    done()
 
 module "relative weekday or date"
 
-
-test "today", ->
+test "today", (assert) ->
+  done = assert.async()
   now = moment()
   el = addTimeEl type: "weekday-or-date", datetime: now.toISOString()
-  run()
+  defer ->
+    equal getText(el), "Today"
+    done()
 
-  equal getText(el), "Today"
-
-test "yesterday", ->
+test "yesterday", (assert) ->
+  done = assert.async()
   yesterday = moment().subtract("days", 1)
   el = addTimeEl type: "weekday-or-date", datetime: yesterday.toISOString()
-  run()
+  defer ->
+    equal getText(el), "Yesterday"
+    done()
 
-  equal getText(el), "Yesterday"
-
-test "this week", ->
+test "this week", (assert) ->
+  done = assert.async()
   recent = moment().subtract("days", 3)
   el = addTimeEl type: "weekday-or-date", datetime: recent.toISOString()
-  run()
+  defer ->
+    equal getText(el), recent.format("dddd")
+    done()
 
-  equal getText(el), recent.format("dddd")
-
-test "before this week", ->
+test "before this week", (assert) ->
+  done = assert.async()
   before = moment().subtract("days", 8)
   el = addTimeEl type: "weekday-or-date", datetime: before.toISOString()
-  run()
-
-  equal getText(el), before.format("MMM D")
+  defer ->
+    equal getText(el), before.format("MMM D")
+    done()

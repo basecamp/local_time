@@ -12,8 +12,11 @@ class LocalTime.Controller
       addEventListener("DOMContentLoaded", @pageUpdated, false)
       setInterval(@processElements, @constructor.interval)
 
-      if Turbolinks?.supported
-        document.addEventListener("page:update", @pageUpdated, false)
+      if MutationObserver?
+        addEventListener "DOMContentLoaded", =>
+          @observer = new MutationObserver @pageUpdated
+          @observer.observe(document.body, childList: true)
+        , false
       else if jQuery?
         jQuery(document).on "ajaxSuccess", (event, xhr) =>
           if jQuery.trim xhr.responseText
