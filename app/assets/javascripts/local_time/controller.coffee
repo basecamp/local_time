@@ -1,3 +1,4 @@
+#= require ./page_observer
 #= require ./relative_time
 #= require ./strftime
 
@@ -7,27 +8,19 @@ class LocalTime.Controller
   @selector: "time[data-local]:not([data-localized])"
   @interval: 60 * 1000
 
-  start: ->
-    unless @started
-      addEventListener("DOMContentLoaded", @pageUpdated, false)
-      setInterval(@processElements, @constructor.interval)
+  constructor: ->
+    @pageObserver = new LocalTime.PageObserver this
+    addEventListener("DOMContentLoaded", @pageLoaded, false)
 
-      if MutationObserver?
-        addEventListener "DOMContentLoaded", =>
-          @observer = new MutationObserver @pageUpdated
-          @observer.observe(document.body, childList: true)
-        , false
-      else if jQuery?
-        jQuery(document).on "ajaxSuccess", (event, xhr) =>
-          if jQuery.trim xhr.responseText
-            @pageUpdated()
+  pageLoaded: =>
+    @processElements()
+    setInterval(@processElements, @constructor.interval)
+    @pageObserver.start()
 
-      @started = true
-
-  pageUpdated: (event) =>
+  pageUpdated: ->
     @processElements()
 
-  processElements: ->
+  processElements: =>
     elements = document.querySelectorAll(@constructor.selector)
     @processElement(element) for element in elements
     elements.length
@@ -73,6 +66,4 @@ class LocalTime.Controller
     if day = new RelativeTime(date).relativeWeekday()
       day.charAt(0).toUpperCase() + day.substring(1)
 
-do ->
-  LocalTime.controller = controller = new LocalTime.Controller
-  controller.start()
+LocalTime.controller = new LocalTime.Controller
