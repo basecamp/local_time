@@ -5,7 +5,6 @@
 {RelativeTime, strftime, t} = LocalTime
 
 class LocalTime.Controller
-  @selector: "time[data-local]:not([data-localized])"
   @interval: 60 * 1000
 
   constructor: ->
@@ -21,7 +20,7 @@ class LocalTime.Controller
     @processElements()
 
   processElements: =>
-    elements = document.querySelectorAll(@constructor.selector)
+    elements = document.querySelectorAll("time[data-local]:not([data-localized])")
     @processElement(element) for element in elements
     elements.length
 
