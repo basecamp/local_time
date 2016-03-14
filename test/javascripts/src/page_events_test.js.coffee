@@ -5,11 +5,6 @@ test "document DOMContentLoaded", ->
   triggerEvent "DOMContentLoaded"
   ok getText el
 
-test "document time:elapse", ->
-  el = addTimeEl()
-  triggerEvent "time:elapse"
-  ok getText el
-
 test "document page:update with Turbolinks on", ->
   el = addTimeEl()
   triggerEvent "page:update"
