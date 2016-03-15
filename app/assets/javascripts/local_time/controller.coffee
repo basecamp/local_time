@@ -16,7 +16,7 @@ class LocalTime.Controller
     setInterval(@processElements, @constructor.interval)
     @pageObserver.start()
 
-  pageUpdated: ->
+  pageUpdateObserved: ->
     @processElements()
 
   processElements: =>

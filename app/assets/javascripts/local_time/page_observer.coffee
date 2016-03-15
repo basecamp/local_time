@@ -20,4 +20,4 @@ class LocalTime.PageObserver
       true
 
   notify: =>
-    @delegate.pageUpdated?()
+    @delegate.pageUpdateObserved?()
