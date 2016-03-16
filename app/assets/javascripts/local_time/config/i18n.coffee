@@ -24,7 +24,7 @@ LocalTime.config.i18n =
     june: "June"
     july: "July"
     august: "August"
-    septemper: "September"
+    september: "September"
     october: "October"
     november: "November"
     december: "December"
