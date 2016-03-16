@@ -1,7 +1,7 @@
 #= require ./relative_time
 #= require ./page_observer
 
-{RelativeTime, parseDate, strftime, getI18nValue} = LocalTime
+{parseDate, strftime, getI18nValue} = LocalTime
 
 class LocalTime.Controller
   @interval: 60 * 1000
@@ -24,44 +24,43 @@ class LocalTime.Controller
     elements.length
 
   processElement: (element) ->
-    datetime = element.getAttribute "datetime"
-    format   = element.getAttribute "data-format"
-    local    = element.getAttribute "data-local"
+    datetime = element.getAttribute("datetime")
+    format = element.getAttribute("data-format")
+    local = element.getAttribute("data-local")
 
     time = parseDate(datetime)
     return if isNaN time
 
     unless element.hasAttribute("title")
-      element.setAttribute "title", strftime(time, getI18nValue("datetime.formats.default"))
+      title = strftime(time, getI18nValue("datetime.formats.default"))
+      element.setAttribute("title", title)
 
-    element.textContent =
-      switch local
-        when "date"
-          element.setAttribute "data-localized", true
-          relativeDate time
-        when "time"
-          element.setAttribute "data-localized", true
-          strftime time, format
-        when "time-ago"
-          relativeTimeAgo time
-        when "time-or-date"
-          relativeTimeOrDate time
-        when "weekday"
-          relativeWeekday(time) ? ""
-        when "weekday-or-date"
-          relativeWeekday(time) ? relativeDate(time)
+    element.textContent = switch local
+      when "time"
+        markAsLocalized(element)
+        strftime(time, format)
+      when "date"
+        markAsLocalized(element)
+        relative(time).formatDate()
+      when "time-ago"
+        relative(time).toString()
+      when "time-or-date"
+        relative(time).toTimeOrDateString()
+      when "weekday"
+        capitalize(relative(time).relativeWeekday())
+      when "weekday-or-date"
+        if weekday = relative(time).relativeWeekday()
+          capitalize(weekday)
+        else
+          relative(time).formatDate()
 
-  relativeDate = (date) ->
-    new RelativeTime(date).formatDate()
+  markAsLocalized = (element) ->
+    element.setAttribute("data-localized", "")
 
-  relativeTimeAgo = (date) ->
-    new RelativeTime(date).toString()
+  relative = (time) ->
+    new LocalTime.RelativeTime time
 
-  relativeTimeOrDate = (date) ->
-    new RelativeTime(date).toTimeOrDateString()
-
-  relativeWeekday = (date) ->
-    if day = new RelativeTime(date).relativeWeekday()
-      day.charAt(0).toUpperCase() + day.substring(1)
+  capitalize = (string = "") ->
+    string.charAt(0).toUpperCase() + string.substring(1)
 
 LocalTime.controller = new LocalTime.Controller

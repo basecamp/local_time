@@ -3,11 +3,11 @@ class LocalTime.CalendarDate
     new this date.getFullYear(), date.getMonth() + 1, date.getDate()
 
   @today: ->
-    @fromDate new Date
+    @fromDate(new Date)
 
   constructor: (year, month, day) ->
-    @date = new Date Date.UTC year, month - 1
-    @date.setUTCDate day
+    @date = new Date Date.UTC(year, month - 1)
+    @date.setUTCDate(day)
 
     @year = @date.getUTCFullYear()
     @month = @date.getUTCMonth() + 1
@@ -18,20 +18,20 @@ class LocalTime.CalendarDate
     calendarDate?.value is @value
 
   is: (calendarDate) ->
-    @equals calendarDate
+    @equals(calendarDate)
 
   isToday: ->
-    @is @constructor.today()
+    @is(@constructor.today())
 
   occursOnSameYearAs: (date) ->
     @year is date?.year
 
   occursThisYear: ->
-    @occursOnSameYearAs @constructor.today()
+    @occursOnSameYearAs(@constructor.today())
 
   daysSince: (date) ->
     if date
       (@date - date.date) / (1000 * 60 * 60 * 24)
 
   daysPassed: ->
-    @constructor.today().daysSince @
+    @constructor.today().daysSince(this)

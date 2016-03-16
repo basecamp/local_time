@@ -4,7 +4,7 @@
 
 class LocalTime.RelativeTime
   constructor: (@date) ->
-    @calendarDate = CalendarDate.fromDate @date
+    @calendarDate = CalendarDate.fromDate(@date)
 
   toString: ->
     if value = @timeElapsed()

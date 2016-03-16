@@ -11,28 +11,29 @@ LocalTime.strftime = strftime = (time, formatString) ->
 
   formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
     switch modifier
-      when '%' then '%'
-      when 'a' then getDayName(day).slice(0, 3)
-      when 'A' then getDayName(day)
-      when 'b' then getMonthName(month).slice(0, 3)
-      when 'B' then getMonthName(month)
-      when 'c' then time.toString()
-      when 'd' then pad date
-      when 'e' then date
-      when 'H' then pad hour
-      when 'I' then pad strftime time, '%l'
-      when 'l' then (if hour is 0 or hour is 12 then 12 else (hour + 12) % 12)
-      when 'm' then pad month + 1
-      when 'M' then pad minute
-      when 'p' then (if hour > 11 then 'PM' else 'AM')
-      when 'P' then (if hour > 11 then 'pm' else 'am')
-      when 'S' then pad second
-      when 'w' then day
-      when 'y' then pad year % 100
-      when 'Y' then year
-      when 'Z' then parseTimeZone(time)
+      when "%" then "%"
+      when "a" then getDayName(day).slice(0, 3)
+      when "A" then getDayName(day)
+      when "b" then getMonthName(month).slice(0, 3)
+      when "B" then getMonthName(month)
+      when "c" then time.toString()
+      when "d" then pad(date)
+      when "e" then date
+      when "H" then pad(hour)
+      when "I" then pad(strftime(time, "%l"))
+      when "l" then (if hour is 0 or hour is 12 then 12 else (hour + 12) % 12)
+      when "m" then pad(month + 1)
+      when "M" then pad(minute)
+      when "p" then (if hour > 11 then "PM" else "AM")
+      when "P" then (if hour > 11 then "pm" else "am")
+      when "S" then pad(second)
+      when "w" then day
+      when "y" then pad(year % 100)
+      when "Y" then year
+      when "Z" then parseTimeZone(time)
 
-pad = (num) -> ('0' + num).slice -2
+pad = (num) ->
+  ("0#{num}").slice(-2)
 
 parseTimeZone = (time) ->
   string = time.toString()
