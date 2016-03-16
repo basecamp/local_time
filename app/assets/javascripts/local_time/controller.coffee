@@ -1,7 +1,7 @@
 #= require ./relative_time
 #= require ./page_observer
 
-{RelativeTime, strftime, getI18nValue} = LocalTime
+{RelativeTime, parseDate, strftime, getI18nValue} = LocalTime
 
 class LocalTime.Controller
   @interval: 60 * 1000
@@ -28,7 +28,7 @@ class LocalTime.Controller
     format   = element.getAttribute "data-format"
     local    = element.getAttribute "data-local"
 
-    time = new Date Date.parse datetime
+    time = parseDate(datetime)
     return if isNaN time
 
     unless element.hasAttribute("title")
