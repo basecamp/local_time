@@ -1,27 +1,27 @@
 #= require ./calendar_date
 
-{CalendarDate, strftime, translate, getI18nValue} = LocalTime
+{strftime, translate, getI18nValue} = LocalTime
 
 class LocalTime.RelativeTime
   constructor: (@date) ->
-    @calendarDate = CalendarDate.fromDate(@date)
+    @calendarDate = LocalTime.CalendarDate.fromDate(@date)
 
   toString: ->
-    if value = @timeElapsed()
+    if value = @toTimeElapsedString()
       translate("elapsed", {value})
-    else if date = @relativeWeekday()
-      time = @formatTime()
+    else if date = @toWeekdayString()
+      time = @toTimeString()
       translate("dateAtTime", {date, time})
     else
-      translate("on", value: @formatDate())
+      translate("on", value: @toDateString())
 
   toTimeOrDateString: ->
     if @calendarDate.isToday()
-      @formatTime()
+      @toTimeString()
     else
-      @formatDate()
+      @toDateString()
 
-  timeElapsed: ->
+  toTimeElapsedString: ->
     ms = new Date().getTime() - @date.getTime()
     seconds = Math.round ms / 1000
     minutes = Math.round seconds / 60
@@ -45,9 +45,9 @@ class LocalTime.RelativeTime
     else if hours < 24
       "#{hours} #{translate("hours")}"
     else
-      null
+      ""
 
-  relativeWeekday: ->
+  toWeekdayString: ->
     switch @calendarDate.daysPassed()
       when 0
         translate("today")
@@ -57,8 +57,10 @@ class LocalTime.RelativeTime
         translate("tomorrow")
       when 2,3,4,5,6
         strftime(@date, "%A")
+      else
+        ""
 
-  formatDate: ->
+  toDateString: ->
     format = if @calendarDate.occursThisYear()
       getI18nValue("date.formats.thisYear")
     else
@@ -66,5 +68,5 @@ class LocalTime.RelativeTime
 
     strftime(@date, format)
 
-  formatTime: ->
+  toTimeString: ->
     strftime(@date, getI18nValue("time.formats.default"))

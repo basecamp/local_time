@@ -41,26 +41,20 @@ class LocalTime.Controller
         strftime(time, format)
       when "date"
         markAsLocalized(element)
-        relative(time).formatDate()
+        relative(time).toDateString()
       when "time-ago"
         relative(time).toString()
       when "time-or-date"
         relative(time).toTimeOrDateString()
       when "weekday"
-        capitalize(relative(time).relativeWeekday())
+        relative(time).toWeekdayString()
       when "weekday-or-date"
-        if weekday = relative(time).relativeWeekday()
-          capitalize(weekday)
-        else
-          relative(time).formatDate()
+        relative(time).toWeekdayString() or relative(time).toDateString()
 
   markAsLocalized = (element) ->
     element.setAttribute("data-localized", "")
 
   relative = (time) ->
     new LocalTime.RelativeTime time
-
-  capitalize = (string = "") ->
-    string.charAt(0).toUpperCase() + string.substring(1)
 
 LocalTime.controller = new LocalTime.Controller

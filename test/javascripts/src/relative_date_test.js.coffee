@@ -41,7 +41,7 @@ test "today", (assert) ->
   now = moment()
   el = addTimeEl type: "weekday", datetime: now.toISOString()
   defer ->
-    equal getText(el), "Today"
+    equal getText(el), "today"
     done()
 
 test "yesterday", (assert) ->
@@ -49,7 +49,7 @@ test "yesterday", (assert) ->
   yesterday = moment().subtract("days", 1)
   el = addTimeEl type: "weekday", datetime: yesterday.toISOString()
   defer ->
-    equal getText(el), "Yesterday"
+    equal getText(el), "yesterday"
     done()
 
 test "this week", (assert) ->
@@ -75,7 +75,7 @@ test "today", (assert) ->
   now = moment()
   el = addTimeEl type: "weekday-or-date", datetime: now.toISOString()
   defer ->
-    equal getText(el), "Today"
+    equal getText(el), "today"
     done()
 
 test "yesterday", (assert) ->
@@ -83,7 +83,7 @@ test "yesterday", (assert) ->
   yesterday = moment().subtract("days", 1)
   el = addTimeEl type: "weekday-or-date", datetime: yesterday.toISOString()
   defer ->
-    equal getText(el), "Yesterday"
+    equal getText(el), "yesterday"
     done()
 
 test "this week", (assert) ->
