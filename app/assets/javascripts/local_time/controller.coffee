@@ -1,8 +1,7 @@
-#= require ./page_observer
 #= require ./relative_time
-#= require ./strftime
+#= require ./page_observer
 
-{RelativeTime, strftime, t} = LocalTime
+{RelativeTime, strftime, getI18nValue} = LocalTime
 
 class LocalTime.Controller
   @interval: 60 * 1000
@@ -33,7 +32,7 @@ class LocalTime.Controller
     return if isNaN time
 
     unless element.hasAttribute("title")
-      element.setAttribute "title", strftime(time, t('datetimeFormatDefault'))
+      element.setAttribute "title", strftime(time, getI18nValue("datetime.formats.default"))
 
     element.textContent =
       switch local

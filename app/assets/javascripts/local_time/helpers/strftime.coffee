@@ -1,3 +1,4 @@
+{getDayName, getMonthName} = LocalTime
 
 LocalTime.strftime = strftime = (time, formatString) ->
   day    = time.getDay()
@@ -11,10 +12,10 @@ LocalTime.strftime = strftime = (time, formatString) ->
   formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
     switch modifier
       when '%' then '%'
-      when 'a' then LocalTime.i18n.weekdays.split(" ")[day].slice 0, 3
-      when 'A' then LocalTime.i18n.weekdays.split(" ")[day]
-      when 'b' then LocalTime.i18n.months.split(" ")[month].slice 0, 3
-      when 'B' then LocalTime.i18n.months.split(" ")[month]
+      when 'a' then getDayName(day).slice(0, 3)
+      when 'A' then getDayName(day)
+      when 'b' then getMonthName(month).slice(0, 3)
+      when 'B' then getMonthName(month)
       when 'c' then time.toString()
       when 'd' then pad date
       when 'e' then date

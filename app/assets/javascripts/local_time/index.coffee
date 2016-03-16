@@ -1,5 +1,6 @@
 #= require_self
-#= require ./date_parse
+#= require_tree ./config
+#= require_tree ./helpers
 #= require ./controller
 
 @LocalTime =

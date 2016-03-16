@@ -1,26 +1,19 @@
 #= require ./calendar_date
-#= require ./strftime
-#= require ./i18n
 
-{CalendarDate, strftime, i18n, t} = LocalTime
+{CalendarDate, strftime, translate, getI18nValue} = LocalTime
 
 class LocalTime.RelativeTime
   constructor: (@date) ->
     @calendarDate = CalendarDate.fromDate @date
 
   toString: ->
-    # Today: "Saved 5 hours ago"
-    if ago = @timeElapsed()
-      t('timeFormatAgo', ago)
-
-    # Yesterday: "Saved yesterday at 8:15am"
-    # This week: "Saved Thursday at 8:15am"
-    else if day = @relativeWeekday()
-      t('timeFormatWeekday', day, @formatTime())
-
-    # Older: "Saved on Dec 15"
+    if value = @timeElapsed()
+      translate("elapsed", {value})
+    else if date = @relativeWeekday()
+      time = @formatTime()
+      translate("dateAtTime", {date, time})
     else
-      t('timeFormatOn', @formatDate())
+      translate("on", value: @formatDate())
 
   toTimeOrDateString: ->
     if @calendarDate.isToday()
@@ -29,45 +22,49 @@ class LocalTime.RelativeTime
       @formatDate()
 
   timeElapsed: ->
-    ms  = new Date().getTime() - @date.getTime()
-    sec = Math.round ms  / 1000
-    min = Math.round sec / 60
-    hr  = Math.round min / 60
+    ms = new Date().getTime() - @date.getTime()
+    seconds = Math.round ms / 1000
+    minutes = Math.round seconds / 60
+    hours = Math.round minutes / 60
 
     if ms < 0
       null
-    else if sec < 10
-      t('relativeTimeAgoSec')
-    else if sec < 45
-      t('relativeTimeAgoSecs', sec)
-    else if sec < 90
-      t('relativeTimeAgoMin')
-    else if min < 45
-      t('relativeTimeAgoMins', min)
-    else if min < 90
-      t('relativeTimeAgoHour')
-    else if hr < 24
-      t('relativeTimeAgoHours', hr)
+    else if seconds < 10
+      value = translate("second")
+      translate("singular", {value})
+    else if seconds < 45
+      "#{seconds} #{translate("seconds")}"
+    else if seconds < 90
+      value = translate("minute")
+      translate("singular", {value})
+    else if minutes < 45
+      "#{minutes} #{translate("minutes")}"
+    else if minutes < 90
+      value = translate("hour")
+      translate("singularAn", {value})
+    else if hours < 24
+      "#{hours} #{translate("hours")}"
     else
       null
 
   relativeWeekday: ->
     switch @calendarDate.daysPassed()
       when 0
-        t('relativeTimeWeekdaysToday')
+        translate("today")
       when 1
-        t('relativeTimeWeekdaysYesterday')
+        translate("yesterday")
       when -1
-        t('relativeTimeWeekdaysTomorrow')
+        translate("tomorrow")
       when 2,3,4,5,6
-        strftime @date, "%A"
+        strftime(@date, "%A")
 
   formatDate: ->
-    if @calendarDate.occursThisYear()
-      format = t('dateFormatThisYear')
+    format = if @calendarDate.occursThisYear()
+      getI18nValue("date.formats.thisYear")
     else
-      format = t('dateFormatDefault')
-    strftime @date, format
+      getI18nValue("date.formats.default")
+
+    strftime(@date, format)
 
   formatTime: ->
-    strftime @date, t('timeFormatDefault')
+    strftime(@date, getI18nValue("time.formats.default"))

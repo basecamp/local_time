@@ -1,0 +1,45 @@
+LocalTime.config.i18n =
+  en:
+    second: "second"
+    seconds: "seconds"
+    minute: "minute"
+    minutes: "minutes"
+    hour: "hour"
+    hours: "hours"
+    yesterday: "yesterday"
+    today: "today"
+    tomorrow: "tomorrow"
+    sunday: "Sunday"
+    monday: "Monday"
+    tuesday: "Tuesday"
+    wednesday: "Wednesday"
+    thursday: "Thursday"
+    friday: "Friday"
+    saturday: "Saturday"
+    january: "January"
+    february: "February"
+    march: "March"
+    april: "April"
+    may: "May"
+    june: "June"
+    july: "July"
+    august: "August"
+    septemper: "September"
+    october: "October"
+    november: "November"
+    december: "December"
+    singular: "a {value}"
+    singularAn: "an {value}"
+    elapsed: "{value} ago"
+    on: "on {value}"
+    dateAtTime: "{date} at {time}"
+    date:
+      formats:
+        default: "%b %e, %Y"
+        thisYear: "%b %e"
+    time:
+      formats:
+        default: "%l:%M%P"
+    datetime:
+      formats:
+        default: "%B %e, %Y at %l:%M%P %Z"
