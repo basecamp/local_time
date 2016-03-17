@@ -8,12 +8,13 @@ class LocalTime.Controller
 
   constructor: ->
     @pageObserver = new LocalTime.PageObserver this
-    addEventListener("DOMContentLoaded", @pageLoaded, false)
 
-  pageLoaded: =>
-    @processElements()
-    setInterval(@processElements, @constructor.interval)
-    @pageObserver.start()
+  start: ->
+    unless @started
+      @processElements()
+      setInterval(@processElements, @constructor.interval)
+      @pageObserver.start()
+      @started = true
 
   pageUpdateObserved: ->
     @processElements()
@@ -56,5 +57,3 @@ class LocalTime.Controller
 
   relative = (time) ->
     new LocalTime.RelativeTime time
-
-LocalTime.controller = new LocalTime.Controller
