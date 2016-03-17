@@ -1,20 +1,23 @@
 #= require ./relative_time
 #= require ./page_observer
 
-{parseDate, strftime, getI18nValue} = LocalTime
+{parseDate, strftime, getI18nValue, config} = LocalTime
 
 class LocalTime.Controller
-  @interval: 60 * 1000
-
   constructor: ->
     @pageObserver = new LocalTime.PageObserver this
 
   start: ->
     unless @started
       @processElements()
-      setInterval(@processElements, @constructor.interval)
+      @startTimer()
       @pageObserver.start()
+
       @started = true
+
+  startTimer: ->
+    if interval = config.timerInterval
+      @timer ?= setInterval(@processElements, interval)
 
   pageUpdateObserved: ->
     @processElements()
