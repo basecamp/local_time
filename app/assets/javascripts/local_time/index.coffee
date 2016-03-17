@@ -16,17 +16,19 @@
 
   start: ->
     unless @started
-      @controller = new LocalTime.Controller
-      @controller.start()
+      @getController().start()
       @started = true
 
   run: ->
-    @start()
-    @controller.processElements()
+    @getController().processElements()
 
   process: (elements...) ->
     for element in elements
-      @controller.processElement(element)
+      @getController().processElement(element)
     elements.length
+
+  getController: ->
+    @controller ?= new LocalTime.Controller
+
 
 LocalTime.install()
