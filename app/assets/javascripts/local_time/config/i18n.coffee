@@ -55,6 +55,8 @@ LocalTime.config.i18n =
         default: "%b %e, %Y"
         thisYear: "%b %e"
     time:
+      am: "am"
+      pm: "pm"
       singular: "a {time}"
       singularAn: "an {time}"
       elapsed: "{time} ago"
