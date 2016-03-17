@@ -7,13 +7,13 @@ class LocalTime.RelativeTime
     @calendarDate = LocalTime.CalendarDate.fromDate(@date)
 
   toString: ->
-    if value = @toTimeElapsedString()
-      translate("elapsed", {value})
+    if time = @toTimeElapsedString()
+      translate("time.elapsed", {time})
     else if date = @toWeekdayString()
       time = @toTimeString()
-      translate("dateAtTime", {date, time})
+      translate("datetime.at", {date, time})
     else
-      translate("on", value: @toDateString())
+      translate("date.on", date: @toDateString())
 
   toTimeOrDateString: ->
     if @calendarDate.isToday()
@@ -30,31 +30,31 @@ class LocalTime.RelativeTime
     if ms < 0
       null
     else if seconds < 10
-      value = translate("second")
-      translate("singular", {value})
+      time = translate("time.second")
+      translate("time.singular", {time})
     else if seconds < 45
-      "#{seconds} #{translate("seconds")}"
+      "#{seconds} #{translate("time.seconds")}"
     else if seconds < 90
-      value = translate("minute")
-      translate("singular", {value})
+      time = translate("time.minute")
+      translate("time.singular", {time})
     else if minutes < 45
-      "#{minutes} #{translate("minutes")}"
+      "#{minutes} #{translate("time.minutes")}"
     else if minutes < 90
-      value = translate("hour")
-      translate("singularAn", {value})
+      time = translate("time.hour")
+      translate("time.singularAn", {time})
     else if hours < 24
-      "#{hours} #{translate("hours")}"
+      "#{hours} #{translate("time.hours")}"
     else
       ""
 
   toWeekdayString: ->
     switch @calendarDate.daysPassed()
       when 0
-        translate("today")
+        translate("date.today")
       when 1
-        translate("yesterday")
+        translate("date.yesterday")
       when -1
-        translate("tomorrow")
+        translate("date.tomorrow")
       when 2,3,4,5,6
         strftime(@date, "%A")
       else

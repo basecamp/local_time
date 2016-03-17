@@ -6,7 +6,7 @@ module "i18n"
 test "updating a value", (assert) ->
   done = assert.async()
   now = moment()
-  values = i18n[config.defaultLocale]
+  values = i18n[config.defaultLocale].date
 
   originalValue = values.today
   values.today = "2day"
@@ -23,7 +23,7 @@ test "adding a new locale", (assert) ->
 
   originalLocale = config.locale
   config.locale = "es"
-  i18n.es = today: "hoy"
+  i18n.es = date: today: "hoy"
 
   el = addTimeEl type: "weekday", datetime: now.toISOString()
   defer ->
@@ -38,7 +38,7 @@ test "falling back to the default locale", (assert) ->
 
   originalLocale = config.locale
   config.locale = "es"
-  i18n.es = yesterday: "ayer"
+  i18n.es = date: yesterday: "ayer"
 
   elWithTranslation = addTimeEl type: "weekday", datetime: yesterday.toISOString()
   elWithoutTranslation = addTimeEl type: "weekday", datetime: now.toISOString()
