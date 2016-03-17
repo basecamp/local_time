@@ -20,4 +20,13 @@
       @controller.start()
       @started = true
 
+  run: ->
+    @start()
+    @controller.processElements()
+
+  process: (elements...) ->
+    for element in elements
+      @controller.processElement(element)
+    elements.length
+
 LocalTime.install()

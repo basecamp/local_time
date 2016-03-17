@@ -51,5 +51,5 @@ assertTimeAgo = (string, unit, amount) ->
   el = document.getElementById "ago"
   el.setAttribute "data-local", "time-ago"
   el.setAttribute "datetime", moment().subtract(unit, amount).utc().toISOString()
-  LocalTime.controller.processElements()
+  LocalTime.run()
   equal getText(el), string
