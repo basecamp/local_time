@@ -10,6 +10,15 @@ LocalTime.config.i18n =
         "Friday"
         "Saturday"
       ]
+      abbrDayNames: [
+        "Sun"
+        "Mon"
+        "Tue"
+        "Wed"
+        "Thu"
+        "Fri"
+        "Sat"
+      ]
       monthNames: [
         "January"
         "February"
@@ -23,6 +32,20 @@ LocalTime.config.i18n =
         "October"
         "November"
         "December"
+      ]
+      abbrMonthNames: [
+        "Jan"
+        "Feb"
+        "Mar"
+        "Apr"
+        "May"
+        "Jun"
+        "Jul"
+        "Aug"
+        "Sep"
+        "Oct"
+        "Nov"
+        "Dec"
       ]
       yesterday: "yesterday"
       today: "today"

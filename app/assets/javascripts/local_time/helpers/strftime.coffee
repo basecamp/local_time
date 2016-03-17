@@ -12,9 +12,9 @@ LocalTime.strftime = strftime = (time, formatString) ->
   formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
     switch modifier
       when "%" then "%"
-      when "a" then getI18nValue("date.dayNames")[day].slice(0, 3)
+      when "a" then getI18nValue("date.abbrDayNames")[day]
       when "A" then getI18nValue("date.dayNames")[day]
-      when "b" then getI18nValue("date.monthNames")[month].slice(0, 3)
+      when "b" then getI18nValue("date.abbrMonthNames")[month]
       when "B" then getI18nValue("date.monthNames")[month]
       when "c" then time.toString()
       when "d" then pad(date)
