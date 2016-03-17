@@ -3,7 +3,7 @@ class LocalTime.PageObserver
 
   start: ->
     unless @started
-      @observeWithMutationObserver() or @observeWithJQuery()
+      @observeWithMutationObserver() or @observeWithMutationEvent()
       @started = true
 
   observeWithMutationObserver: ->
@@ -12,12 +12,9 @@ class LocalTime.PageObserver
       observer.observe(document.body, childList: true)
       true
 
-  observeWithJQuery: ->
-    if jQuery?
-      jQuery(document).on "ajaxSuccess", (event, xhr) =>
-        if jQuery.trim xhr.responseText
-          @notify()
-      true
+  observeWithMutationEvent: ->
+    addEventListener("DOMNodeInserted", @notify, false)
+    true
 
   notify: =>
     @delegate.pageUpdateObserved?()
