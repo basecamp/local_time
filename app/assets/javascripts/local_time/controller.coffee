@@ -4,8 +4,10 @@
 {parseDate, strftime, getI18nValue, config} = LocalTime
 
 class LocalTime.Controller
+  SELECTOR = "time[data-local]:not([data-localized])"
+
   constructor: ->
-    @pageObserver = new LocalTime.PageObserver this
+    @pageObserver = new LocalTime.PageObserver SELECTOR, @processElements
 
   start: ->
     unless @started
@@ -19,11 +21,7 @@ class LocalTime.Controller
     if interval = config.timerInterval
       @timer ?= setInterval(@processElements, interval)
 
-  pageUpdateObserved: ->
-    @processElements()
-
-  processElements: =>
-    elements = document.querySelectorAll("time[data-local]:not([data-localized])")
+  processElements: (elements = document.querySelectorAll(SELECTOR)) =>
     @processElement(element) for element in elements
     elements.length
 
