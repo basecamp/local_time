@@ -22,7 +22,7 @@ class LocalTime.PageObserver
     elements = []
     if element?.nodeType is Node.ELEMENT_NODE
       elements.push(element) if elementMatchesSelector(element, @selector)
-      elements.concat(element.querySelectorAll(@selector)...)
+      elements.push(element.querySelectorAll(@selector)...)
     elements
 
   processMutations: (mutations) =>
