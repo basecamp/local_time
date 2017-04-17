@@ -2,7 +2,7 @@ Local Time is a Rails engine with helpers and JavaScript for displaying times an
 
 ---
 
-####Example
+#### Example
 
 ```ruby
 > comment.created_at
