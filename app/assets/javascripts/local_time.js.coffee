@@ -169,6 +169,15 @@ class RelativeTime
         "tomorrow"
       when 2,3,4,5,6
         strftime @date, "%A"
+  
+  relativeCloseWeekday: ->
+    switch @calendarDate.daysPassed()
+      when 0
+        "today"
+      when 1
+        "yesterday"
+      when -1
+        "tomorrow"
 
   formatDate: ->
     format = "%b %e"
@@ -189,6 +198,10 @@ relativeTimeOrDate = (date) ->
 
 relativeWeekday = (date) ->
   if day = new RelativeTime(date).relativeWeekday()
+    day.charAt(0).toUpperCase() + day.substring(1)
+
+relativeCloseWeekday = (date) ->
+  if day = new RelativeTime(date).relativeCloseWeekday()
     day.charAt(0).toUpperCase() + day.substring(1)
 
 
@@ -241,6 +254,8 @@ document.addEventListener "DOMContentLoaded", ->
           relativeWeekday(time) ? ""
         when "weekday-or-date"
           relativeWeekday(time) ? relativeDate(time)
+        when "close-weekday-or-date"
+          relativeCloseWeekday(time) ? strftime(time, '%b %e, %a')
 
 run = ->
   event = document.createEvent "Events"
@@ -250,4 +265,4 @@ run = ->
 setInterval run, 60 * 1000
 
 # Public API
-@LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, run, strftime}
+@LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, relativeCloseWeekday, run, strftime}
