@@ -49,7 +49,7 @@ strftime = (time, formatString) ->
   minute = time.getMinutes()
   second = time.getSeconds()
 
-  formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
+  formatString.replace /%([%aAbBcdeHIlmMopPSwyYZ])/g, ([match, modifier]) ->
     switch modifier
       when '%' then '%'
       when 'a' then weekdays[day].slice 0, 3
@@ -64,6 +64,7 @@ strftime = (time, formatString) ->
       when 'l' then (if hour is 0 or hour is 12 then 12 else (hour + 12) % 12)
       when 'm' then pad month + 1
       when 'M' then pad minute
+      when 'o' then month + 1
       when 'p' then (if hour > 11 then 'PM' else 'AM')
       when 'P' then (if hour > 11 then 'pm' else 'am')
       when 'S' then pad second

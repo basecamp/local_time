@@ -13,6 +13,7 @@ momentMap =
   "%l": "h"
   "%m": "MM"
   "%M": "mm"
+  "%o": "M"
   "%p": "A"
   "%P": "a"
   "%S": "ss"
