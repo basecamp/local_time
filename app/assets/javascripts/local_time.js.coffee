@@ -49,28 +49,34 @@ strftime = (time, formatString) ->
   minute = time.getMinutes()
   second = time.getSeconds()
 
-  formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
-    switch modifier
-      when '%' then '%'
-      when 'a' then weekdays[day].slice 0, 3
-      when 'A' then weekdays[day]
-      when 'b' then months[month].slice 0, 3
-      when 'B' then months[month]
-      when 'c' then time.toString()
-      when 'd' then pad date
-      when 'e' then date
-      when 'H' then pad hour
-      when 'I' then pad strftime time, '%l'
-      when 'l' then (if hour is 0 or hour is 12 then 12 else (hour + 12) % 12)
-      when 'm' then pad month + 1
-      when 'M' then pad minute
-      when 'p' then (if hour > 11 then 'PM' else 'AM')
-      when 'P' then (if hour > 11 then 'pm' else 'am')
-      when 'S' then pad second
-      when 'w' then day
-      when 'y' then pad year % 100
-      when 'Y' then year
-      when 'Z' then parseTimeZone(time)
+  formatString.replace /%-?[%aAbBcdeHIlmMpPSwyYZ]/g, (match) ->
+    switch match.slice(1)
+      when '%'  then '%'
+      when 'a'  then weekdays[day].slice 0, 3
+      when 'A'  then weekdays[day]
+      when 'b'  then months[month].slice 0, 3
+      when 'B'  then months[month]
+      when 'c'  then time.toString()
+      when 'd'  then pad date
+      when '-d' then date
+      when 'e'  then date
+      when 'H'  then pad hour
+      when '-H' then hour
+      when 'I'  then pad strftime time, '%l'
+      when '-I' then strftime time, '%l'
+      when 'l'  then (if hour is 0 or hour is 12 then 12 else (hour + 12) % 12)
+      when 'm'  then pad month + 1
+      when '-m' then month + 1
+      when 'M'  then pad minute
+      when '-M' then minute
+      when 'p'  then (if hour > 11 then 'PM' else 'AM')
+      when 'P'  then (if hour > 11 then 'pm' else 'am')
+      when 'S'  then pad second
+      when '-S' then second
+      when 'w'  then day
+      when 'y'  then pad year % 100
+      when 'Y'  then year
+      when 'Z'  then parseTimeZone(time)
 
 
 class CalendarDate
