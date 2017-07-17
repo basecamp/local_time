@@ -1,10 +1,8 @@
 browserIsCompatible = ->
   document.querySelectorAll and document.addEventListener
 
-return unless browserIsCompatible()
-
 # Older browsers do not support ISO8601 (JSON) timestamps in Date.parse
-if isNaN Date.parse "2011-01-01T12:00:00-05:00"
+if browserIsCompatible() && isNaN Date.parse "2011-01-01T12:00:00-05:00"
   parse = Date.parse
   iso8601 = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|[-+]?[\d:]+)$/
 
@@ -210,44 +208,48 @@ process = (selector, callback) ->
     for element in document.querySelectorAll selector
       callback element
 
-document.addEventListener "DOMContentLoaded", ->
-  domLoaded = true
-  textProperty = if "textContent" of document.body then "textContent" else "innerText"
+if browserIsCompatible()
+  document.addEventListener "DOMContentLoaded", ->
+    domLoaded = true
+    textProperty = if "textContent" of document.body then "textContent" else "innerText"
 
-  process "time[data-local]:not([data-localized])", (element) ->
-    datetime = element.getAttribute "datetime"
-    format   = element.getAttribute "data-format"
-    local    = element.getAttribute "data-local"
+    process "time[data-local]:not([data-localized])", (element) ->
+      datetime = element.getAttribute "datetime"
+      format   = element.getAttribute "data-format"
+      local    = element.getAttribute "data-local"
 
-    time = new Date Date.parse datetime
-    return if isNaN time
+      time = new Date Date.parse datetime
+      return if isNaN time
 
-    unless element.hasAttribute("title")
-      element.setAttribute "title", strftime(time, "%B %e, %Y at %l:%M%P %Z")
+      unless element.hasAttribute("title")
+        element.setAttribute "title", strftime(time, "%B %e, %Y at %l:%M%P %Z")
 
-    element[textProperty] =
-      switch local
-        when "date"
-          element.setAttribute "data-localized", true
-          relativeDate time
-        when "time"
-          element.setAttribute "data-localized", true
-          strftime time, format
-        when "time-ago"
-          relativeTimeAgo time
-        when "time-or-date"
-          relativeTimeOrDate time
-        when "weekday"
-          relativeWeekday(time) ? ""
-        when "weekday-or-date"
-          relativeWeekday(time) ? relativeDate(time)
+      element[textProperty] =
+        switch local
+          when "date"
+            element.setAttribute "data-localized", true
+            relativeDate time
+          when "time"
+            element.setAttribute "data-localized", true
+            strftime time, format
+          when "time-ago"
+            relativeTimeAgo time
+          when "time-or-date"
+            relativeTimeOrDate time
+          when "weekday"
+            relativeWeekday(time) ? ""
+          when "weekday-or-date"
+            relativeWeekday(time) ? relativeDate(time)
 
-run = ->
-  event = document.createEvent "Events"
-  event.initEvent "time:elapse", true, true
-  document.dispatchEvent event
+  run = ->
+    event = document.createEvent "Events"
+    event.initEvent "time:elapse", true, true
+    document.dispatchEvent event
 
-setInterval run, 60 * 1000
+  setInterval run, 60 * 1000
 
-# Public API
-@LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, run, strftime}
+  # Public API
+  @LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, run, strftime}
+
+  if typeof module is "object" && module.exports
+    module.exports = @LocalTime
