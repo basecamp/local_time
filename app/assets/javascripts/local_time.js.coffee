@@ -193,6 +193,9 @@ relativeWeekday = (date) ->
 
 
 domLoaded = false
+textProperty = do ->
+  element = document.createElement("div")
+  if "textContent" of element then "textContent" else "innerText"
 
 update = (callback) ->
   callback() if domLoaded
@@ -205,42 +208,42 @@ update = (callback) ->
     jQuery?(document).on "ajaxSuccess", (event, xhr) ->
       callback() if jQuery.trim xhr.responseText
 
-process = (selector, callback) ->
-  update ->
-    for element in document.querySelectorAll selector
-      callback element
-
 document.addEventListener "DOMContentLoaded", ->
   domLoaded = true
-  textProperty = if "textContent" of document.body then "textContent" else "innerText"
 
-  process "time[data-local]:not([data-localized])", (element) ->
-    datetime = element.getAttribute "datetime"
-    format   = element.getAttribute "data-format"
-    local    = element.getAttribute "data-local"
+  update ->
+    for element in document.querySelectorAll("time[data-local]:not([data-localized])")
+      updateElement(element)
 
-    time = new Date Date.parse datetime
-    return if isNaN time
+updateElement = (element) ->
+  return unless element?.nodeType is Node.ELEMENT_NODE
 
-    unless element.hasAttribute("title")
-      element.setAttribute "title", strftime(time, "%B %e, %Y at %l:%M%P %Z")
+  datetime = element.getAttribute "datetime"
+  format   = element.getAttribute "data-format"
+  local    = element.getAttribute "data-local"
 
-    element[textProperty] =
-      switch local
-        when "date"
-          element.setAttribute "data-localized", true
-          relativeDate time
-        when "time"
-          element.setAttribute "data-localized", true
-          strftime time, format
-        when "time-ago"
-          relativeTimeAgo time
-        when "time-or-date"
-          relativeTimeOrDate time
-        when "weekday"
-          relativeWeekday(time) ? ""
-        when "weekday-or-date"
-          relativeWeekday(time) ? relativeDate(time)
+  time = new Date Date.parse datetime
+  return if isNaN time
+
+  unless element.hasAttribute("title")
+    element.setAttribute "title", strftime(time, "%B %e, %Y at %l:%M%P %Z")
+
+  element[textProperty] =
+    switch local
+      when "date"
+        element.setAttribute "data-localized", true
+        relativeDate time
+      when "time"
+        element.setAttribute "data-localized", true
+        strftime time, format
+      when "time-ago"
+        relativeTimeAgo time
+      when "time-or-date"
+        relativeTimeOrDate time
+      when "weekday"
+        relativeWeekday(time) ? ""
+      when "weekday-or-date"
+        relativeWeekday(time) ? relativeDate(time)
 
 run = ->
   event = document.createEvent "Events"
@@ -250,4 +253,4 @@ run = ->
 setInterval run, 60 * 1000
 
 # Public API
-@LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, run, strftime}
+@LocalTime = {relativeDate, relativeTimeAgo, relativeTimeOrDate, relativeWeekday, updateElement, run, strftime}
