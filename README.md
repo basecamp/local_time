@@ -125,7 +125,44 @@ The included JavaScript does not depend on any frameworks or libraries, and list
 "February 9, 2014 12:55pm"
 ```
 
+#### Internationalization
+
+By default, all the strings and date/time formats are in english. To be able to translate your dates and times in another lang or if your project supports multiple languages, you nedd to simply add a javacript object `window.local_time` which contains all the translated version of `local_time` strings **BEFORE** you include the local_time file. 
+
+Here is an example of the object for a french translation:
+
+```js
+window.local_time = {};
+window.local_time.i18n = {
+    weekdays: "dimanche lundi mardi mercredi jeudi vendredi samedi",
+    months: "janvier février mars avril mai juin juillet août septembre octobre novembre décembre",
+    time_format_weekday: "%{str_day} à %{formatted_time}",
+    time_format_ago: "il y a %{relative_time}",
+    time_format_on: "le %{formatted_date} à %{formatted_time}",
+    date_format_this_year: "%e %B",
+    date_format_default: "%e %B %Y",
+    time_format_default: "%Hh%M",
+    datetime_format_default: "%e %B %Y à %Hh%M",
+    relative_time_ago_sec: "une seconde",
+    relative_time_ago_secs: "%{secs} secondes",
+    relative_time_ago_min: "une minute",
+    relative_time_ago_mins: "%{mins} minutes",
+    relative_time_ago_hour: "une heure",
+    relative_time_ago_hours: "%{hours} heures",
+    relative_time_weekdays_today: "aujourd'hui",
+    relative_time_weekdays_yesterday: "hier",
+    relative_time_weekdays_tomorrow: "demain",
+};
+```
+
+It allows you to generate these strings using xml files from locales directory (or any other sources you prefer) depending on the lang context. 
+
+
 #### Version History
+
+**1.0.4**
+
+* Added internationalization
 
 **1.0.3**
 
