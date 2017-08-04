@@ -1,16 +1,17 @@
-module "localized"
+{addTimeEl, assert, defer, getText, setText, test, testAsync, testGroup, triggerEvent} = LocalTime.TestHelpers
 
-for id in ["one", "two", "past", "future"]
-  test id, ->
-    assertLocalized id
+testGroup "localized", ->
+  for id in ["one", "two", "past", "future"]
+    test id, ->
+      assertLocalized id
 
-test "date", ->
-  assertLocalized "date", "date"
+  test "date", ->
+    assertLocalized "date", "date"
 
-test "unparseable time", ->
-  el = addTimeEl format: "%Y", datetime: ":("
-  setText el, "2013"
-  equal getText(el), "2013"
+  test "unparseable time", ->
+    el = addTimeEl format: "%Y", datetime: ":("
+    setText el, "2013"
+    assert.equal getText(el), "2013"
 
 
 assertLocalized = (id, type = "time") ->
@@ -24,12 +25,12 @@ assertLocalized = (id, type = "time") ->
 
   el = document.getElementById id
 
-  ok datetime = el.getAttribute "datetime"
-  ok local = getText el
+  assert.ok datetime = el.getAttribute "datetime"
+  assert.ok local = getText el
 
   datetimeParsed = moment datetime
   localParsed = moment local, momentFormat
 
-  ok datetimeParsed.isValid()
-  ok localParsed.isValid()
-  equal datetimeParsed[compare](), localParsed[compare]()
+  assert.ok datetimeParsed.isValid()
+  assert.ok localParsed.isValid()
+  assert.equal datetimeParsed[compare](), localParsed[compare]()
