@@ -22,9 +22,11 @@ plugins:
         os: Mac, Windows, Linux
       Safari:
         version: -2
+      Microsoft Edge:
+        version: -2
       Internet Explorer:
         version: -3
       iPhone:
         version: -2
-      Motorola Droid 4 Emulator:
+      Android:
         version: -2
