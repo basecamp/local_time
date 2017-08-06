@@ -1,8 +1,9 @@
+#= export LocalTime
 #= require_self
 #= require_tree ./config
 #= require_tree ./helpers
 #= require ./controller
-#= require ./install
+#= require ./start
 
 @LocalTime =
   config: {}

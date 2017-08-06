@@ -1,12 +1,21 @@
 load_paths:
-  - app/assets/javascripts
+  - lib/assets/javascripts
   - test/javascripts/src
   - test/javascripts/vendor
   - test/javascripts/fixtures
 
 logical_paths:
-  - local_time.js
+  - local-time.js
   - test.js
+
+build:
+  logical_paths:
+    - local-time.js
+  path: app/assets/javascripts
+  js_compressor: uglifier
+
+require:
+  - sprockets/export
 
 plugins:
   sauce_labs:

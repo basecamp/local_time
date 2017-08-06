@@ -1,0 +1,17 @@
+
+{
+  "name": "local-time",
+  "version": "2.0.0",
+  "description": "Local <time> elements",
+  "main": "app/assets/javascripts/local-time.js",
+  "files": [
+    "app/assets/javascripts/*.js"
+  ],
+  "repository": "basecamp/local_time",
+  "author": "Javan Makhmali <javan@basecamp.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/basecamp/local_time/issues"
+  },
+  "homepage": "https://github.com/basecamp/local_time"
+}
