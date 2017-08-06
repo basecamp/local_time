@@ -14,7 +14,6 @@ class LocalTime.Controller
       @processElements()
       @startTimer()
       @pageObserver.start()
-
       @started = true
 
   startTimer: ->

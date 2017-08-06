@@ -8,11 +8,6 @@
 @LocalTime =
   config: {}
 
-  start: ->
-    unless @started
-      @getController().start()
-      @started = true
-
   run: ->
     @getController().processElements()
 

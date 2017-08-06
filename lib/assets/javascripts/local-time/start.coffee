@@ -1,11 +1,25 @@
-if window.LocalTime is LocalTime
-  start = ->
-    LocalTime.start()
+started = false
 
-  defer = (fn) ->
-    window.requestAnimationFrame?(fn) ? setTimeout(fn, 16)
-
-  if document.readyState is "loading"
-    addEventListener("DOMContentLoaded", start, false)
+domReady = ->
+  if document.attachEvent
+    document.readyState is "complete"
   else
-    defer(start)
+    document.readyState isnt "loading"
+
+nextFrame = (fn) ->
+  requestAnimationFrame?(fn) ? setTimeout(fn, 17)
+
+startController = ->
+  controller = LocalTime.getController()
+  controller.start()
+
+LocalTime.start = ->
+  unless started
+    started = true
+    if MutationObserver? or domReady()
+      startController()
+    else
+      nextFrame(startController)
+
+if window.LocalTime is LocalTime
+  LocalTime.start()
