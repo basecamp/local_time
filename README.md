@@ -1,8 +1,23 @@
-Local Time is a Rails engine with helpers and JavaScript for displaying times and dates to users in their local time. The helpers render a `<time>` element and the JavaScript swoops in to convert and format. The helper output is ideal for caching since it's always in UTC time.
+# Local Time
 
----
+Local Time makes it easy to display times and dates to users in their local time. Its Rails helpers render `<time>` elements in UTC (making them cache friendly), and its JavaScript component immediately converts those elements from UTC to the browser's local time.
 
-#### Example
+## Installation
+
+1. Add `gem 'local_time'` to your Gemfile.
+2. Include `local-time.js` in your application's JavaScript bundle.
+
+    Using the asset pipeline:
+    ```js
+    //= require local-time
+    ```
+    Using the npm package:
+    ```js
+    import LocalTime from "local-time"
+    LocalTime.start()
+    ```
+
+## Example
 
 ```ruby
 > comment.created_at
@@ -21,7 +36,7 @@ Renders:
       datetime="2013-11-27T23:43:22Z">November 27, 2013 11:43pm</time>
 ```
 
-When the DOM loads, the content is immediately replaced with a local, formatted time:
+And is converted client-side to:
 
 ```html
 <time data-format="%B %e, %Y %l:%M%P"
@@ -33,7 +48,7 @@ When the DOM loads, the content is immediately replaced with a local, formatted 
 
 *(Line breaks added for readability)*
 
-#### Time and date helpers
+## Time and date helpers
 
 ```erb
 <%= local_time(time) %>
@@ -67,7 +82,7 @@ To use a strftime format already defined in your app, pass a symbol as the forma
 
 Note: The included strftime JavaScript implementation is not 100% complete. It supports the following directives: `%a %A %b %B %c %d %e %H %I %l %m %M %p %P %S %w %y %Y %Z`
 
-#### Time ago helper
+## Time ago helpers
 
 ```erb
 <%= local_time_ago(time) %>
@@ -83,7 +98,7 @@ Examples (in quotes):
 * This year: "on Nov 17"
 * Last year: "on Jan 31, 2012"
 
-#### Relative time helper
+## Relative time helpers
 
 Preset time and date formats that vary with age. The available types are `date`, `time-ago`, `time-or-date`, and `weekday`. Like the `local_time` helper, `:type` can be passed a string or in an options hash.
 
@@ -100,32 +115,40 @@ Preset time and date formats that vary with age. The available types are `date`,
 * `weekday` Displays "Today", "Yesterday", or the weekday (e.g. Wednesday) if the time is within a week of today.
 * `weekday-or-date` Displays the weekday if it occurs within a week or the date if not. "Yesterday" or "Apr 11"
 
-#### Installation
 
-1. Add `gem 'local_time'` to your Gemfile.
-2. Run `bundle install`.
-3. Add `//= require local_time` to your JavaScript manifest file (usually found at app/assets/javascripts/application.js).
+## Configuration
 
-#### JavaScript events and library compatibility
+**Internationalization (I18n)**
 
-The included JavaScript does not depend on any frameworks or libraries, and listens for a `DOMContentLoaded` event to run initially. It also listens on `document` for `page:update` if you're using Turbolinks and `ajaxSuccess` if you're using jQuery. This should catch most cases where new `<time>` elements have been added to the DOM and process them automatically. If you're adding new elements in another context, trigger `time:elapse` to process them.
-
-#### JavaScript API
-
-`relativeDate`, `relativeTimeAgo`, `relativeTimeOrDate`, `relativeWeekday`, `run`, and `strftime` methods are available on the global `LocalTime` object.
+Local Time includes a [set of default `en` translations](lib/assets/javascripts/src/local-time/config/i18n.coffee) which can be updated directly. Or, you can provide an entirely new set in a different locale:
 
 ```js
-> LocalTime.relativeTimeAgo(new Date(new Date - 60 * 1000 * 5))
-"5 minutes ago"
+LocalTime.config.i18n["es"] = {
+  date: {
+    dayNames: [ … ],
+    monthNames: [ … ],
+    …
+  },
+  time: {
+    …
+  },
+  datetime: {
+    …
+  }
+}
 
-// Process <time> tags. Equivalent to dispatching a "time:elapse" Event.
-> LocalTime.run()
-
-> LocalTime.strftime(new Date, "%B %e, %Y %l:%M%P")
-"February 9, 2014 12:55pm"
+LocalTime.config.locale = "es"
 ```
 
-#### Version History
+## Version History
+
+**2.0.0** (August 7, 2017)
+
+* Add internationalization (I18n) API
+* Switch to `MutationObserver` instead of listening for various DOM, Turbolinks, and jQuery events
+* Publish JavaScript module on npm
+* Drop coffee-rails gem dependency
+* Renamed `local_time.js` to `local-time.js`
 
 **1.0.3**
 

@@ -1,2 +1,12 @@
 source 'https://rubygems.org'
-gemspec
+
+gem 'rake'
+gem 'rails'
+gem 'rails-dom-testing'
+gem 'sprockets'
+gem 'sprockets-export'
+gem 'coffee-script'
+gem 'coffee-script-source'
+gem 'uglifier'
+gem 'blade'
+gem 'blade-sauce_labs_plugin'

@@ -1,6 +1,4 @@
 module LocalTimeHelper
-  DEFAULT_FORMAT = '%B %e, %Y %l:%M%P'
-
   def local_time(time, options = nil)
     time = utc_time(time)
 
@@ -15,7 +13,7 @@ module LocalTimeHelper
 
   def local_date(time, options = nil)
     options, format = extract_options_and_value(options, :format)
-    options[:format] = format || '%B %e, %Y'
+    options[:format] = format || LocalTime.default_date_format
     local_time time, options
   end
 
@@ -26,11 +24,11 @@ module LocalTimeHelper
     options[:data] ||= {}
     options[:data].merge! local: type
 
-    time_tag time, time.strftime(DEFAULT_FORMAT), options
+    time_tag time, time.strftime(LocalTime.default_time_format), options
   end
 
   def local_time_ago(time, options = nil)
-    options, type = extract_options_and_value(options, :type)
+    options, * = extract_options_and_value(options, :type)
     options[:type] = 'time-ago'
     local_relative_time time, options
   end
@@ -49,12 +47,12 @@ module LocalTimeHelper
         if (i18n_format = I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", ''])).present?
           i18n_format
         elsif (date_format = Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format])
-          date_format.is_a?(Proc) ? DEFAULT_FORMAT : date_format
+          date_format.is_a?(Proc) ? LocalTime.default_time_format : date_format
         else
-          DEFAULT_FORMAT
+          LocalTime.default_time_format
         end
       else
-        format.presence || DEFAULT_FORMAT
+        format.presence || LocalTime.default_time_format
       end
     end
 

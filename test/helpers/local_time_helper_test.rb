@@ -1,7 +1,9 @@
-require_relative '../../app/helpers/local_time_helper'
-require 'active_support/all'
+require 'rails'
 require 'action_view'
 require 'rails-dom-testing'
+
+require 'local_time'
+require_relative '../../app/helpers/local_time_helper'
 
 require 'minitest/autorun'
 begin

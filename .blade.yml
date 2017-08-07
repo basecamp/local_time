@@ -1,18 +1,26 @@
 load_paths:
-  - app/assets/javascripts
+  - lib/assets/javascripts/src
   - test/javascripts/src
   - test/javascripts/vendor
   - test/javascripts/fixtures
 
 logical_paths:
-  - local_time.js
+  - local-time.js
   - test.js
+
+build:
+  logical_paths:
+    - local-time.js
+  path: app/assets/javascripts
+  js_compressor: uglifier
+
+require:
+  - sprockets/export
 
 plugins:
   sauce_labs:
     test_config:
       time_zone: Central
-      max_duration: 300
     browsers:
       Google Chrome:
         version: -2
@@ -22,9 +30,11 @@ plugins:
         os: Mac, Windows, Linux
       Safari:
         version: -2
+      Microsoft Edge:
+        version: -2
       Internet Explorer:
         version: -3
       iPhone:
-        version: -2
-      Motorola Droid 4 Emulator:
-        version: -2
+        version: -1
+      Android:
+        version: -1
