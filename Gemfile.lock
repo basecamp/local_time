@@ -54,7 +54,7 @@ GEM
       thor (~> 0.19.1)
       useragent (~> 0.16.7)
     blade-qunit_adapter (2.0.1)
-    blade-sauce_labs_plugin (0.7.1)
+    blade-sauce_labs_plugin (0.7.2)
       childprocess
       faraday
       selenium-webdriver
