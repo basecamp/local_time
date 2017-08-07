@@ -28,7 +28,7 @@ module LocalTimeHelper
   end
 
   def local_time_ago(time, options = nil)
-    options, type = extract_options_and_value(options, :type)
+    options, * = extract_options_and_value(options, :type)
     options[:type] = 'time-ago'
     local_relative_time time, options
   end
