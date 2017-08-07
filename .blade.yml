@@ -1,5 +1,5 @@
 load_paths:
-  - lib/assets/javascripts
+  - lib/assets/javascripts/src
   - test/javascripts/src
   - test/javascripts/vendor
   - test/javascripts/fixtures
