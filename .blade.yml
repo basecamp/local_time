@@ -21,7 +21,6 @@ plugins:
   sauce_labs:
     test_config:
       time_zone: Central
-      max_duration: 300
     browsers:
       Google Chrome:
         version: -2
@@ -36,6 +35,6 @@ plugins:
       Internet Explorer:
         version: -3
       iPhone:
-        version: -2
+        version: -1
       Android:
-        version: -2
+        version: -1
