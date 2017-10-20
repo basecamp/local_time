@@ -72,3 +72,76 @@ LocalTime.config.i18n =
       at: "{date} at {time}"
       formats:
         default: "%B %e, %Y at %l:%M%P %Z"
+  ru:
+    date:
+      dayNames: [
+        "воскресенье"
+        "понедельник"
+        "вторник"
+        "среда"
+        "четверг"
+        "пятница"
+        "суббота"
+      ]
+      abbrDayNames: [
+        "Вс"
+        "Пн"
+        "Вт"
+        "Ср"
+        "Чт"
+        "Пт"
+        "Сб"
+      ]
+      monthNames: [
+        "январь"
+        "февраль"
+        "март"
+        "апрель"
+        "май"
+        "июнь"
+        "июль"
+        "август"
+        "сентябрь"
+        "октябрь"
+        "ноябрь"
+        "декабрь"
+      ]
+      abbrMonthNames: [
+        "янв."
+        "февр."
+        "март"
+        "апр."
+        "май"
+        "июнь"
+        "июль"
+        "авг."
+        "сент."
+        "октб."
+        "нояб."
+        "дек."
+      ]
+      yesterday: "вчера"
+      today: "сегодня"
+      tomorrow: "завтра"
+      on: "{date}"
+      formats:
+        default: "%e %b %Y"
+        thisYear: "%e %b"
+    time:
+      am: "утра"
+      pm: "вечера"
+      singular: "{time}"
+      singularAn: "{time}"
+      elapsed: "{time} назад"
+      second: "секунда"
+      seconds: "секунд"
+      minute: "минута"
+      minutes: "минут"
+      hour: "час"
+      hours: "часов"
+      formats:
+        default: "%H:%M"
+    datetime:
+      at: "{date} в {time}"
+      formats:
+        default: "%e %B %Y в %H:%M %Z"
