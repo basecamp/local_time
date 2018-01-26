@@ -49,13 +49,18 @@ strftime = (time, formatString) ->
   minute = time.getMinutes()
   second = time.getSeconds()
 
-  formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, ([match, modifier]) ->
+  formatString.replace /%\^?([%aAbBcdeHIlmMpPSwyYZ])/g, (match) ->
+    modifier = match.slice(1)
     switch modifier
       when '%' then '%'
       when 'a' then weekdays[day].slice 0, 3
+      when '^a'  then weekdays[day].slice(0, 3).toUpperCase()
       when 'A' then weekdays[day]
+      when '^A'  then weekdays[day].toUpperCase()
       when 'b' then months[month].slice 0, 3
+      when '^b'  then months[month].slice(0, 3).toUpperCase()
       when 'B' then months[month]
+      when '^B'  then months[month].toUpperCase()
       when 'c' then time.toString()
       when 'd' then pad date
       when 'e' then date
