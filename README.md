@@ -142,6 +142,10 @@ LocalTime.config.locale = "es"
 
 ## Version History
 
+**2.0.1** (June 6, 2018)
+
+* Add `aria-label` attribute to improve accessibility
+
 **2.0.0** (August 7, 2017)
 
 * Add internationalization (I18n) API
