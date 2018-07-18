@@ -59,6 +59,11 @@ class LocalTimeHelperTest < TestCase
     assert_dom_equal expected, local_time(@time)
   end
 
+  def test_local_time_with_nil
+    expected = nil
+    assert_dom_equal expected, local_time(nil)
+  end
+
   def test_local_time_with_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
     assert_dom_equal expected, local_time(@time, format: '%b %e')
