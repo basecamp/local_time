@@ -1,5 +1,7 @@
 module LocalTimeHelper
   def local_time(time, options = nil)
+    return nil if time == nil
+
     time = utc_time(time)
 
     options, format = extract_options_and_value(options, :format)
