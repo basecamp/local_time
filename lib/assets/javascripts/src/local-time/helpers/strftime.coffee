@@ -9,7 +9,7 @@ LocalTime.strftime = strftime = (time, formatString) ->
   minute = time.getMinutes()
   second = time.getSeconds()
 
-  formatString.replace /%([%aAbBcdeHIlmMpPSwyYZ])/g, (match, modifier) ->
+  formatString.replace /%(-?)([%aAbBcdeHIlmMpPSwyYZ])/g, (match, flag, modifier) ->
     switch modifier
       when "%" then "%"
       when "a" then getI18nValue("date.abbrDayNames")[day]
