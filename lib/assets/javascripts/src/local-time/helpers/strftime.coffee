@@ -17,23 +17,25 @@ LocalTime.strftime = strftime = (time, formatString) ->
       when "b" then getI18nValue("date.abbrMonthNames")[month]
       when "B" then getI18nValue("date.monthNames")[month]
       when "c" then time.toString()
-      when "d" then pad(date)
+      when "d" then pad(date, flag)
       when "e" then date
-      when "H" then pad(hour)
-      when "I" then pad(strftime(time, "%l"))
+      when "H" then pad(hour, flag)
+      when "I" then pad(strftime(time, "%l"), flag)
       when "l" then (if hour is 0 or hour is 12 then 12 else (hour + 12) % 12)
-      when "m" then pad(month + 1)
-      when "M" then pad(minute)
+      when "m" then pad(month + 1, flag)
+      when "M" then pad(minute, flag)
       when "p" then translate("time.#{(if hour > 11 then "pm" else "am")}").toUpperCase()
       when "P" then translate("time.#{(if hour > 11 then "pm" else "am")}")
-      when "S" then pad(second)
+      when "S" then pad(second, flag)
       when "w" then day
-      when "y" then pad(year % 100)
+      when "y" then pad(year % 100, flag)
       when "Y" then year
       when "Z" then parseTimeZone(time)
 
-pad = (num) ->
-  ("0#{num}").slice(-2)
+pad = (num, flag) ->
+  switch flag
+    when "-" then num
+    else ("0#{num}").slice(-2)
 
 parseTimeZone = (time) ->
   string = time.toString()
