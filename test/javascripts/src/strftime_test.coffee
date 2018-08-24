@@ -24,7 +24,6 @@ momentMap =
   "%-S": "s"
   "%w": "e"
   "%y": "YY"
-  "%-y": "Y"
   "%Y": "YYYY"
 
 testGroup "strftime", ->
