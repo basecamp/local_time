@@ -33,7 +33,13 @@ class LocalTime.Controller
     return if isNaN time
 
     unless element.hasAttribute("title")
-      title = strftime(time, getI18nValue("datetime.formats.default"))
+      switch local
+        when "date", "weekday-or-date", "time-or-date", "weekday"
+          title = strftime(time, getI18nValue("date.formats.default"))
+        when "time", "time-ago"
+          title = strftime(time, getI18nValue("time.formats.default"))
+        else
+          title = strftime(time, getI18nValue("datetime.formats.default"))
       element.setAttribute("title", title)
 
     element.textContent = content =
