@@ -72,3 +72,76 @@ LocalTime.config.i18n =
       at: "{date} at {time}"
       formats:
         default: "%B %e, %Y at %l:%M%P %Z"
+  fa:
+    date:
+      dayNames: [
+        "یک‌شنبه"
+        "دوشنبه"
+        "سه‌شنبه"
+        "چهارشنبه"
+        "پنج‌شنبه"
+        "جمعه"
+        "شنبه"
+      ]
+      abbrDayNames: [
+        "یک‌شنبه"
+        "دوشنبه"
+        "سه‌شنبه"
+        "چهارشنبه"
+        "پنج‌شنبه"
+        "جمعه"
+        "شنبه"
+      ]
+      monthNames: [
+        "ژانویه"
+        "فوریه"
+        "مارس"
+        "آوریل"
+        "مه"
+        "ژوئن"
+        "جولای"
+        "اوت"
+        "سپتامبر"
+        "اکتبر"
+        "نوامبر"
+        "دسامبر"
+      ]
+      abbrMonthNames: [
+        "ژانویه"
+        "فوریه"
+        "مارس"
+        "آوریل"
+        "مه"
+        "ژوئن"
+        "جولای"
+        "اوت"
+        "سپتامبر"
+        "اکتبر"
+        "نوامبر"
+        "دسامبر"
+      ]
+      yesterday: "دیروز"
+      today: "امروز"
+      tomorrow: "فردا"
+      on: "در {date}"
+      formats:
+        default: "%b %e, %Y"
+        thisYear: "%b %e"
+    time:
+      am: "ق.ظ"
+      pm: "ب.ظ"
+      singular: "در {time}"
+      singularAn: "در {time}"
+      elapsed: "{time} پیش"
+      second: "ثانیه"
+      seconds: "ثانیه"
+      minute: "دقیقه"
+      minutes: "دقیقه"
+      hour: "ساعت"
+      hours: "ساعت"
+      formats:
+        default: "%l:%M%P"
+    datetime:
+      at: "{date} {time}"
+      formats:
+        default: "%B %e, %Y در %l:%M%P %Z"
