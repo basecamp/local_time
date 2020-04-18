@@ -9,7 +9,7 @@ Local Time makes it easy to display times and dates to users in their local time
 
     Using the asset pipeline:
     ```js
-    //= require local-time
+    //= require local_time
     ```
     Using the [local-time npm package](https://www.npmjs.com/package/local-time):
     ```js
