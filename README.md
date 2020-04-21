@@ -16,6 +16,15 @@ Local Time makes it easy to display times and dates to users in their local time
     import LocalTime from "local-time"
     LocalTime.start()
     ```
+    ...or if using webpacker:
+    ```terminal
+    yarn add local-time
+    ```
+    ```js
+    // e.g. javascript/packs/application.js
+    import LocalTime from "local-time"
+    LocalTime.start()
+    ```
 
 ## Example
 
