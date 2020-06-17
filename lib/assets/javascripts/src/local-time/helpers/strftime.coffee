@@ -40,7 +40,7 @@ pad = (num, flag) ->
 parseTimeZone = (time) ->
   string = time.toString()
   # Sun Aug 30 2015 10:22:57 GMT-0400 (NAME)
-  if name = string.match(/\(([\w\s]+)\)$/)?[1]
+  if name = string.match(/\(([\w\s-]+)\)$/)?[1]
     if /\s/.test(name)
       # Sun Aug 30 2015 10:22:57 GMT-0400 (Eastern Daylight Time)
       name.match(/\b(\w)/g).join("")
