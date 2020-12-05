@@ -7,20 +7,20 @@ Local Time makes it easy to display times and dates to users in their local time
 1. Add `gem 'local_time'` to your Gemfile.
 2. Include `local-time.js` in your application's JavaScript bundle.
 
-    Using the asset pipeline:
+ 1. Using the asset pipeline:
     ```js
     //= require local-time
     ```
-    Using the [local-time npm package](https://www.npmjs.com/package/local-time):
+ 1. Using the [local-time npm package](https://www.npmjs.com/package/local-time):
     ```js
     import LocalTime from "local-time"
     LocalTime.start()
     ```
 
-    Using Ruby on Rails 6 with Webpacker:
+ 1. Using Ruby on Rails 6 with Webpacker:
 
     1. Add `local-time` to `package.json`
-       ```json
+       ```
        {
          [...]
          "dependencies": {
