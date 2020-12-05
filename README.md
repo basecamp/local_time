@@ -17,6 +17,29 @@ Local Time makes it easy to display times and dates to users in their local time
     LocalTime.start()
     ```
 
+    Using Ruby on Rails 6 with Webpacker:
+
+    1. Add `local-time` to `package.json`
+       ```json
+       {
+         [...]
+         "dependencies": {
+           [...],
+           "local-time": "^2.1.0"
+         },
+         [...]
+       }
+       ```
+    1. Run `yarn install` to install npm packages
+       ```sh
+       $ yarn install
+       [...] Resolving packages ...
+       ```
+    1. Add `local-time` to `app/javascript/packs/application.js`
+       ```js
+       require("local-time").start()
+       ```
+
 ## Example
 
 ```ruby
