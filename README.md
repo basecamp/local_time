@@ -4,15 +4,22 @@ Local Time makes it easy to display times and dates to users in their local time
 
 ## Installation
 
-1. Add `gem 'local_time'` to your Gemfile.
+1. Add `gem 'local_time'` to your Gemfile and run `$ bundle install`.
 2. Include `local-time.js` in your application's JavaScript bundle.
 
     Using the asset pipeline:
     ```js
+    // In application.js
     //= require local-time
     ```
     Using the [local-time npm package](https://www.npmjs.com/package/local-time):
+    
+    ```bash
+    $ yarn install local-time
+    ```
+    
     ```js
+    // In application.js
     import LocalTime from "local-time"
     LocalTime.start()
     ```
