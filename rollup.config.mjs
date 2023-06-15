@@ -30,5 +30,20 @@ export default [
     watch: {
       include: "lib/assets/javascripts/src/local-time/**"
     }
+  },
+  {
+    input: "test/javascripts/src/index.coffee",
+    context: "window",
+    output: {
+      file: "test/javascripts/builds/index.js",
+      format: "iife"
+    },
+    plugins: [
+      coffee(),
+      nodeResolve({ extensions: [".coffee"] })
+    ],
+    watch: {
+      include: "test/javascripts/src/**"
+    }
   }
 ]

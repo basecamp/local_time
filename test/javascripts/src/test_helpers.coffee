@@ -1,8 +1,6 @@
-#= require moment
-#= require sinon-timers
+import LocalTime from "../../../app/assets/javascripts/local-time.es2017-esm.js"
 
-#= require_self
-#= require_directory .
+LocalTime.start()
 
 LocalTime.TestHelpers =
   assert: QUnit.assert

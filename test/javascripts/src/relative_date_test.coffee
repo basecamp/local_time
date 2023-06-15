@@ -1,3 +1,5 @@
+import LocalTime from "../../../app/assets/javascripts/local-time.es2017-esm.js"
+
 {addTimeEl, assert, defer, getText, setText, test, testAsync, testGroup, triggerEvent} = LocalTime.TestHelpers
 
 testGroup "relative date", ->
