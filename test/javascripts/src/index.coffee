@@ -1,5 +1,5 @@
-import "../vendor/moment"
-import "../vendor/sinon-timers"
+import "moment"
+import "sinon"
 
 import "./test_helpers"
 import "./i18n_test"

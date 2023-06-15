@@ -1,4 +1,4 @@
-import LocalTime from "../../../app/assets/javascripts/local-time.es2017-esm.js"
+import LocalTime from "local_time"
 
 {addTimeEl, assert, defer, getText, setText, test, testAsync, testGroup, triggerEvent} = LocalTime.TestHelpers
 

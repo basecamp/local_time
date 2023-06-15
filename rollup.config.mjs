@@ -1,7 +1,10 @@
+import * as url from 'url'
 import coffee from "rollup-plugin-coffee-script"
 import terser from '@rollup/plugin-terser'
+import alias from '@rollup/plugin-alias'
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const year = new Date().getFullYear()
 const banner = `/*\nLocalTime ${process.env.npm_package_version}\nCopyright © ${year} 37signals LLC\n*/`
 
@@ -39,6 +42,13 @@ export default [
       format: "iife"
     },
     plugins: [
+      alias({
+        entries: {
+          "local_time": `${__dirname}/app/assets/javascripts/local-time.es2017-esm.js`,
+          "moment": `${__dirname}/test/javascripts/vendor/moment.js`,
+          "sinon": `${__dirname}/test/javascripts/vendor/sinon.js`
+        }
+      }),
       coffee(),
       nodeResolve({ extensions: [".coffee"] })
     ],

@@ -14,7 +14,7 @@ namespace :test do
   task assets: ["assets:compile", "assets:verify"]
 
   task :javascripts do
-    system "yarn test"
+    system "yarn start"
   end
 end
 

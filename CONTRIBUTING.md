@@ -8,6 +8,8 @@ Install the following dependencies:
 
 Then, open your console on the project directory and run `bundle install` and `yarn install`.
 
+Finally, run `rake assets:compile`.
+
 ## Running Tests
 This library has a Ruby component and a JavaScript component. Each component has its own test suite.
 

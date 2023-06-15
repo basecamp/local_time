@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/basecamp/local_time",
   "devDependencies": {
+    "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
     "coffeescript": "^2.7.0",
