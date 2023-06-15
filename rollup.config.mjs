@@ -4,7 +4,7 @@ import terser from '@rollup/plugin-terser'
 import alias from '@rollup/plugin-alias'
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 const year = new Date().getFullYear()
 const banner = `/*\nLocalTime ${process.env.npm_package_version}\nCopyright © ${year} 37signals LLC\n*/`
 
