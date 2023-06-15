@@ -1,3 +1,5 @@
+import LocalTime from "../local_time"
+
 {config} = LocalTime
 {i18n} = config
 

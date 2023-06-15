@@ -1,3 +1,5 @@
+import LocalTime from "../local_time"
+
 {getI18nValue, translate} = LocalTime
 
 LocalTime.strftime = strftime = (time, formatString) ->

@@ -19,17 +19,9 @@ namespace :test do
 end
 
 namespace :assets do
-  desc "Compile assets"
-  task :compile do
-    require "blade"
-    require "sprockets"
-    require "sprockets/export"
-    Blade.build
-  end
-
   desc "Verify compiled assets"
   task :verify do
-    file = "app/assets/javascripts/local-time.js"
+    file = "app/assets/javascripts/local-time.es2017-umd.js"
     pathname = Pathname.new("#{__dir__}/#{file}")
 
     print "[verify] #{file} exists "
