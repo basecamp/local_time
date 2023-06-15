@@ -5,8 +5,6 @@ import alias from '@rollup/plugin-alias'
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
-const year = new Date().getFullYear()
-const banner = `/*\nLocalTime ${process.env.npm_package_version}\nCopyright © ${year} 37signals LLC\n*/`
 
 export default [
   {
@@ -16,13 +14,11 @@ export default [
       {
         name: "LocalTime",
         file: "app/assets/javascripts/local-time.es2017-umd.js",
-        format: "umd",
-        banner
+        format: "umd"
       },
       {
         file: "app/assets/javascripts/local-time.es2017-esm.js",
-        format: "es",
-        banner
+        format: "es"
       }
     ],
     plugins: [
