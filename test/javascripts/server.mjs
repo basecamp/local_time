@@ -22,5 +22,9 @@ app.use(router)
 
 const port = parseInt(process.env.PORT || "9000")
 app.listen(port, () => {
-  console.log(`Go to http://localhost:${port}/ to run JS tests`)
+  console.log(`
+    /*
+      Please go to http://localhost:${port}/ to run JS tests now.
+    */
+  `)
 })

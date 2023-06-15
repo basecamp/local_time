@@ -145,3 +145,6 @@ LocalTime.config.locale = "es"
 [![Build Status](https://travis-ci.org/basecamp/local_time.svg?branch=master)](https://travis-ci.org/basecamp/local_time)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/basecamp_local_time.svg)](https://saucelabs.com/u/basecamp_local_time)
+
+## Contributing
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md).
