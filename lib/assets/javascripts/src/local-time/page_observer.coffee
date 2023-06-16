@@ -1,3 +1,5 @@
+import LocalTime from "./local_time"
+
 {elementMatchesSelector} = LocalTime
 
 class LocalTime.PageObserver

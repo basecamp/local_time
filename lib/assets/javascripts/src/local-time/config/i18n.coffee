@@ -1,3 +1,5 @@
+import LocalTime from "../local_time"
+
 LocalTime.config.i18n =
   en:
     date:

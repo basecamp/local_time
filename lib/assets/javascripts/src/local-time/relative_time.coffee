@@ -1,4 +1,5 @@
-#= require ./calendar_date
+import LocalTime from "./local_time"
+import "./calendar_date"
 
 {strftime, translate, getI18nValue} = LocalTime
 

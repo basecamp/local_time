@@ -1,5 +1,6 @@
-#= require ./relative_time
-#= require ./page_observer
+import LocalTime from "./local_time"
+import "./relative_time"
+import "./page_observer"
 
 {parseDate, strftime, getI18nValue, config} = LocalTime
 

@@ -1,8 +1,6 @@
-#= require moment
-#= require sinon-timers
+import LocalTime from "local_time"
 
-#= require_self
-#= require_directory .
+LocalTime.start()
 
 LocalTime.TestHelpers =
   assert: QUnit.assert

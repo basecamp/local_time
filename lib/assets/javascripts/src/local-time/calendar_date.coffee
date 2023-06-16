@@ -1,3 +1,5 @@
+import LocalTime from "./local_time"
+
 class LocalTime.CalendarDate
   @fromDate: (date) ->
     new this date.getFullYear(), date.getMonth() + 1, date.getDate()

@@ -1,4 +1,5 @@
 require 'rails'
+require 'active_support/all'
 require 'action_view'
 require 'rails-dom-testing'
 

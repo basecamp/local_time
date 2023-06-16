@@ -1,3 +1,5 @@
+import LocalTime from "local_time"
+
 {addTimeEl, assert, defer, getText, setText, test, testAsync, testGroup, triggerEvent} = LocalTime.TestHelpers
 {config} = LocalTime
 {i18n} = config

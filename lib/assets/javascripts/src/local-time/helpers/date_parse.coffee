@@ -1,3 +1,5 @@
+import LocalTime from "../local_time"
+
 # Older browsers do not support ISO8601 (JSON) timestamps in Date.parse
 supportsISO8601 = not isNaN Date.parse("2011-01-01T12:00:00-05:00")
 

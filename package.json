@@ -1,9 +1,9 @@
-
 {
   "name": "local-time",
   "version": "2.1.0",
   "description": "Local <time> elements",
-  "main": "app/assets/javascripts/local-time.js",
+  "module": "app/assets/javascripts/local-time.es2017-esm.js",
+  "main": "app/assets/javascripts/local-time.es2017-umd.js",
   "files": [
     "app/assets/javascripts/*.js"
   ],
@@ -13,5 +13,20 @@
   "bugs": {
     "url": "https://github.com/basecamp/local_time/issues"
   },
-  "homepage": "https://github.com/basecamp/local_time"
+  "homepage": "https://github.com/basecamp/local_time",
+  "devDependencies": {
+    "@rollup/plugin-alias": "^5.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "coffeescript": "^2.7.0",
+    "express": "^4.18.2",
+    "rollup": "^3.25.1",
+    "rollup-plugin-coffee-script": "^2.0.0"
+  },
+  "scripts": {
+    "start": "node test/javascripts/server.mjs",
+    "build": "rollup -c",
+    "watch": "rollup -wc",
+    "test": "yarn build && yarn start"
+  }
 }
