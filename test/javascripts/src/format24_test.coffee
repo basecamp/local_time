@@ -14,33 +14,33 @@ testGroup "format24 (24h time)", ->
 
   testAsync "turned off", (done) ->
     now = moment()
-    originalFormat24 = config.format24
-    config.format24 = false
+    originalFormat24 = config.useFormat24
+    config.useFormat24 = false
 
     el = addTimeEl format: "%-l:%M%P", format24: "%H:%M", datetime: now.toISOString()
     defer ->
       assert.equal getText(el), now.format("h:mma")
-      config.format24 = originalFormat24
+      config.useFormat24 = originalFormat24
       done()
 
   testAsync "turned on", (done) ->
     now = moment()
-    originalFormat24 = config.format24
-    config.format24 = true
+    originalFormat24 = config.useFormat24
+    config.useFormat24 = true
 
     el = addTimeEl format: "%-l:%M%P", format24: "%H:%M", datetime: now.toISOString()
     defer ->
       assert.equal getText(el), now.format("HH:mm")
-      config.format24 = originalFormat24
+      config.useFormat24 = originalFormat24
       done()
 
   testAsync "fallback for missing data-format24 values", (done) ->
     now = moment()
-    originalFormat24 = config.format24
-    config.format24 = true
+    originalFormat24 = config.useFormat24
+    config.useFormat24 = true
 
     el = addTimeEl format: "%-l:%M%P", datetime: now.toISOString()
     defer ->
       assert.equal getText(el), now.format("h:mma")
-      config.format24 = originalFormat24
+      config.useFormat24 = originalFormat24
       done()
