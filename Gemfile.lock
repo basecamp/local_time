@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/basecamp/house-style
+  revision: b3ad65254828e8e8019a0d9a6205aff9ad206a77
+  specs:
+    rubocop-37signals (1.0.0)
+      rubocop
+      rubocop-minitest
+      rubocop-performance
+      rubocop-rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -66,6 +76,7 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    ast (2.4.2)
     builder (3.2.4)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
@@ -75,6 +86,7 @@ GEM
       activesupport (>= 5.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    json (2.6.3)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -101,6 +113,10 @@ GEM
     nokogiri (1.15.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    parallel (1.23.0)
+    parser (3.2.2.3)
+      ast (~> 2.4.1)
+      racc
     racc (1.7.1)
     rack (2.2.7)
     rack-test (2.1.0)
@@ -132,11 +148,39 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0)
       zeitwerk (~> 2.5)
+    rainbow (3.1.1)
     rake (13.0.6)
+    regexp_parser (2.8.1)
+    rexml (3.2.5)
+    rubocop (1.52.1)
+      json (~> 2.3)
+      parallel (~> 1.10)
+      parser (>= 3.2.2.3)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.28.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.29.0)
+      parser (>= 3.2.1.0)
+    rubocop-minitest (0.31.0)
+      rubocop (>= 1.39, < 2.0)
+    rubocop-performance (1.18.0)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.20.2)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.33.0, < 2.0)
+    rubocop-rake (0.6.0)
+      rubocop (~> 1.0)
+    ruby-progressbar (1.13.0)
     thor (1.2.2)
     timeout (0.3.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    unicode-display_width (2.4.2)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -149,6 +193,8 @@ DEPENDENCIES
   rails
   rails-dom-testing
   rake
+  rubocop-37signals!
+  rubocop-rake
 
 BUNDLED WITH
    2.4.14

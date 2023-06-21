@@ -29,7 +29,7 @@ module LocalTimeHelper
 
   def local_time_ago(time, options = nil)
     options, * = extract_options_and_value(options, :type)
-    options[:type] = 'time-ago'
+    options[:type] = "time-ago"
     local_relative_time time, options
   end
 
@@ -77,7 +77,7 @@ module LocalTimeHelper
     end
 
     def i18n_time_or_date_format(name)
-      I18n.t("time.formats.#{name}", default: [:"date.formats.#{name}", ""]).presence
+      I18n.t("time.formats.#{name}", default: [ :"date.formats.#{name}", "" ]).presence
     end
 
     def find_i18_time_formats(name)

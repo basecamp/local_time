@@ -1,0 +1,6 @@
+inherit_gem: { rubocop-37signals: rubocop.yml }
+
+require: rubocop-rake
+
+AllCops:
+  TargetRubyVersion: 2.7
