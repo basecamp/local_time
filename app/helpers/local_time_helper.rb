@@ -80,6 +80,6 @@ module LocalTimeHelper
     end
 
     def ruby_time_or_date_format(format)
-      Time::DATE_FORMATS[format.to_sym] || Date::DATE_FORMATS[format.to_sym]
+      Time::DATE_FORMATS.with_indifferent_access[format] || Date::DATE_FORMATS.with_indifferent_access[format]
     end
 end
