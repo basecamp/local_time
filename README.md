@@ -159,8 +159,8 @@ They will search for `#{name}_24h` in [the same places](#time-and-date-helpers) 
 This is an example of what your app configuration might look like:
 
 ```ruby
-Time::DATE_FORMATS[:time_formats_simple_time] = "%-l:%M%P"
-Time::DATE_FORMATS[:time_formats_simple_time_24h] = "%H:%M"
+Time::DATE_FORMATS[:simple] = "%-l:%M%P"
+Time::DATE_FORMATS[:simple_24h] = "%H:%M"
 ```
 
 In practice, you might set `config.useFormat24` to `true` or `false` depending on the current user's configuration, before rendering any `<time>` elements.
