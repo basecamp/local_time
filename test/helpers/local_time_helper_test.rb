@@ -1,12 +1,12 @@
-require 'rails'
-require 'active_support/all'
-require 'action_view'
-require 'rails-dom-testing'
+require "rails"
+require "active_support/all"
+require "action_view"
+require "rails-dom-testing"
 
-require 'local_time'
-require_relative '../../app/helpers/local_time_helper'
+require "local_time"
+require_relative "../../app/helpers/local_time_helper"
 
-require 'minitest/autorun'
+require "minitest/autorun"
 begin
   # 2.0.0
   class TestCase < MiniTest::Test; end
@@ -32,7 +32,7 @@ class LocalTimeHelperTest < TestCase
     Time::DATE_FORMATS[:time_formats_simple_time] = "%-l:%M%P"
     Time::DATE_FORMATS[:time_formats_simple_time_24h] = "%H:%M"
     Time::DATE_FORMATS[:time_formats_time_with_context] = "%b %e, %-l:%M%P"
-    Date::DATE_FORMATS[:date_formats_simple_date] = '%b %e'
+    Date::DATE_FORMATS[:date_formats_simple_date] = "%b %e"
 
     @date = "2013-11-21"
     @time = Time.zone.parse(@date)
@@ -64,12 +64,12 @@ class LocalTimeHelperTest < TestCase
 
   def test_local_time_with_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
-    assert_dom_equal expected, local_time(@time, format: '%b %e')
+    assert_dom_equal expected, local_time(@time, format: "%b %e")
   end
 
   def test_local_time_with_format_as_string
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
-    assert_dom_equal expected, local_time(@time, '%b %e')
+    assert_dom_equal expected, local_time(@time, "%b %e")
   end
 
   def test_local_time_with_i18n_format
@@ -105,7 +105,7 @@ class LocalTimeHelperTest < TestCase
 
   def test_local_time_with_options
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}" style="display:none">Nov 21</time>)
-    assert_dom_equal expected, local_time(@time, format: '%b %e', style: 'display:none')
+    assert_dom_equal expected, local_time(@time, format: "%b %e", style: "display:none")
   end
 
   def test_local_date
@@ -116,12 +116,12 @@ class LocalTimeHelperTest < TestCase
 
   def test_local_date_with_format
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
-    assert_dom_equal expected, local_date(@time.to_date, format: '%b %e')
+    assert_dom_equal expected, local_date(@time.to_date, format: "%b %e")
   end
 
   def test_local_date_with_format_as_string
     expected = %Q(<time data-format="%b %e" data-local="time" datetime="#{@time_js}">Nov 21</time>)
-    assert_dom_equal expected, local_date(@time.to_date, '%b %e')
+    assert_dom_equal expected, local_date(@time.to_date, "%b %e")
   end
 
   def test_local_date_with_i18n_format

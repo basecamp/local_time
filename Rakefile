@@ -4,14 +4,14 @@ require "open3"
 
 task default: :test
 
-task test: ["test:helpers", "test:assets", "test:javascripts"]
+task test: [ "test:helpers", "test:assets", "test:javascripts" ]
 
 namespace :test do
   Rake::TestTask.new(:helpers) do |t|
     t.pattern = "test/helpers/*test.rb"
   end
 
-  task assets: ["assets:compile", "assets:verify"]
+  task assets: [ "assets:compile", "assets:verify" ]
 
   task :javascripts do
     system "yarn start"
