@@ -30,7 +30,7 @@ testGroup "format24 (24h time)", ->
 
     el = addTimeEl format: "%-l:%M%P", format24: "%H:%M", datetime: now.toISOString()
     defer ->
-      assert.equal getText(el), now.format("H:mm")
+      assert.equal getText(el), now.format("HH:mm")
       config.format24 = originalFormat24
       done()
 

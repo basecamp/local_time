@@ -3,7 +3,7 @@ module LocalTimeHelper
     time = utc_time(time)
 
     options, format = extract_options_and_value(options, :format)
-    format, format24 = find_time_format(format)
+    format, format24 = find_time_formats(format)
 
     options[:data] ||= {}
     options[:data].merge! local: :time, format: format, format24: format24
@@ -54,25 +54,25 @@ module LocalTimeHelper
       end
     end
 
-    def find_time_format(format)
+    def find_time_formats(format)
       if format.is_a?(Symbol)
-        find_time_format_by_name(format)
+        find_time_formats_by_name(format)
       else
-        [format.presence || LocalTime.default_time_format, nil]
+        [ format.presence || LocalTime.default_time_format, nil ]
       end
     end
 
-    def find_time_format_by_name(format)
+    def find_time_formats_by_name(format)
       if format12 = i18n_time_or_date_format(format)
         format24 = i18n_time_or_date_format("#{format}_24h")
       elsif fmt = ruby_time_or_date_format(format)
         format12 = fmt.is_a?(Proc) ? nil : fmt
-        format24 = ruby_time_or_date_format(:"#{format}_24h")
+        format24 = ruby_time_or_date_format("#{format}_24h")
       else
         format12, format24 = nil, nil
       end
 
-      [format12.presence || LocalTime.default_time_format, format24.presence]
+      [ format12.presence || LocalTime.default_time_format, format24.presence ]
     end
 
     def i18n_time_or_date_format(format)
@@ -80,6 +80,6 @@ module LocalTimeHelper
     end
 
     def ruby_time_or_date_format(format)
-      Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format]
+      Time::DATE_FORMATS[format.to_sym] || Date::DATE_FORMATS[format.to_sym]
     end
 end

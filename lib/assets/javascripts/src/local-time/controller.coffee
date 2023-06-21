@@ -28,8 +28,8 @@ class LocalTime.Controller
   processElement: (element) ->
     datetime = element.getAttribute("datetime")
     local = element.getAttribute("data-local")
-    format = if config.format24 and element.hasAttribute("data-format24")
-      element.getAttribute("data-format24")
+    format = if config.format24
+      element.getAttribute("data-format24") || element.getAttribute("data-format")
     else
       element.getAttribute("data-format")
 
