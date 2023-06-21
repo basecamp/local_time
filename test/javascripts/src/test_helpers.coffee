@@ -12,7 +12,7 @@ LocalTime.TestHelpers =
       done = assert.async()
       callback(done)
 
-  addTimeEl: ({format, type, datetime} = {}) ->
+  addTimeEl: ({format, type, datetime, format24} = {}) ->
     format ?= "%Y"
     type ?= "time"
     datetime ?= "2013-11-12T12:13:00Z"
@@ -21,6 +21,8 @@ LocalTime.TestHelpers =
     el.setAttribute "data-local", type
     el.setAttribute "data-format", format
     el.setAttribute "datetime", datetime
+    if format24 then el.setAttribute "data-format24", format24
+
     document.body.appendChild el
     el
 
