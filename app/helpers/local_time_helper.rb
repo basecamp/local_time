@@ -2,13 +2,13 @@ module LocalTimeHelper
   def local_time(time, options = nil)
     time = utc_time(time)
 
-    options, format = extract_options_and_value(options, :format)
-    format, format24 = find_time_formats(format)
+    options, format12 = extract_options_and_value(options, :format)
+    format12, format24 = find_time_formats(format12)
 
     options[:data] ||= {}
-    options[:data].merge! local: :time, format: format, format24: format24
+    options[:data].merge! local: :time, format: format12, format24: format24
 
-    time_tag time, time.strftime(format), options
+    time_tag time, time.strftime(format12), options
   end
 
   def local_date(time, options = nil)
@@ -54,48 +54,51 @@ module LocalTimeHelper
       end
     end
 
-    def find_time_formats(format)
-      if format.is_a?(Symbol)
-        find_time_formats_by_name(format)
+    def find_time_formats(format12)
+      if format12.is_a?(Symbol)
+        find_time_formats_by_name(format12)
       else
-        [ format.presence || LocalTime.default_time_format, nil ]
+        [ format12.presence || LocalTime.default_time_format, nil ]
       end
     end
 
-    def find_time_formats_by_name(format)
-      if use_i18n_time_formats?(format)
-        find_i18_time_formats(format)
-      elsif use_ruby_time_formats?(format)
-        find_ruby_time_formats(format)
+    def find_time_formats_by_name(name)
+      if use_i18n_time_formats?(name)
+        find_i18_time_formats(name)
+      elsif use_ruby_time_formats?(name)
+        find_ruby_time_formats(name)
       else
         [ LocalTime.default_time_format, nil ]
       end
     end
 
-    def use_i18n_time_formats?(format)
-      i18n_time_or_date_format(format).present?
+    def use_i18n_time_formats?(name)
+      i18n_time_or_date_format(name).present?
     end
 
-    def i18n_time_or_date_format(format)
-      I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", ""]).presence
+    def i18n_time_or_date_format(name)
+      I18n.t("time.formats.#{name}", default: [:"date.formats.#{name}", ""]).presence
     end
 
-    def find_i18_time_formats(format)
-      [ i18n_time_or_date_format(format), i18n_time_or_date_format("#{format}_24h") ]
+    def find_i18_time_formats(name)
+      [ i18n_time_or_date_format(name), i18n_time_or_date_format("#{name}_24h") ]
     end
 
-    def use_ruby_time_formats?(format)
-      ruby_time_or_date_format(format).present?
+    def use_ruby_time_formats?(name)
+      ruby_time_or_date_format(name).present?
     end
 
-    def ruby_time_or_date_format(format)
-      Time::DATE_FORMATS.with_indifferent_access[format] || Date::DATE_FORMATS.with_indifferent_access[format]
+    def ruby_time_or_date_format(name)
+      Time::DATE_FORMATS.with_indifferent_access[name] || Date::DATE_FORMATS.with_indifferent_access[name]
     end
 
-    def find_ruby_time_formats(format)
-      format12 = ruby_time_or_date_format(format)
-      format12 = format12.is_a?(Proc) ? LocalTime.default_time_format : format12
+    def find_ruby_time_formats(name)
+      format12 = ruby_time_or_date_format(name)
 
-      [ format12, ruby_time_or_date_format("#{format}_24h") ]
+      if format12.is_a?(Proc)
+        [ LocalTime.default_time_format, nil ]
+      else
+        [ format12, ruby_time_or_date_format("#{name}_24h") ]
+      end
     end
 end
