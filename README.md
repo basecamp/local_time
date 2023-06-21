@@ -140,11 +140,30 @@ LocalTime.config.i18n["es"] = {
 LocalTime.config.locale = "es"
 ```
 
----
+**24-hour time formatting**
 
-[![Build Status](https://travis-ci.org/basecamp/local_time.svg?branch=master)](https://travis-ci.org/basecamp/local_time)
+Local Time supports 24-hour time formats out of the box.
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/basecamp_local_time.svg)](https://saucelabs.com/u/basecamp_local_time)
+To use this feature, configure the library to favor `data-format24` over `data-format` attributes:
+
+```js
+LocalTime.config.useFormat24 = true
+```
+
+The library will now default to using the `data-format24` attribute on `<time>` elements for formatting.
+But it will still fall back to `data-format` if `data-format24` is not provided.
+
+The included Rails helpers will automatically look for 24h variants of named formats.
+They will search for `#{name}_24h` in [the same places](#time-and-date-helpers) the regular name is looked up.
+
+This is an example of what your app configuration might look like:
+
+```ruby
+Time::DATE_FORMATS[:simple] = "%-l:%M%P"
+Time::DATE_FORMATS[:simple_24h] = "%H:%M"
+```
+
+In practice, you might set `config.useFormat24` to `true` or `false` depending on the current user's configuration, before rendering any `<time>` elements.
 
 ## Contributing
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md).

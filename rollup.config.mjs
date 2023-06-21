@@ -27,7 +27,7 @@ export default [
       terser()
     ],
     watch: {
-      include: "lib/assets/javascripts/src/local-time/**"
+      include: "lib/assets/javascripts/src/local-time/**/*"
     }
   },
   {
@@ -49,7 +49,7 @@ export default [
       nodeResolve({ extensions: [".coffee"] })
     ],
     watch: {
-      include: "test/javascripts/src/**"
+      include: "test/javascripts/src/**/*"
     }
   }
 ]

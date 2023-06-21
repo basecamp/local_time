@@ -27,8 +27,11 @@ class LocalTime.Controller
 
   processElement: (element) ->
     datetime = element.getAttribute("datetime")
-    format = element.getAttribute("data-format")
     local = element.getAttribute("data-local")
+    format = if config.useFormat24
+      element.getAttribute("data-format24") || element.getAttribute("data-format")
+    else
+      element.getAttribute("data-format")
 
     time = parseDate(datetime)
     return if isNaN time
