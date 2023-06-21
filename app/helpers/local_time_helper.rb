@@ -3,10 +3,10 @@ module LocalTimeHelper
     time = utc_time(time)
 
     options, format = extract_options_and_value(options, :format)
-    format = find_time_format(format)
+    format, format24 = find_time_format(format)
 
     options[:data] ||= {}
-    options[:data].merge! local: :time, format: format
+    options[:data].merge! local: :time, format: format, format24: format24
 
     time_tag time, time.strftime(format), options
   end
@@ -42,20 +42,6 @@ module LocalTimeHelper
   end
 
   private
-    def find_time_format(format)
-      if format.is_a?(Symbol)
-        if (i18n_format = I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", ''])).present?
-          i18n_format
-        elsif (date_format = Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format])
-          date_format.is_a?(Proc) ? LocalTime.default_time_format : date_format
-        else
-          LocalTime.default_time_format
-        end
-      else
-        format.presence || LocalTime.default_time_format
-      end
-    end
-
     def extract_options_and_value(options, value_key = nil)
       case options
       when Hash
@@ -66,5 +52,34 @@ module LocalTimeHelper
       else
         [ {}, options ]
       end
+    end
+
+    def find_time_format(format)
+      if format.is_a?(Symbol)
+        find_time_format_by_name(format)
+      else
+        [format.presence || LocalTime.default_time_format, nil]
+      end
+    end
+
+    def find_time_format_by_name(format)
+      if format12 = i18n_time_or_date_format(format)
+        format24 = i18n_time_or_date_format("#{format}_24h")
+      elsif fmt = ruby_time_or_date_format(format)
+        format12 = fmt.is_a?(Proc) ? nil : fmt
+        format24 = ruby_time_or_date_format(:"#{format}_24h")
+      else
+        format12, format24 = nil, nil
+      end
+
+      [format12.presence || LocalTime.default_time_format, format24.presence]
+    end
+
+    def i18n_time_or_date_format(format)
+      I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", ""]).presence
+    end
+
+    def ruby_time_or_date_format(format)
+      Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format]
     end
 end
