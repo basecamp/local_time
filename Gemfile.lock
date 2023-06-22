@@ -8,6 +8,11 @@ GIT
       rubocop-performance
       rubocop-rails
 
+PATH
+  remote: .
+  specs:
+    local_time (2.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -190,9 +195,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rails
-  rails-dom-testing
-  rake
+  local_time!
+  rails (~> 7.0)
+  rails-dom-testing (~> 2.0)
+  rake (~> 13.0)
   rubocop-37signals!
   rubocop-rake
 

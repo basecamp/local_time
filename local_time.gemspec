@@ -12,8 +12,7 @@ Gem::Specification.new do |s|
   s.files = Dir["app/**/*", "lib/local_time.rb", "lib/local_time/**/*", "MIT-LICENSE", "README.md"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_development_dependency "rubocop", "~> 1.52"
-  s.add_development_dependency "rubocop-performance", "~> 1.18"
-  s.add_development_dependency "rubocop-rails", "~> 2.20"
-  s.add_development_dependency "rubocop-rake", "~> 0.6"
+  s.add_development_dependency "rake", "~> 13.0"
+  s.add_development_dependency "rails", "~> 7.0"
+  s.add_development_dependency "rails-dom-testing", "~> 2.0"
 end
