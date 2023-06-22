@@ -19,4 +19,4 @@ Ruby tests will run first. You will then be prompted to open your web browser to
 
 ## Releasing
 
-Run `bin/release x.y.z`, use `--dry` to skip publishing.
+Run `bin/release x.y.z`, use `--dry` to skip publishing. This is not idempotent. If releasing fails, take note of where the process left off and continue manually.
