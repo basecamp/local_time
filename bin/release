@@ -14,6 +14,7 @@ class Release
   def perform
     guard_clean
     write_version
+    update_copyright
     bundle
     build_gem
 
@@ -52,10 +53,17 @@ class Release
     end
 
     def write_version_to_js
-      pathname = Pathname.new("package.json")
-      data = JSON.parse(pathname.read)
+      pathname = Pathname.new "package.json"
+      data = JSON.parse pathname.read
       data["version"] = version
-      pathname.write(JSON.pretty_generate(data) + "\n")
+      pathname.write JSON.pretty_generate(data) + "\n"
+    end
+
+    def update_copyright
+      pathname = Pathname.new "MIT-LICENSE"
+      data = pathname.read
+      data.sub! /Copyright \d{4}/, "Copyright #{Time.now.year}"
+      pathname.write data
     end
 
     def bundle
