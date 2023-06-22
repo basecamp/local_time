@@ -77,20 +77,20 @@ class Release
         system("git tag v#{version}") &&
         system("git push --tags")
 
-      puts "✅ Successfully pushed git release"
+      puts "✅ Successfully published git release"
     end
 
     def publish_rubygems_release
       system "gem push 'local_time-#{version}.gem' --host https://rubygems.org"
 
-      puts "✅ Successfully pushed rubygems release"
+      puts "✅ Successfully published rubygems release"
     end
 
     def publish_npm_release
       system("npm whoami") || abort("❌ Must be logged in to npm")
       system("npm publish") || abort("❌ npm publish failed")
 
-      puts "✅ Successfully pushed npm release"
+      puts "✅ Successfully published npm release"
     end
 
     def cleanup
