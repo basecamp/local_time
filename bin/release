@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative "../lib/local_time/version"
+require "bundler/gem_tasks"
 require "pathname"
 require "json"
 
@@ -11,7 +12,9 @@ class Release
   end
 
   def perform
+    guard_clean
     write_version
+    bundle
     build_gem
 
     unless dry?
@@ -24,6 +27,10 @@ class Release
 
   private
     attr_reader :version, :dry
+
+    def guard_clean
+      Rake::Task["release:guard_clean"].invoke
+    end
 
     def write_version
       puts "== Writing version to files =="
@@ -49,6 +56,12 @@ class Release
       data = JSON.parse(pathname.read)
       data["version"] = version
       pathname.write(JSON.pretty_generate(data) + "\n")
+    end
+
+    def bundle
+      puts "== Building Gemfile =="
+
+      abort "❌ Failed to bundle" unless system "bundle"
     end
 
     def build_gem
@@ -87,8 +100,8 @@ class Release
     end
 
     def publish_npm_release
-      system("npm whoami") || abort("❌ Must be logged in to npm")
-      system("npm publish") || abort("❌ npm publish failed")
+      abort "❌ Must be logged in to npm" unless system "npm whoami"
+      abort "❌ npm publish failed" unless system "npm publish"
 
       puts "✅ Successfully published npm release"
     end
