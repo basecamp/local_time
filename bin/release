@@ -37,7 +37,11 @@ class Release
     end
 
     def write_version_to_rb
-      system %Q( printf 'module LocalTime\n  VERSION = "#{version}"\nend\n' > ./lib/local_time/version.rb )
+      Pathname.new("./lib/local_time/version.rb").write <<~RUBY
+        module LocalTime
+          VERSION = "#{version}"
+        end
+      RUBY
     end
 
     def write_version_to_js
