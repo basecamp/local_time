@@ -16,3 +16,7 @@ This library has a Ruby component and a JavaScript component. Each component has
 To run both suites, open your console and run `rake test` from the project directory.
 
 Ruby tests will run first. You will then be prompted to open your web browser to run the JavaScript tests.
+
+## Releasing
+
+Run `bin/release x.y.z`, use `--dry` to skip publishing.
