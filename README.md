@@ -5,7 +5,7 @@ Local Time makes it easy to display times and dates to users in their local time
 ## Installation
 
 ### Importmaps
-1. Add `gem 'local_time'` to your Gemfile.
+1. Add `gem "local_time"` to your Gemfile.
 2. Run `bundle install`
 3. Run `bin/importmap pin local-time` to add the [local-time npm package](https://www.npmjs.com/package/local-time)
 4. Add this to `app/javascript/application.js`
@@ -16,7 +16,7 @@ Local Time makes it easy to display times and dates to users in their local time
     ```
 
 ### Webpacker
-1. Add `gem 'local_time'` to your Gemfile.
+1. Add `gem "local_time"` to your Gemfile.
 2. Run `bundle install`
 3. Run `yarn add local-time`
 4. Add this to `app/javascript/packs/application.js`
