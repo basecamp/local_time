@@ -40,25 +40,21 @@ class LocalTime.Controller
       title = strftime(time, getI18nValue("datetime.formats.default"))
       element.setAttribute("title", title)
 
-    element.textContent = content =
-      switch local
-        when "time"
-          markAsLocalized(element)
-          strftime(time, format)
-        when "date"
-          markAsLocalized(element)
-          relative(time).toDateString()
-        when "time-ago"
-          relative(time).toString()
-        when "time-or-date"
-          relative(time).toTimeOrDateString()
-        when "weekday"
-          relative(time).toWeekdayString()
-        when "weekday-or-date"
-          relative(time).toWeekdayString() or relative(time).toDateString()
-
-    unless element.hasAttribute("aria-label")
-      element.setAttribute("aria-label", content)
+    element.textContent = switch local
+      when "time"
+        markAsLocalized(element)
+        strftime(time, format)
+      when "date"
+        markAsLocalized(element)
+        relative(time).toDateString()
+      when "time-ago"
+        relative(time).toString()
+      when "time-or-date"
+        relative(time).toTimeOrDateString()
+      when "weekday"
+        relative(time).toWeekdayString()
+      when "weekday-or-date"
+        relative(time).toWeekdayString() or relative(time).toDateString()
 
   markAsLocalized = (element) ->
     element.setAttribute("data-localized", "")

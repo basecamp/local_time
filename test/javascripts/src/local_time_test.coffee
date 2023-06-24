@@ -29,7 +29,6 @@ assertLocalized = (id, type = "time") ->
 
   assert.ok datetime = el.getAttribute "datetime"
   assert.ok local = getText el
-  assert.equal el.getAttribute("aria-label"), local
 
   datetimeParsed = moment datetime
   localParsed = moment local, momentFormat
