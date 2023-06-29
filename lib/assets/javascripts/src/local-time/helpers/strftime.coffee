@@ -43,7 +43,12 @@ parseTimeZone = (time) ->
   string = time.toString()
   # Sun Aug 30 2015 10:22:57 GMT-0400 (NAME)
   if name = string.match(/\(([\w\s]+)\)$/)?[1]
-    if /\s/.test(name)
+    if name == "Western Indonesia Time"
+      # The correct abbreviation for this time zone is WIB from its original name Waktu Indonesia Barat
+      # Confusingly, WIT means Eastern Indonesia Time
+      # See: https://en.wikipedia.org/wiki/Time_in_Indonesia
+      "WIB"
+    else if /\s/.test(name)
       # Sun Aug 30 2015 10:22:57 GMT-0400 (Eastern Daylight Time)
       name.match(/\b(\w)/g).join("")
     else
