@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Time Zone Check</title>
+  <script src="/current-build"></script>
+</head>
+<body>
+  <script>
+    LocalTime.start()
+  </script>
+
+  <p><strong>Standard Time (Northern Hemisphere) | DST Time (Southern Hemisphere)</strong></p>
+  <time data-format="%B %e, %Y %l:%M%P (%Z)" data-local="time" datetime="2023-12-12T12:13:00Z"></time>
+
+  <br>
+  <br>
+
+  <p><strong>DST Time (Northern Hemisphere) | Standard Time (Southern Hemisphere)</strong></p>
+  <time data-format="%B %e, %Y %l:%M%P (%Z)" data-local="time" datetime="2023-07-12T12:13:00Z"></time>
+</body>

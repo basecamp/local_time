@@ -2,6 +2,16 @@ import LocalTime from "../local_time"
 
 {getI18nValue, translate} = LocalTime
 
+supportsIntlDateFormat = typeof Intl?.DateTimeFormat is "function"
+
+knownEdgeCaseTimeZones =
+  "Central European Summer Time": "CEST"
+  "Central European Standard Time": "CET"
+  "Western Indonesia Time": "WIB"
+  "Singapore Standard Time": "SGT"
+  "Москва, стандартное время": "MSK" # Europe/Moscow
+  "中国标准时间": "CST" # Asia/Shanghai
+
 LocalTime.strftime = strftime = (time, formatString) ->
   day    = time.getDay()
   date   = time.getDate()
@@ -40,6 +50,23 @@ pad = (num, flag) ->
     else ("0#{num}").slice(-2)
 
 parseTimeZone = (time) ->
+  if longTimeZone = edgeCaseTimeZone(time)
+    knownEdgeCaseTimeZones[longTimeZone]
+  else if shortTimeZone = parseTimeZoneWithIntl(time)
+    shortTimeZone
+  else
+    parseTimeZoneWithHeuristic(time)
+
+edgeCaseTimeZone = (time) ->
+  Object.keys(knownEdgeCaseTimeZones).find (name) ->
+    time.toString().indexOf(name) isnt -1
+
+parseTimeZoneWithIntl = (time) ->
+  return null unless supportsIntlDateFormat
+  result = new Date(time).toLocaleString(undefined, { timeZoneName: "short" }).split(" ").pop()
+  result if result.indexOf("GMT") is -1
+
+parseTimeZoneWithHeuristic = (time) ->
   string = time.toString()
   # Sun Aug 30 2015 10:22:57 GMT-0400 (NAME)
   if name = string.match(/\(([\w\s]+)\)$/)?[1]
