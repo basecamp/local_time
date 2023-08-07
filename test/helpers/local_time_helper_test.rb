@@ -32,7 +32,9 @@ class LocalTimeHelperTest < TestCase
     Time::DATE_FORMATS[:time_formats_simple_time] = "%-l:%M%P"
     Time::DATE_FORMATS[:time_formats_simple_time_24h] = "%H:%M"
     Time::DATE_FORMATS[:time_formats_time_with_context] = "%b %e, %-l:%M%P"
+    Time::DATE_FORMATS[:ambiguous_format] = "%Y-%m-%d %H:%M:%S"
     Date::DATE_FORMATS[:date_formats_simple_date] = "%b %e"
+    Date::DATE_FORMATS[:ambiguous_format] = "%Y-%m-%d"
 
     @date = "2013-11-21"
     @time = Time.zone.parse(@date)
@@ -92,6 +94,11 @@ class LocalTimeHelperTest < TestCase
     assert_dom_equal expected, local_time(@time, format: :time_formats_time_with_context)
   end
 
+  def test_local_time_with_ambiguous_format
+    expected = %Q(<time data-format="%Y-%m-%d %H:%M:%S" data-local="time" datetime="#{@time_js}">2013-11-21 06:00:00</time>)
+    assert_dom_equal expected, local_time(@time, format: :ambiguous_format)
+  end
+
   def test_local_time_with_missing_i18n_and_ruby_format
     expected = %Q(<time data-format="%B %e, %Y %l:%M%P" data-local="time" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
     assert_dom_equal expected, local_time(@time, format: :missing_format)
@@ -134,7 +141,14 @@ class LocalTimeHelperTest < TestCase
     assert_dom_equal expected, local_date(@time.to_date, format: :date_formats_simple_date)
   end
 
+  def test_local_date_with_ambiguous_format
+    expected = %Q(<time data-format="%Y-%m-%d" data-local="time" datetime="#{@time_js}">2013-11-21</time>)
+    assert_dom_equal expected, local_date(@time.to_date, format: :db)
+  end
+
   def test_local_date_with_missing_i18n_and_ruby_format
+    # This one fails because we expect the default time format and we get the default date format.
+    # Maybe we should change this test?
     expected = %Q(<time data-format="%B %e, %Y %l:%M%P" data-local="time" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
     assert_dom_equal expected, local_date(@time.to_date, format: :missing_date_format)
   end
