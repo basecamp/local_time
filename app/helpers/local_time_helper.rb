@@ -67,7 +67,7 @@ module LocalTimeHelper
     #   else
     #     { format: format }
     #   end
-    #   data[:format] ||= get_default(type)
+    #   data[:format] ||= default_format(type)
     #   data
     # end
 
@@ -79,7 +79,7 @@ module LocalTimeHelper
       elsif format
         { format: format }
       else
-        { format: get_default(type)}
+        { format: default_format(type)}
       end
     end
 
@@ -102,7 +102,7 @@ module LocalTimeHelper
     def find_ruby_formats(name, type)
       format_data = ruby_format(name, type)
       if format_data.is_a?(Proc)
-        { format: get_default(type) }
+        { format: default_format(type) }
       elsif type == :time
         { format: format_data, format24: ruby_format("#{name}_24h") }
       else
@@ -118,7 +118,7 @@ module LocalTimeHelper
       end
     end
 
-    def get_default(type)
+    def default_format(type)
       type == :time ? LocalTime.default_time_format : LocalTime.default_date_format
     end
 end
