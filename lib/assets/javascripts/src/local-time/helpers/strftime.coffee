@@ -5,12 +5,15 @@ import LocalTime from "../local_time"
 supportsIntlDateFormat = typeof Intl?.DateTimeFormat is "function"
 
 knownEdgeCaseTimeZones =
-  "Central European Summer Time": "CEST"
   "Central European Standard Time": "CET"
-  "Western Indonesia Time": "WIB"
+  "Central European Summer Time": "CEST"
+  "China Standard Time": "CST"
+  "Israel Daylight Time": "IDT"
+  "Israel Standard Time": "IST"
+  "Moscow Standard Time": "MSK"
+  "Philippine Standard Time": "PHT"
   "Singapore Standard Time": "SGT"
-  "Москва, стандартное время": "MSK" # Europe/Moscow
-  "中国标准时间": "CST" # Asia/Shanghai
+  "Western Indonesia Time": "WIB"
 
 LocalTime.strftime = strftime = (time, formatString) ->
   day    = time.getDay()
@@ -42,31 +45,38 @@ LocalTime.strftime = strftime = (time, formatString) ->
       when "w" then day
       when "y" then pad(year % 100, flag)
       when "Y" then year
-      when "Z" then parseTimeZone(time)
+      when "Z" then shortTimeZoneName(time)
 
 pad = (num, flag) ->
   switch flag
     when "-" then num
     else ("0#{num}").slice(-2)
 
-parseTimeZone = (time) ->
+shortTimeZoneName = (time) ->
   if longTimeZone = edgeCaseTimeZone(time)
     knownEdgeCaseTimeZones[longTimeZone]
-  else if shortTimeZone = parseTimeZoneWithIntl(time)
+  else if shortTimeZone = shortTimeZoneNameFromIntl(time, { allowGMT: false })
     shortTimeZone
+  else if shortTimeZone = shortTimeZoneNameFromHeuristic(time)
+    shortTimeZone
+  else if gmtOffset = timeZoneOffset(time)
+    gmtOffset
   else
-    parseTimeZoneWithHeuristic(time)
+    ""
 
 edgeCaseTimeZone = (time) ->
   Object.keys(knownEdgeCaseTimeZones).find (name) ->
-    time.toString().indexOf(name) isnt -1
+    if supportsIntlDateFormat
+      new Date(time).toLocaleString("en-US", { timeZoneName: "long" }).includes(name)
+    else
+      time.toString().includes(name)
 
-parseTimeZoneWithIntl = (time) ->
-  return null unless supportsIntlDateFormat
-  result = new Date(time).toLocaleString(undefined, { timeZoneName: "short" }).split(" ").pop()
-  result if result.indexOf("GMT") is -1
+shortTimeZoneNameFromIntl = (time, { allowGMT }) ->
+  if supportsIntlDateFormat
+    shortTimeZone = new Date(time).toLocaleString("en-US", { timeZoneName: "short" }).split(" ").pop()
+    shortTimeZone if allowGMT || !shortTimeZone.includes("GMT")
 
-parseTimeZoneWithHeuristic = (time) ->
+shortTimeZoneNameFromHeuristic = (time) ->
   string = time.toString()
   # Sun Aug 30 2015 10:22:57 GMT-0400 (NAME)
   if name = string.match(/\(([\w\s]+)\)$/)?[1]
@@ -82,5 +92,6 @@ parseTimeZoneWithHeuristic = (time) ->
   # "Sun Aug 30 10:22:57 UTC-0400 2015"
   else if name = string.match(/(UTC[\+\-]\d+)/)?[1]
     name
-  else
-    ""
+
+timeZoneOffset = (time) ->
+  shortTimeZoneNameFromIntl(time, { allowGMT: true })

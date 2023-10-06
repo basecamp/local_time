@@ -29,7 +29,7 @@ Stubbing the browser's time zone is not possible. Therefore, testing for a speci
 5. Use Chrome's [location sensor override feature](https://developer.chrome.com/docs/devtools/sensors/#open-sensors) to set your location to the one you chose in step 1.
 6. Refresh the page and visually verify the results.
 
-Here's a list of known edge-case time zones and their locations:
+Here's a list of time zones we've had problems with in the past:
 
 TZ identifier     | Standard Abbreviation | DST Abbreviation | Latitude | Longitude
 ----------------- | --------------------- | ---------------- | -------- | ---------
@@ -40,3 +40,5 @@ Pacific/Honolulu  | HST                   | —                | 21.5376  | -158
 Asia/Singapore    | SGT                   | —                | 1.3521   | 103.8198
 Europe/Moscow     | MSK                   | —                | 55.7558  | 37.6173
 Asia/Shanghai     | CST                   | —                | 31.2304  | 121.4737
+Asia/Jerusalem    | IST                   | IDT              | 31.7683  | 35.2137
+Asia/Manila       | PHT                   | —                | 14.5995  | 120.9842
