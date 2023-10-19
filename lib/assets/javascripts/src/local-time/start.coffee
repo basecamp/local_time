@@ -22,6 +22,3 @@ LocalTime.start = ->
       startController()
     else
       nextFrame(startController)
-
-if window.LocalTime is LocalTime
-  LocalTime.start()
