@@ -150,6 +150,8 @@ LocalTime.config.locale = "es"
 ```
 
 **24-hour time formatting**
+> [!WARNING]  
+> 24-hour time formatting will be part of a future release. It's available on the repository's main branch but hasn't been published to npm or rubygems yet.
 
 Local Time supports 24-hour time formats out of the box.
 
