@@ -34,6 +34,9 @@ LocalTime.TestHelpers =
     # reading the text content, not a potentially arbitrary property.
     el.innerHTML
 
+  getTitle: (el) ->
+    el.getAttribute("title")
+
   triggerEvent: (name, el = document) ->
     event = document.createEvent "Events"
     event.initEvent name, true, true

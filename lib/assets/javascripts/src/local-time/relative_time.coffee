@@ -1,7 +1,7 @@
 import LocalTime from "./local_time"
 import "./calendar_date"
 
-{strftime, translate, getI18nValue} = LocalTime
+{strftime, translate, getI18nValue, config} = LocalTime
 
 class LocalTime.RelativeTime
   constructor: (@date) ->
@@ -70,4 +70,5 @@ class LocalTime.RelativeTime
     strftime(@date, format)
 
   toTimeString: ->
-    strftime(@date, getI18nValue("time.formats.default"))
+    format = if config.useFormat24 then "default_24h" else "default"
+    strftime(@date, getI18nValue("time.formats.#{format}"))
