@@ -16,7 +16,9 @@ startController = ->
   controller.start()
 
 LocalTime.start = ->
-  unless started
+  if started
+    LocalTime.run()
+  else
     started = true
     if MutationObserver? or domReady()
       startController()
