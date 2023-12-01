@@ -45,26 +45,26 @@ LocalTime.strftime = strftime = (time, formatString) ->
       when "w" then day
       when "y" then pad(year % 100, flag)
       when "Y" then year
-      when "Z" then shortTimeZoneName(time)
+      when "Z" then shortTimeZone(time)
 
 pad = (num, flag) ->
   switch flag
     when "-" then num
     else ("0#{num}").slice(-2)
 
-shortTimeZoneName = (time) ->
-  if longTimeZone = edgeCaseTimeZone(time)
-    knownEdgeCaseTimeZones[longTimeZone]
-  else if shortTimeZone = shortTimeZoneNameFromIntl(time, { allowGMT: false })
-    shortTimeZone
-  else if shortTimeZone = shortTimeZoneNameFromHeuristic(time)
-    shortTimeZone
-  else if gmtOffset = timeZoneOffset(time)
+shortTimeZone = (time) ->
+  if longTimeZoneName = edgeCaseTimeZoneNameFor(time)
+    knownEdgeCaseTimeZones[longTimeZoneName]
+  else if shortTimeZoneName = shortTimeZoneNameFromIntl(time, { allowGMT: false })
+    shortTimeZoneName
+  else if shortTimeZoneName = shortTimeZoneNameFromHeuristic(time)
+    shortTimeZoneName
+  else if gmtOffset = shortTimeZoneNameFromIntl(time, { allowGMT: true })
     gmtOffset
   else
     ""
 
-edgeCaseTimeZone = (time) ->
+edgeCaseTimeZoneNameFor = (time) ->
   Object.keys(knownEdgeCaseTimeZones).find (name) ->
     if supportsIntlDateFormat
       new Date(time).toLocaleString("en-US", { timeZoneName: "long" }).includes(name)
@@ -73,8 +73,8 @@ edgeCaseTimeZone = (time) ->
 
 shortTimeZoneNameFromIntl = (time, { allowGMT }) ->
   if supportsIntlDateFormat
-    shortTimeZone = new Date(time).toLocaleString("en-US", { timeZoneName: "short" }).split(" ").pop()
-    shortTimeZone if allowGMT || !shortTimeZone.includes("GMT")
+    shortTimeZoneName = new Date(time).toLocaleString("en-US", { timeZoneName: "short" }).split(" ").pop()
+    shortTimeZoneName if allowGMT || !shortTimeZoneName.includes("GMT")
 
 shortTimeZoneNameFromHeuristic = (time) ->
   string = time.toString()
@@ -92,6 +92,3 @@ shortTimeZoneNameFromHeuristic = (time) ->
   # "Sun Aug 30 10:22:57 UTC-0400 2015"
   else if name = string.match(/(UTC[\+\-]\d+)/)?[1]
     name
-
-timeZoneOffset = (time) ->
-  shortTimeZoneNameFromIntl(time, { allowGMT: true })
