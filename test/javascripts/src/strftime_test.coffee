@@ -33,9 +33,9 @@ stubToLocaleString = (stubImplementation) ->
   Date.prototype.toLocaleString = stubImplementation
   restore: -> Date.prototype.toLocaleString = original
 
-stubDateToString = ->
+stubDateToString = (stubImplementation) ->
   original = Date.prototype.toString
-  Date.prototype.toString = -> ""
+  Date.prototype.toString = stubImplementation
   restore: -> Date.prototype.toString = original
 
 testGroup "strftime", ->
@@ -106,7 +106,7 @@ testGroup "strftime time zones", ->
     assert.ok /^(\w{3,4}|UTC[\+\-]\d+)$/.test(text), "'#{text}' doesn't look like a timezone. System date: '#{new Date}'"
 
   test "time zones Intl can't abbreviate and our heuristic can't parse display GMT offset", ->
-    dateToStringStub = stubDateToString()
+    dateToStringStub = stubDateToString -> ""
     toLocaleStringStub = stubToLocaleString (_, options) ->
       if options.timeZoneName == "long"
         return "Thu Nov 30 2023 14:22:57 GMT+0700 (Central Twilight Time)" # not a known edge-case
