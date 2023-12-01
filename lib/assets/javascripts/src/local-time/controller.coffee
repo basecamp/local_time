@@ -56,6 +56,15 @@ class LocalTime.Controller
       when "weekday-or-date"
         relative(time).toWeekdayString() or relative(time).toDateString()
 
+    @observeMutations()
+
+  observeMutations: ->
+    new MutationObserver((mutations) =>
+      for mutation in mutations
+        if mutation.target.matches(SELECTOR)
+          @processElement(mutation.target)
+    )
+
   markAsLocalized = (element) ->
     element.setAttribute("data-localized", "")
 
