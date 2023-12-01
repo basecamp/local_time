@@ -1,0 +1,124 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/local_time/version"
+require "bundler/gem_tasks"
+require "pathname"
+require "json"
+
+class Release
+  def initialize(version, dry: false)
+    @version = version
+    @dry = dry
+  end
+
+  def perform
+    guard_clean
+    write_version
+    update_copyright
+    bundle
+    build_gem
+
+    unless dry?
+      publish
+      cleanup
+    end
+
+    puts "== Done! =="
+  end
+
+  private
+    attr_reader :version, :dry
+
+    def guard_clean
+      Rake::Task["release:guard_clean"].invoke
+    end
+
+    def write_version
+      puts "== Writing version to files =="
+
+      if Gem::Version.new(version) <= Gem::Version.new(LocalTime::VERSION)
+        abort "❌ New version (#{version}) must be greater than #{LocalTime::VERSION}"
+      end
+
+      write_version_to_rb
+      write_version_to_js
+    end
+
+    def write_version_to_rb
+      Pathname.new("./lib/local_time/version.rb").write <<~RUBY
+        module LocalTime
+          VERSION = "#{version}"
+        end
+      RUBY
+    end
+
+    def write_version_to_js
+      pathname = Pathname.new "package.json"
+      data = JSON.parse pathname.read
+      data["version"] = version
+      pathname.write JSON.pretty_generate(data) + "\n"
+    end
+
+    def update_copyright
+      pathname = Pathname.new "MIT-LICENSE"
+      data = pathname.read
+      data.sub! /Copyright \d{4}/, "Copyright #{Time.now.year}"
+      pathname.write data
+    end
+
+    def bundle
+      puts "== Building Gemfile =="
+
+      abort "❌ Failed to bundle" unless system "bundle"
+    end
+
+    def build_gem
+      puts "== Building gem =="
+
+      system "gem build local_time.gemspec"
+    end
+
+    def dry?
+      dry
+    end
+
+    def publish
+      puts "== Publishing releases =="
+
+      publish_git_release
+      publish_rubygems_release
+      publish_npm_release
+    end
+
+    def publish_git_release
+      abort("❌ Failed to commit") unless \
+        system("git add lib/local_time/version.rb package.json") &&
+        system("git commit -m 'Bump version for #{version}'") &&
+        system("git push") &&
+        system("git tag v#{version}") &&
+        system("git push --tags")
+
+      puts "✅ Successfully published git release"
+    end
+
+    def publish_rubygems_release
+      system "gem push 'local_time-#{version}.gem' --host https://rubygems.org"
+
+      puts "✅ Successfully published rubygems release"
+    end
+
+    def publish_npm_release
+      abort "❌ Must be logged in to npm" unless system "npm whoami"
+      abort "❌ npm publish failed" unless system "npm publish"
+
+      puts "✅ Successfully published npm release"
+    end
+
+    def cleanup
+      puts "== Cleaning up =="
+
+      system "rm 'local_time-#{version}.gem'"
+    end
+end
+
+Release.new(ARGV[0], dry: ARGV.include?("--dry")).perform
