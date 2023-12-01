@@ -2,6 +2,21 @@ import LocalTime from "../local_time"
 
 {getI18nValue, translate} = LocalTime
 
+supportsIntlDateFormat = typeof Intl?.DateTimeFormat is "function"
+
+knownEdgeCaseTimeZones =
+  "Central European Standard Time": "CET"
+  "Central European Summer Time": "CEST"
+  "China Standard Time": "CST"
+  "Israel Daylight Time": "IDT"
+  "Israel Standard Time": "IST"
+  "Moscow Standard Time": "MSK"
+  "Philippine Standard Time": "PHT"
+  "Singapore Standard Time": "SGT"
+  "Western Indonesia Time": "WIB"
+
+LocalTime.knownEdgeCaseTimeZones = knownEdgeCaseTimeZones
+
 LocalTime.strftime = strftime = (time, formatString) ->
   day    = time.getDay()
   date   = time.getDate()
@@ -32,14 +47,38 @@ LocalTime.strftime = strftime = (time, formatString) ->
       when "w" then day
       when "y" then pad(year % 100, flag)
       when "Y" then year
-      when "Z" then parseTimeZone(time)
+      when "Z" then shortTimeZone(time)
 
 pad = (num, flag) ->
   switch flag
     when "-" then num
     else ("0#{num}").slice(-2)
 
-parseTimeZone = (time) ->
+shortTimeZone = (time) ->
+  if longTimeZoneName = edgeCaseTimeZoneNameFor(time)
+    knownEdgeCaseTimeZones[longTimeZoneName]
+  else if shortTimeZoneName = shortTimeZoneNameFromIntl(time, { allowGMT: false })
+    shortTimeZoneName
+  else if shortTimeZoneName = shortTimeZoneNameFromHeuristic(time)
+    shortTimeZoneName
+  else if gmtOffset = shortTimeZoneNameFromIntl(time, { allowGMT: true })
+    gmtOffset
+  else
+    ""
+
+edgeCaseTimeZoneNameFor = (time) ->
+  Object.keys(knownEdgeCaseTimeZones).find (name) ->
+    if supportsIntlDateFormat
+      new Date(time).toLocaleString("en-US", { timeZoneName: "long" }).includes(name)
+    else
+      time.toString().includes(name)
+
+shortTimeZoneNameFromIntl = (time, { allowGMT }) ->
+  if supportsIntlDateFormat
+    shortTimeZoneName = new Date(time).toLocaleString("en-US", { timeZoneName: "short" }).split(" ").pop()
+    shortTimeZoneName if allowGMT || !shortTimeZoneName.includes("GMT")
+
+shortTimeZoneNameFromHeuristic = (time) ->
   string = time.toString()
   # Sun Aug 30 2015 10:22:57 GMT-0400 (NAME)
   if name = string.match(/\(([\w\s]+)\)$/)?[1]
@@ -55,5 +94,3 @@ parseTimeZone = (time) ->
   # "Sun Aug 30 10:22:57 UTC-0400 2015"
   else if name = string.match(/(UTC[\+\-]\d+)/)?[1]
     name
-  else
-    ""

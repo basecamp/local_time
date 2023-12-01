@@ -4,14 +4,23 @@ Local Time makes it easy to display times and dates to users in their local time
 
 ## Installation
 
-1. Add `gem 'local_time'` to your Gemfile.
-2. Include `local-time.js` in your application's JavaScript bundle.
+### Importmaps
+1. Add `gem "local_time"` to your Gemfile.
+2. Run `bundle install`
+3. Run `bin/importmap pin local-time` to add the [local-time npm package](https://www.npmjs.com/package/local-time)
+4. Add this to `app/javascript/application.js`
 
-    Using the asset pipeline:
     ```js
-    //= require local-time
+    import LocalTime from "local-time"
+    LocalTime.start()
     ```
-    Using the [local-time npm package](https://www.npmjs.com/package/local-time):
+
+### Webpacker
+1. Add `gem "local_time"` to your Gemfile.
+2. Run `bundle install`
+3. Run `yarn add local-time`
+4. Add this to `app/javascript/packs/application.js`
+
     ```js
     import LocalTime from "local-time"
     LocalTime.start()
@@ -141,6 +150,8 @@ LocalTime.config.locale = "es"
 ```
 
 **24-hour time formatting**
+> [!WARNING]  
+> 24-hour time formatting will be part of a future release. It's available on the repository's main branch but hasn't been published to npm or rubygems yet.
 
 Local Time supports 24-hour time formats out of the box.
 
