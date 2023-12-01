@@ -3,7 +3,7 @@ module LocalTimeHelper
     time = utc_time(time)
 
     options, format12 = extract_options_and_value(options, :format)
-    format12, format24 = find_12h_and_24h_time_formats(format12)
+    format12, format24 = find_12h_and_24h_formats(format12)
 
     options[:data] ||= {}
     options[:data].merge! local: :time, format: format12, format24: format24
@@ -13,7 +13,7 @@ module LocalTimeHelper
 
   def local_date(time, options = nil)
     options, format = extract_options_and_value(options, :format)
-    format, _ = find_12h_and_24h_time_formats(format, prefer: :date)
+    format, _ = find_12h_and_24h_formats(format, prefer: :date)
     local_time time, options.merge(format: format)
   end
 
@@ -54,7 +54,7 @@ module LocalTimeHelper
       end
     end
 
-    def find_12h_and_24h_time_formats(format12, prefer: :time)
+    def find_12h_and_24h_formats(format12, prefer: :time)
       if format12.is_a?(Symbol)
         find_time_formats_by_name(format12, prefer: prefer)
       else
