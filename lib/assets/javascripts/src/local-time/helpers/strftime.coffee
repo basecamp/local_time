@@ -15,6 +15,8 @@ knownEdgeCaseTimeZones =
   "Singapore Standard Time": "SGT"
   "Western Indonesia Time": "WIB"
 
+LocalTime.knownEdgeCaseTimeZones = knownEdgeCaseTimeZones
+
 LocalTime.strftime = strftime = (time, formatString) ->
   day    = time.getDay()
   date   = time.getDate()

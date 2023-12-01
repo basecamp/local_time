@@ -28,6 +28,16 @@ momentMap =
   "%y": "YY"
   "%Y": "YYYY"
 
+stubToLocaleString = (stubImplementation) ->
+  original = Date.prototype.toLocaleString
+  Date.prototype.toLocaleString = stubImplementation
+  restore: -> Date.prototype.toLocaleString = original
+
+stubDateToString = ->
+  original = Date.prototype.toString
+  Date.prototype.toString = -> ""
+  restore: -> Date.prototype.toString = original
+
 testGroup "strftime", ->
   for day in [0..30] by 6
     do (day) ->
@@ -54,3 +64,65 @@ testGroup "strftime", ->
 
             text = getText el
             assert.ok /^(\w{3,4}|UTC[\+\-]\d+)$/.test(text), "'#{text}' doesn't look like a timezone. System date: '#{new Date}'"
+
+testGroup "strftime time zones", ->
+  for timeZone in Object.keys(LocalTime.knownEdgeCaseTimeZones)
+    do (timeZone) ->
+      test "edge-case time zone #{timeZone}", ->
+        stub = stubToLocaleString(-> "Thu Nov 30 2023 XX:XX:XX GMT-XXXX (#{timeZone})")
+
+        el = addTimeEl format: "%Z", datetime: "2023-11-30T14:22:57Z"
+        LocalTime.process(el)
+
+        assert.equal getText(el), LocalTime.knownEdgeCaseTimeZones[timeZone]
+
+        stub.restore()
+
+  test "time zones Intl can abbreviate are parsed correctly", ->
+    stub = stubToLocaleString(
+      (_, options) ->
+        if options.timeZoneName == "long"
+          return "Thu Nov 30 2023 XX:XX:XX GMT-XXXX (Alaska Daylight Time)" # not a known edge-case
+        else if options.timeZoneName == "short"
+          return "11/30/2023, X:XX:XX AM AKDT" # possible to abbreviate
+    )
+
+    el = addTimeEl format: "%Z", datetime: "2023-11-30T14:22:57Z"
+    LocalTime.process(el)
+
+    assert.equal getText(el), "AKDT"
+
+    stub.restore()
+
+  test "time zones Intl can't abbreviate are parsed by our heuristic", ->
+    stub = stubToLocaleString(
+      (_, options) ->
+        if options.timeZoneName == "long"
+          return "Thu Nov 30 2023 XX:XX:XX GMT-XXXX (Central Twilight Time)" # not a known edge-case
+        else if options.timeZoneName == "short"
+          return "11/30/2023, X:XX:XX AM GMT+7" # not possible to abbreviate
+    )
+
+    el = addTimeEl format: "%Z", datetime: "2023-11-30T14:22:57Z"
+    LocalTime.process(el)
+
+    text = getText el
+    assert.ok /^(\w{3,4}|UTC[\+\-]\d+)$/.test(text), "'#{text}' doesn't look like a timezone. System date: '#{new Date}'"
+
+  test "time zones Intl can't abbreviate and our heuristic can't parse display GMT offset", ->
+    dateToStringStub = stubDateToString()
+    toLocaleStringStub = stubToLocaleString(
+      (_, options) ->
+        if options.timeZoneName == "long"
+          return "Thu Nov 30 2023 XX:XX:XX GMT-XXXX (Central Twilight Time)" # not a known edge-case
+        else if options.timeZoneName == "short"
+          return "11/30/2023, X:XX:XX AM GMT+7" # not possible to abbreviate
+    )
+
+    el = addTimeEl format: "%Z", datetime: "2023-11-30T14:22:57Z"
+    LocalTime.process(el)
+
+    assert.equal getText(el), "GMT+7"
+
+    dateToStringStub.restore()
+    toLocaleStringStub.restore()

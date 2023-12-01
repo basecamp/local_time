@@ -20,7 +20,7 @@ To only run the JavaScript tests, open your console and run `yarn test` from the
 To only run the Ruby tests, open your console and run `rake test:helpers` from the project directory.
 
 ## Testing specific time zones
-Stubbing the browser's time zone is not possible. Therefore, testing for a specific time zone needs to be done manually as follows:
+Stubbing the browser's time zone is fragile. Although we have some automated tests for specific time zones, we also need to do some manual testing as follows:
 
 1. Build the project with `yarn build`.
 2. Run `yarn start`.
