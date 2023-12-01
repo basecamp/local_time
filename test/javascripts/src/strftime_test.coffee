@@ -81,9 +81,9 @@ testGroup "strftime time zones", ->
   test "time zones Intl can abbreviate are parsed correctly", ->
     stub = stubToLocaleString (_, options) ->
       if options.timeZoneName == "long"
-        return "Thu Nov 30 2023 14:22:57 GMT-0800 (Alaska Daylight Time)" # not a known edge-case
+        "Thu Nov 30 2023 14:22:57 GMT-0800 (Alaska Daylight Time)" # not a known edge-case
       else if options.timeZoneName == "short"
-        return "11/30/2023, 2:22:57 PM AKDT" # possible to abbreviate
+        "11/30/2023, 2:22:57 PM AKDT" # possible to abbreviate
 
     el = addTimeEl format: "%Z", datetime: "2023-11-30T14:22:57Z"
     LocalTime.process(el)
@@ -95,9 +95,9 @@ testGroup "strftime time zones", ->
   test "time zones Intl can't abbreviate are parsed by our heuristic", ->
     stub = stubToLocaleString (_, options) ->
       if options.timeZoneName == "long"
-        return "Thu Nov 30 2023 14:22:57 GMT+0700 (Central Twilight Time)" # not a known edge-case
+        "Thu Nov 30 2023 14:22:57 GMT+0700 (Central Twilight Time)" # not a known edge-case
       else if options.timeZoneName == "short"
-        return "11/30/2023, 2:22:57 PM GMT+7" # not possible to abbreviate
+        "11/30/2023, 2:22:57 PM GMT+7" # not possible to abbreviate
 
     el = addTimeEl format: "%Z", datetime: "2023-11-30T14:22:57Z"
     LocalTime.process(el)
@@ -109,9 +109,9 @@ testGroup "strftime time zones", ->
     dateToStringStub = stubDateToString -> ""
     toLocaleStringStub = stubToLocaleString (_, options) ->
       if options.timeZoneName == "long"
-        return "Thu Nov 30 2023 14:22:57 GMT+0700 (Central Twilight Time)" # not a known edge-case
+        "Thu Nov 30 2023 14:22:57 GMT+0700 (Central Twilight Time)" # not a known edge-case
       else if options.timeZoneName == "short"
-        return "11/30/2023, 2:22:57 PM GMT+7" # not possible to abbreviate
+        "11/30/2023, 2:22:57 PM GMT+7" # not possible to abbreviate
 
     el = addTimeEl format: "%Z", datetime: "2023-11-30T14:22:57Z"
     LocalTime.process(el)
