@@ -1,5 +1,7 @@
 # Contributing
+
 ## Getting started
+
 Install the following dependencies:
 
 1. Ruby (version found [here](./.ruby-version))
@@ -11,6 +13,7 @@ Then, open your console on the project directory and run `bundle install` and `y
 Finally, run `rake assets:compile`.
 
 ## Running tests
+
 This library has a Ruby component and a JavaScript component. Each component has its own test suite.
 
 To run both suites, plus an asset compilation check, open your console and run `rake test` from the project directory. Ruby tests will run first. You will then be prompted to open your web browser to run the JavaScript tests.
@@ -20,6 +23,7 @@ To only run the JavaScript tests, open your console and run `yarn test` from the
 To only run the Ruby tests, open your console and run `rake test:helpers` from the project directory.
 
 ## Testing specific time zones
+
 Stubbing the browser's time zone is fragile. Although we have some automated tests for specific time zones, we also need to do some manual testing as follows:
 
 1. Build the project with `yarn build`.
@@ -42,3 +46,7 @@ Europe/Moscow     | MSK                   | —                | 55.7558  | 37.6
 Asia/Shanghai     | CST                   | —                | 31.2304  | 121.4737
 Asia/Jerusalem    | IST                   | IDT              | 31.7683  | 35.2137
 Asia/Manila       | PHT                   | —                | 14.5995  | 120.9842
+
+## Releasing
+
+Run `bin/release x.y.z`, use `--dry` to skip publishing. This is not idempotent. If releasing fails, take note of where the process left off and continue manually.
