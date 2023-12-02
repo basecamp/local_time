@@ -22,7 +22,9 @@ class LocalTime.Controller
       @timer ?= setInterval(@processElements, interval)
 
   processElements: (elements = document.querySelectorAll(SELECTOR)) =>
-    @processElement(element) for element in elements
+    for element in elements
+      @processElement(element)
+      observeMutations(element)
     elements.length
 
   processElement: (element) ->
@@ -56,14 +58,12 @@ class LocalTime.Controller
       when "weekday-or-date"
         relative(time).toWeekdayString() or relative(time).toDateString()
 
-    @observeMutations()
-
-  observeMutations: ->
+  observeMutations = (element) ->
     new MutationObserver((mutations) =>
       for mutation in mutations
         if mutation.target.matches(SELECTOR)
           @processElement(mutation.target)
-    )
+    ).observe(element)
 
   markAsLocalized = (element) ->
     element.setAttribute("data-localized", "")
