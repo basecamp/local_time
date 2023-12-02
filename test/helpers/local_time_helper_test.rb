@@ -27,11 +27,13 @@ class LocalTimeHelperTest < TestCase
     @original_zone = Time.zone
     Time.zone = ActiveSupport::TimeZone["Central Time (US & Canada)"]
     I18n.backend.store_translations(:en, {
-      time: { formats: { simple_time: "%-l:%M%P", simple_time_24h: "%H:%M", time_with_context: "%b %e, %-l:%M%P" } },
-      date: { formats: { simple_date: "%b %e" } } })
+      time: { formats: { simple_time: "%-l:%M%P", simple_time_24h: "%H:%M", time_with_context: "%b %e, %-l:%M%P", ambiguous_format: "%Y-%m-%d %H:%M:%S" } },
+      date: { formats: { simple_date: "%b %e", ambiguous_format: "%Y-%m-%d" } } })
     Time::DATE_FORMATS[:time_formats_simple_time] = "%-l:%M%P"
     Time::DATE_FORMATS[:time_formats_simple_time_24h] = "%H:%M"
     Time::DATE_FORMATS[:time_formats_time_with_context] = "%b %e, %-l:%M%P"
+    Time::DATE_FORMATS[:ruby_ambiguous_format] = "%Y-%m-%d %H:%M:%S"
+    Date::DATE_FORMATS[:ruby_ambiguous_format] = "%Y-%m-%d"
     Date::DATE_FORMATS[:date_formats_simple_date] = "%b %e"
 
     @date = "2013-11-21"
@@ -108,6 +110,26 @@ class LocalTimeHelperTest < TestCase
     assert_dom_equal expected, local_time(@time, format: "%b %e", style: "display:none")
   end
 
+  def test_local_time_with_ruby_ambiguous_format
+    expected = %Q(<time data-format="%Y-%m-%d %H:%M:%S" data-local="time" datetime="#{@time_js}">2013-11-21 06:00:00</time>)
+    assert_dom_equal expected, local_time(@time, format: :ruby_ambiguous_format)
+  end
+
+  def test_local_time_with_i18n_ambiguous_format
+    expected = %Q(<time data-format="%Y-%m-%d %H:%M:%S" data-local="time" datetime="#{@time_js}">2013-11-21 06:00:00</time>)
+    assert_dom_equal expected, local_time(@time, format: :ambiguous_format)
+  end
+
+  def test_local_date_with_ruby_ambiguous_format
+    expected = %Q(<time data-format="%Y-%m-%d" data-local="time" datetime="#{@time_js}">2013-11-21</time>)
+    assert_dom_equal expected, local_date(@time.to_date, format: :ruby_ambiguous_format)
+  end
+
+  def test_local_date_with_i18n_ambiguous_format
+    expected = %Q(<time data-format="%Y-%m-%d" data-local="time" datetime="#{@time_js}">2013-11-21</time>)
+    assert_dom_equal expected, local_date(@time.to_date, format: :ambiguous_format)
+  end
+
   def test_local_date
     expected = %Q(<time data-format="%B %e, %Y" data-local="time" datetime="#{@time_js}">November 21, 2013</time>)
     assert_dom_equal expected, local_date(@time)
@@ -135,7 +157,7 @@ class LocalTimeHelperTest < TestCase
   end
 
   def test_local_date_with_missing_i18n_and_ruby_format
-    expected = %Q(<time data-format="%B %e, %Y %l:%M%P" data-local="time" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
+    expected = %Q(<time data-format="%B %e, %Y" data-local="time" datetime="#{@time_js}">November 21, 2013</time>)
     assert_dom_equal expected, local_date(@time.to_date, format: :missing_date_format)
   end
 
