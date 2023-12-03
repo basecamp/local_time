@@ -26,6 +26,14 @@ Local Time makes it easy to display times and dates to users in their local time
     LocalTime.start()
     ```
 
+## Turbo compatibility
+If you're using [Turbo page refreshes](https://github.com/hotwired/turbo/pull/1019) with morphing enabled, make sure to add this below `LocalTime.start()` to reprocess applicable time elements when morphed:
+```js
+document.addEventListener("turbo:morph", () => {
+  LocalTime.run()
+})
+```
+
 ## Example
 
 ```ruby
