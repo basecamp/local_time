@@ -174,6 +174,8 @@ Time::DATE_FORMATS[:simple] = "%-l:%M%P"
 Time::DATE_FORMATS[:simple_24h] = "%H:%M"
 ```
 
+When `:type` is set to `time-ago`, the format is obtained from the `I18n` [configuration](#configuration).
+
 In practice, you might set `config.useFormat24` to `true` or `false` depending on the current user's configuration, before rendering any `<time>` elements.
 
 ## Contributing

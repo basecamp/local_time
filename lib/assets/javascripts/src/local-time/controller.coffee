@@ -37,7 +37,8 @@ class LocalTime.Controller
     return if isNaN time
 
     unless element.hasAttribute("title")
-      title = strftime(time, getI18nValue("datetime.formats.default"))
+      title_format = if config.useFormat24 then "default_24h" else "default"
+      title = strftime(time, getI18nValue("datetime.formats.#{title_format}"))
       element.setAttribute("title", title)
 
     element.textContent = switch local
