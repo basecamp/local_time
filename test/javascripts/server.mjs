@@ -16,6 +16,15 @@ router.get("/time-zone-check", (_request, response) => {
   response.status(200).sendFile(fixture)
 })
 
+router.get("/turbo", (_request, response) => {
+  const fixture = path.join(__dirname, "./fixtures/turbo.html")
+  response.status(200).sendFile(fixture)
+})
+
+router.get("/turbo-redirect", (_request, response) => {
+  response.status(302).set("Location", "/turbo").end()
+})
+
 router.get("/test-build", (_request, response) => {
   const file = path.join(__dirname, "./builds/index.js")
   response.status(200).sendFile(file)
