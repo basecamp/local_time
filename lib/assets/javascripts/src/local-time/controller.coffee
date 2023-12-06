@@ -1,7 +1,6 @@
 import LocalTime from "./local_time"
 import "./relative_time"
 import "./page_observer"
-import "./element_observer"
 
 {parseDate, strftime, getI18nValue, config, elementMatchesSelector} = LocalTime
 
@@ -16,15 +15,18 @@ class LocalTime.Controller
 
   constructor: ->
     @observedElements = new Map()
-    @pageObserver = new LocalTime.PageObserver NON_LOCALIZED_SELECTOR, @processElements
-    @elementObserver = new LocalTime.ElementObserver SELECTOR, @disconnectObserver
+    @pageObserver = new LocalTime.PageObserver(
+      elementAddedSelector: NON_LOCALIZED_SELECTOR,
+      elementAddedCallback: @processElements,
+      elementRemovedSelector: SELECTOR,
+      elementRemovedCallback: @disconnectObserver
+    )
 
   start: ->
     unless @started
       @processElements()
       @startTimer()
       @pageObserver.start()
-      @elementObserver.start()
       @started = true
 
   startTimer: ->
