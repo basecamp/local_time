@@ -16,6 +16,11 @@ router.get("/time-zone-check", (_request, response) => {
   response.status(200).sendFile(fixture)
 })
 
+router.get("/integration-tests", (_request, response) => {
+  const fixture = path.join(__dirname, "./fixtures/integration_tests.html")
+  response.status(200).sendFile(fixture)
+})
+
 router.get("/turbo", (_request, response) => {
   const fixture = path.join(__dirname, "./fixtures/turbo.html")
   response.status(200).sendFile(fixture)

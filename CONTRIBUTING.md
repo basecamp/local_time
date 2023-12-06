@@ -22,6 +22,22 @@ To only run the JavaScript tests, open your console and run `yarn test` from the
 
 To only run the Ruby tests, open your console and run `rake test:helpers` from the project directory.
 
+### Integration tests
+
+Integration tests are run through `yarn` using [Playwright](https://github.com/microsoft/playwright) for browser testing. Browser and runtime configuration can be found in [`playwright.config.js`](./playwright.config.js).
+
+To begin testing, install the browser drivers:
+
+```bash
+yarn playwright install --with-deps
+```
+
+Then, run the tests:
+
+```bash
+yarn test:integration
+```
+
 ## Testing specific time zones
 
 Stubbing the browser's time zone is fragile. Although we have some automated tests for specific time zones, we also need to do some manual testing as follows:

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Integration Tests</title>
+  <script src="/current-build"></script>
+</head>
+<body>
+  <script>
+    LocalTime.start()
+
+    function simulateMorph() {
+      const textNode = document.getElementById("one").firstChild
+      textNode.nodeValue = "changed"
+    }
+
+    function changeDatetime() {
+      const element = document.getElementById("one")
+      element.setAttribute("datetime", "2015-12-04T14:00:00Z")
+    }
+
+    function changeToRelative() {
+      const element = document.getElementById("one")
+      element.setAttribute("data-local", "time-ago")
+    }
+
+    function changeFormat() {
+      const element = document.getElementById("one")
+      element.setAttribute("data-format", "%b %e")
+    }
+
+    function changeFormat24() {
+      LocalTime.config.useFormat24 = true
+      LocalTime.run()
+
+      const element = document.getElementById("one")
+      element.setAttribute("data-format24", "%B %e")
+    }
+
+    function changeFoo() {
+      const element = document.getElementById("one")
+      element.setAttribute("data-foo", "bar")
+    }
+
+    function reprocess() {
+      LocalTime.run()
+    }
+
+    function removeElement() {
+      const element = document.getElementById("one")
+      element.parentNode.removeChild(element)
+    }
+  </script>
+
+  <button id="morph" onclick="simulateMorph()">Morph</button>
+  <button id="change-datetime" onclick="changeDatetime()">Change Datetime</button>
+  <button id="change-relative" onclick="changeToRelative()">Change To Relative</button>
+  <button id="change-format" onclick="changeFormat()">Change Format</button>
+  <button id="change-format24" onclick="changeFormat24()">Change Format24</button>
+  <button id="change-foo" onclick="changeFoo()">Change Foo</button>
+
+  <button id="reprocess" onclick="reprocess()" style="background-color: darkseagreen;">Reprocess</button>
+  <button id="remove" onclick="removeElement()" style="background-color: firebrick; color: white;">Remove Element</button>
+
+  <br>
+
+  <time id="one" datetime="2024-12-04T14:00:00Z" data-format="%B %e, %Y" data-local="time"></time>
+</body>

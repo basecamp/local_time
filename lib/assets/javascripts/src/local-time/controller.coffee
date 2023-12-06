@@ -1,29 +1,44 @@
 import LocalTime from "./local_time"
 import "./relative_time"
 import "./page_observer"
+import "./element_observer"
 
-{parseDate, strftime, getI18nValue, config} = LocalTime
+{parseDate, strftime, getI18nValue, config, elementMatchesSelector} = LocalTime
 
 class LocalTime.Controller
-  SELECTOR = "time[data-local]:not([data-localized])"
+  SELECTOR = "time[data-local]"
+  NON_LOCALIZED_SELECTOR = "#{SELECTOR}:not([data-localized])"
+  OBSERVER_OPTIONS =
+    characterData: true
+    subtree: true
+    attributes: true
+    attributeFilter: [ "datetime", "data-local", "data-format", "data-format24" ]
 
   constructor: ->
-    @pageObserver = new LocalTime.PageObserver SELECTOR, @processElements
+    @observedElements = new Map()
+    @pageObserver = new LocalTime.PageObserver NON_LOCALIZED_SELECTOR, @processElements
+    @elementObserver = new LocalTime.ElementObserver SELECTOR, @disconnectObserver
 
   start: ->
     unless @started
       @processElements()
       @startTimer()
       @pageObserver.start()
+      @elementObserver.start()
       @started = true
 
   startTimer: ->
     if interval = config.timerInterval
       @timer ?= setInterval(@processElements, interval)
 
-  processElements: (elements = document.querySelectorAll(SELECTOR)) =>
+  processElements: (elements = document.querySelectorAll(NON_LOCALIZED_SELECTOR)) =>
     @processElement(element) for element in elements
     elements.length
+
+  disconnectObserver: (element) =>
+    if observer = @observedElements.get(element)?.observer
+      observer.disconnect()
+      @observedElements.delete(element)
 
   processElement: (element) ->
     datetime = element.getAttribute("datetime")
@@ -56,6 +71,41 @@ class LocalTime.Controller
         relative(time).toWeekdayString()
       when "weekday-or-date"
         relative(time).toWeekdayString() or relative(time).toDateString()
+
+    @observe(element)
+
+  observe: (element) =>
+    unless element.hasAttribute("data-observed")
+      markAsObserved(element)
+      observer = new MutationObserver(@processMutations)
+      observer.observe(element, OBSERVER_OPTIONS)
+      @observedElements.set(element, { observer: observer, updates: -1 })
+      @incrementUpdates(element)
+
+  processMutations: (mutations) =>
+    for mutation in mutations
+      target = mutation.target
+
+      element = if target.nodeType is Node.TEXT_NODE
+        target.parentNode
+      else
+        target
+
+      if elementMatchesSelector(element, SELECTOR)
+        @processLingeringElement(element)
+        break
+
+  processLingeringElement: (element) =>
+    markAsObserved(element)
+    @incrementUpdates(element)
+    @processElement(element)
+
+  incrementUpdates: (element) =>
+    @observedElements.get(element).updates++
+    element.setAttribute("data-updates", @observedElements.get(element).updates)
+
+  markAsObserved = (element) ->
+    element.setAttribute("data-observed", "")
 
   markAsLocalized = (element) ->
     element.setAttribute("data-localized", "")
