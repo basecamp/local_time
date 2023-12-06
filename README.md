@@ -131,7 +131,7 @@ Preset time and date formats that vary with age. The available types are `date`,
 
 **Internationalization (I18n)**
 
-Local Time includes a [set of default `en` translations](lib/assets/javascripts/src/local-time/config/i18n.coffee) which can be updated directly. Or, you can provide an entirely new set in a different locale:
+Local Time includes a [set of default `en` translations](lib/assets/javascripts/src/local-time/config/i18n.js) which can be updated directly. Or, you can provide an entirely new set in a different locale:
 
 ```js
 LocalTime.config.i18n["es"] = {
