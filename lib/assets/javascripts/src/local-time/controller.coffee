@@ -67,7 +67,7 @@ class LocalTime.Controller
     @connectObserver(element)
 
   connectObserver: (element) =>
-    @observations.observe(element)
+    @observations.include(element)
 
   disconnectObserver: (element) =>
     @observations.disregard(element)

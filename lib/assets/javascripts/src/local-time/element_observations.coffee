@@ -8,7 +8,7 @@ class LocalTime.ElementObservations
   constructor: (@selector, @callback) ->
     @observedElements = new Map()
 
-  observe: (element) =>
+  include: (element) =>
     unless element.hasAttribute("data-observed")
       observer = @startObserving(element)
       @registerObserver(element, observer)
