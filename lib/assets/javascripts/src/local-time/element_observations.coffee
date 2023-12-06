@@ -6,7 +6,7 @@ class LocalTime.ElementObservations
   OBSERVABLE_ATTRIBUTES = [ "datetime", "data-local", "data-format", "data-format24" ]
 
   constructor: (@selector, @callback) ->
-    @observedElements = new Map()
+    @elements = new Map()
 
   include: (element) =>
     unless element.hasAttribute("data-observed")
@@ -15,9 +15,9 @@ class LocalTime.ElementObservations
       markAsObserved(element)
 
   disregard: (element) =>
-    if observer = @observedElements.get(element)?.observer
+    if observer = @elements.get(element)?.observer
       observer.disconnect()
-      @observedElements.delete(element)
+      @elements.delete(element)
 
   startObserving: (element) =>
     observer = new MutationObserver(@processMutations)
@@ -25,7 +25,7 @@ class LocalTime.ElementObservations
     observer
 
   registerObserver: (element, observer) =>
-    @observedElements.set(element, { observer: observer, updates: -1 })
+    @elements.set(element, { observer: observer, updates: -1 })
     @incrementUpdates(element)
 
   processMutations: (mutations) =>
@@ -47,11 +47,11 @@ class LocalTime.ElementObservations
     @callback(element)
 
   incrementUpdates: (element) =>
-    @observedElements.get(element).updates++
-    element.setAttribute("data-updates", @observedElements.get(element).updates)
+    @elements.get(element).updates++
+    element.setAttribute("data-updates", @elements.get(element).updates)
 
   size: ->
-    @observedElements.size
+    @elements.size
 
   markAsObserved = (element) ->
     element.setAttribute("data-observed", "")
