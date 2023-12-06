@@ -47,12 +47,12 @@ test("test changing an unlisted attribute does not re-process the element", asyn
 })
 
 test("test removing the element disconnects its mutation observer", async ({ page }) => {
-  const isObserverPresent = await page.evaluate(() => LocalTime.getController().observedElements.size !== 0)
+  const isObserverPresent = await page.evaluate(() => LocalTime.getController().observations.size() !== 0)
   assert.isTrue(isObserverPresent, "The MutationObserver should be active")
 
   await page.click("button#remove")
 
-  const isObserverGone = await page.evaluate(() => LocalTime.getController().observedElements.size === 0)
+  const isObserverGone = await page.evaluate(() => LocalTime.getController().observations.size() === 0)
   assert.isTrue(isObserverGone, "The MutationObserver should no longer be active")
 })
 
@@ -61,7 +61,7 @@ test("test elements are only observed once", async ({ page }) => {
   await page.click("button#reprocess")
   await page.click("button#reprocess")
 
-  const isSingleObserver = await page.evaluate(() => LocalTime.getController().observedElements.size === 1)
+  const isSingleObserver = await page.evaluate(() => LocalTime.getController().observations.size() === 1)
   assert.isTrue(isSingleObserver, "There should only be one MutationObserver")
 })
 
