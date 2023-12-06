@@ -9,22 +9,21 @@ class LocalTime.ElementObservations
     @elements = new Map()
 
   include: (element) =>
-    unless element.hasAttribute("data-observed")
-      observer = @startObserving(element)
-      @registerObserver(element, observer)
-      markAsObserved(element)
+    unless @elements.get(element)
+      observer = @observe(element)
+      @register(element, observer)
 
   disregard: (element) =>
     if observer = @elements.get(element)?.observer
       observer.disconnect()
       @elements.delete(element)
 
-  startObserving: (element) =>
+  observe: (element) =>
     observer = new MutationObserver(@processMutations)
     observer.observe(element, characterData: true, subtree: true, attributes: true, attributeFilter: OBSERVABLE_ATTRIBUTES)
     observer
 
-  registerObserver: (element, observer) =>
+  register: (element, observer) =>
     @elements.set(element, { observer: observer, updates: -1 })
     @incrementUpdates(element)
 
@@ -42,7 +41,6 @@ class LocalTime.ElementObservations
         break
 
   processLingeringElement: (element) =>
-    markAsObserved(element)
     @incrementUpdates(element)
     @callback(element)
 
@@ -52,6 +50,3 @@ class LocalTime.ElementObservations
 
   size: ->
     @elements.size
-
-  markAsObserved = (element) ->
-    element.setAttribute("data-observed", "")
