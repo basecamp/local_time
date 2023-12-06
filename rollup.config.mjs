@@ -42,8 +42,7 @@ export default [
         entries: {
           "local_time": `${__dirname}/app/assets/javascripts/local-time.es2017-esm.js`,
           "moment": `${__dirname}/test/javascripts/vendor/moment.js`,
-          "sinon": `${__dirname}/test/javascripts/vendor/sinon.js`,
-          "turbo": `${__dirname}/test/javascripts/vendor/turbo.js`
+          "sinon": `${__dirname}/test/javascripts/vendor/sinon.js`
         }
       }),
       coffee(),
