@@ -1,14 +1,21 @@
 import LocalTime from "./local_time"
 import "./relative_time"
 import "./page_observer"
+import "./element_observations"
 
 {parseDate, strftime, getI18nValue, config} = LocalTime
 
 class LocalTime.Controller
-  SELECTOR = "time[data-local]:not([data-localized])"
+  SELECTOR = "time[data-local]"
+  NON_LOCALIZED_SELECTOR = "#{SELECTOR}:not([data-localized])"
 
   constructor: ->
-    @pageObserver = new LocalTime.PageObserver SELECTOR, @processElements
+    @observations = new LocalTime.ElementObservations(SELECTOR, @processElement)
+    @pageObserver = new LocalTime.PageObserver(
+      elementAddedSelector: NON_LOCALIZED_SELECTOR,
+      elementAddedCallback: @processElements,
+      elementRemovedSelector: SELECTOR,
+      elementRemovedCallback: @disconnectObserver)
 
   start: ->
     unless @started
@@ -21,11 +28,11 @@ class LocalTime.Controller
     if interval = config.timerInterval
       @timer ?= setInterval(@processElements, interval)
 
-  processElements: (elements = document.querySelectorAll(SELECTOR)) =>
+  processElements: (elements = document.querySelectorAll(NON_LOCALIZED_SELECTOR)) =>
     @processElement(element) for element in elements
     elements.length
 
-  processElement: (element) ->
+  processElement: (element) =>
     datetime = element.getAttribute("datetime")
     local = element.getAttribute("data-local")
     format = if config.useFormat24
@@ -56,6 +63,14 @@ class LocalTime.Controller
         relative(time).toWeekdayString()
       when "weekday-or-date"
         relative(time).toWeekdayString() or relative(time).toDateString()
+
+    @connectObserver(element)
+
+  connectObserver: (element) =>
+    @observations.include(element)
+
+  disconnectObserver: (element) =>
+    @observations.disregard(element)
 
   markAsLocalized = (element) ->
     element.setAttribute("data-localized", "")
