@@ -15,6 +15,11 @@ testGroup "localized", ->
     setText el, "2013"
     assert.equal getText(el), "2013"
 
+test "processed timestamp", ->
+  el = addTimeEl type: "time-or-date", datetime: moment().toISOString()
+  assert.notOk el.getAttribute("data-processed-at")
+  LocalTime.run()
+  assert.ok el.getAttribute("data-processed-at")
 
 assertLocalized = (id, type = "time") ->
   switch type

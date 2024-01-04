@@ -25,5 +25,8 @@ LocalTime.start = ->
     else
       nextFrame(startController)
 
+LocalTime.processing = ->
+  LocalTime.getController().started
+
 if window.LocalTime is LocalTime
   LocalTime.start()
