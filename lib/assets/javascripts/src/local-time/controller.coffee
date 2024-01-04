@@ -41,6 +41,7 @@ class LocalTime.Controller
       title = strftime(time, getI18nValue("datetime.formats.#{title_format}"))
       element.setAttribute("title", title)
 
+    markAsProcessed(element)
     element.textContent = switch local
       when "time"
         markAsLocalized(element)
@@ -59,6 +60,9 @@ class LocalTime.Controller
 
   markAsLocalized = (element) ->
     element.setAttribute("data-localized", "")
+
+  markAsProcessed = (element) ->
+    element.setAttribute("data-processed-at", new Date().toISOString())
 
   relative = (time) ->
     new LocalTime.RelativeTime time

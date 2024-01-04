@@ -84,7 +84,7 @@ testGroup "relative weekday or date", ->
       done()
 
   testAsync "before this week", (done) ->
-    before = moment().subtract("days", 8)
+    before = moment("#{new Date().getFullYear()}1031", "YYYYMMDD").subtract("days", 8)
     el = addTimeEl type: "weekday-or-date", datetime: before.toISOString()
     defer ->
       assert.equal getText(el), before.format("MMM D")
