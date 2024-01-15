@@ -92,7 +92,7 @@ class Release
 
     def publish_git_release
       abort("❌ Failed to commit") unless \
-        system("git add lib/local_time/version.rb package.json") &&
+        system("git add lib/local_time/version.rb package.json Gemfile.lock MIT-LICENSE") &&
         system("git commit -m 'Bump version for #{version}'") &&
         system("git push") &&
         system("git tag v#{version}") &&
