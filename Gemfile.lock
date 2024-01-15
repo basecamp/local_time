@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    local_time (2.1.0)
+    local_time (3.0.0)
 
 GEM
   remote: https://rubygems.org/
