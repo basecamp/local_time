@@ -87,7 +87,9 @@ To use a strftime format already defined in your app, pass a symbol as the forma
 <%= local_time(date, :long) %>
 ```
 
-When using the `local_time` helper `I18n.t("time.formats.#{format}")`, `I18n.t("date.formats.#{format}")`, `Time::DATE_FORMATS[format]`, and `Date::DATE_FORMATS[format]` will be scanned (in that order) for your format. When using the `local_date` helper, `I18n.t("date.formats.#{format}")`, `I18n.t("time.formats.#{format}")`, `Date::DATE_FORMATS[format]`, and `Time::DATE_FORMATS[format]` will be scanned (in that order) for your format.
+When using the `local_time` helper `I18n.t("time.formats.#{format}")`, `I18n.t("date.formats.#{format}")`, `Time::DATE_FORMATS[format]`, and `Date::DATE_FORMATS[format]` will be scanned (in that order) for your format.
+
+When using the `local_date` helper, `I18n.t("date.formats.#{format}")`, `I18n.t("time.formats.#{format}")`, `Date::DATE_FORMATS[format]`, and `Time::DATE_FORMATS[format]` will be scanned (in that order) for your format.
 
 Note: The included strftime JavaScript implementation is not 100% complete. It supports the following directives: `%a %A %b %B %c %d %e %H %I %l %m %M %p %P %S %w %y %Y %Z`
 
@@ -150,9 +152,6 @@ LocalTime.config.locale = "es"
 ```
 
 **24-hour time formatting**
-> [!WARNING]  
-> 24-hour time formatting will be part of a future release. It's available on the repository's main branch but hasn't been published to npm or rubygems yet.
-
 Local Time supports 24-hour time formats out of the box.
 
 To use this feature, configure the library to favor `data-format24` over `data-format` attributes:
