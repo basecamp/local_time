@@ -151,6 +151,9 @@ LocalTime.config.i18n["es"] = {
 LocalTime.config.locale = "es"
 ```
 
+> [!NOTE]
+> The "default" keys in the i18n configuration object are used for translations in LocalTime's `RelativeTime` module. They are not used to determine which format is rendered when none is provided. See https://github.com/basecamp/local_time/issues/128 for details.
+
 **24-hour time formatting**
 Local Time supports 24-hour time formats out of the box.
 
