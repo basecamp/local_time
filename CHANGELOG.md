@@ -1,3 +1,44 @@
+**3.0.2** (January 15, 2024)
+
+* No changes, just a test release for the release script
+
+**3.0.1** (January 15, 2024)
+
+* Add ancillary files to release script
+  * `Gemfile.lock` and `MIT-LICENSE` were modified by the release script but not committed to the repository as part of releasing.
+
+**3.0.0** (January 15, 2024)
+
+* Add processing indicators
+  * `data-processed-at` attribute is added to processed elements
+* Disambiguate date and time formats
+  * **Breaking change**: Named date formats declared in ruby are given preference when using date helpers. This is only breaking if you have a date format name that conflicts with a time format, and were expecting the time format to be chosen when using a date helper. See README for details.
+  * Provided by @alesolano
+* Create release script
+* Process elements on repeated start calls
+  * Calling `LocalTime.start()` multiple times will reprocess all elements
+* Leverage Intl.DateTimeFormat for time zone parsing
+  * Time zone parsing with `%Z` is now done natively by the browser
+  * Known edge cases not supported by the browser are accounted for separately
+  * Previous mechanism still in place as a fallback
+  * GMT offset displayed as a last resort
+  * Add instructions for time zone testing to CONTRIBUTING.md
+* Revert "Add ARIA label to improve accessibility"
+  * `<time>` elements don't need an aria label
+* Update installation instructions
+  * Add native support for importmap inclusion
+* Add rubocop
+* Support 24h time formats
+  * Use config.useFormat24 to render formats from `data-format24` instead of `data-format`
+  * Rails helpers can automatically find the 24h format based on a provided format name
+  * Support for relative time formats provided by @a-nickol
+* Modernize the library
+  * Replace Blade with Rollup for bundling and Express for testing
+  * Remove sprockets, use static imports
+  * Update test dependencies (moment, sinon, and rails)
+
+_First-time contributors_: @josefarias, @alesolano, @a-nickol
+
 **2.1.0** (September 4, 2018)
 
 * Add support for non-padded numerical strftime values (`%-d`, `%-m`, etc.) [Paco Benavent]
