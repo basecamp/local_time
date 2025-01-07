@@ -7,13 +7,7 @@ require "local_time"
 require_relative "../../app/helpers/local_time_helper"
 
 require "minitest/autorun"
-begin
-  # 2.0.0
-  class TestCase < MiniTest::Test; end
-rescue NameError
-  # 1.9.3
-  class TestCase < MiniTest::Unit::TestCase; end
-end
+class TestCase < Minitest::Test; end
 
 I18n.enforce_available_locales = false
 
