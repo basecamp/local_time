@@ -1,6 +1,6 @@
 import LocalTime from "local_time"
 
-const { addTimeEl, assert, defer, getText, setText, test, testAsync, testGroup, triggerEvent } = LocalTime.TestHelpers
+const { addTimeEl, assert, defer, getText, testAsync, testGroup, stubNow } = LocalTime.TestHelpers
 
 testGroup("relative date", () => {
   testAsync("this year", (done) => {
@@ -109,11 +109,13 @@ testGroup("relative weekday or date", () => {
   })
 
   testAsync("before this week", (done) => {
-    const before = moment().subtract("days", 8)
-    const el = addTimeEl({ type: "weekday-or-date", datetime: before.toISOString() })
-    defer(() => {
-      assert.equal(getText(el), before.format("MMM D"))
-      done()
+    stubNow(`${moment().year()}-03-20`, () => {
+      const before = moment().subtract("days", 8)
+      const el = addTimeEl({ type: "weekday-or-date", datetime: before.toISOString() })
+      defer(() => {
+        assert.equal(getText(el), before.format("MMM D"))
+        done()
+      })
     })
   })
 })
