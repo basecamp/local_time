@@ -54,7 +54,7 @@ LocalTime.TestHelpers = {
     setTimeout(callback, 1)
   },
 
-  mockNow(dateString, callback) {
+  stubNow(dateString, callback) {
     const originalNow = moment.now
     try {
       moment.now = () => new Date(dateString).getTime()
