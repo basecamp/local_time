@@ -19,10 +19,14 @@ module LocalTimeHelper
 
   def local_relative_time(time, options = nil)
     time = utc_time(time)
-    options, type = extract_options_and_value(options, :type)
 
-    options[:data] ||= {}
-    options[:data].merge! local: type
+    options, type = extract_options_and_value(options, :type)
+    options, data = extract_options_and_value(options, :data)
+    options, future_prefix = extract_options_and_value(options, :future_prefix)
+    options, past_prefix = extract_options_and_value(options, :past_prefix)
+
+    options[:data] = (data || {}).merge(future_prefix: future_prefix, past_prefix: past_prefix)
+    options[:data].merge!(local: type || "relative")
 
     time_tag time, time.strftime(LocalTime.default_time_format), options
   end

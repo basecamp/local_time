@@ -174,4 +174,22 @@ class LocalTimeHelperTest < TestCase
     expected = %Q(<time data-local="time-or-date" datetime="#{@time_js}">November 21, 2013  6:00am</time>)
     assert_dom_equal expected, local_relative_time(@time, "time-or-date")
   end
+
+  def test_local_relative_time_with_prefixes
+    expected = %Q(
+      <time data-local="relative" datetime="#{@time_js}" data-future-prefix="Ends" data-past-prefix="Ended">
+        November 21, 2013  6:00am
+      </time>)
+
+    assert_dom_equal expected, local_relative_time(@time, future_prefix: "Ends", past_prefix: "Ended")
+  end
+
+  def test_local_relative_time_with_data_option
+    expected = %Q(
+      <time datetime="#{@time_js}" data-a="b" data-future-prefix="Ends" data-past-prefix="Ended" data-local="relative">
+        November 21, 2013  6:00am
+      </time>)
+
+    assert_dom_equal expected, local_relative_time(@time, future_prefix: "Ends", past_prefix: "Ended", data: { a: "b" })
+  end
 end

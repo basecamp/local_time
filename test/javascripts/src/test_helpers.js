@@ -15,15 +15,18 @@ LocalTime.TestHelpers = {
   },
 
   addTimeEl(param = {}) {
-    let { format, type, datetime, format24 } = param
+    let { format, type, datetime, format24, pastPrefix, futurePrefix } = param
     if (!format) format = "%Y"
     if (!type) type = "time"
     if (!datetime) datetime = "2013-11-12T12:13:00Z"
 
     const el = document.createElement("time")
-    el.setAttribute("data-local", type)
-    el.setAttribute("data-format", format)
+
     el.setAttribute("datetime", datetime)
+    el.dataset.local = type
+    el.dataset.format = format
+    if (pastPrefix) el.dataset.pastPrefix = pastPrefix
+    if (futurePrefix) el.dataset.futurePrefix = futurePrefix
     if (format24) el.setAttribute("data-format24", format24)
 
     document.body.appendChild(el)
@@ -55,12 +58,13 @@ LocalTime.TestHelpers = {
   },
 
   stubNow(dateString, callback) {
-    const originalNow = moment.now
+    const clock = sinon.useFakeTimers({ now: new Date(dateString).getTime(), toFake: ["Date"] })
+
     try {
-      moment.now = () => new Date(dateString).getTime()
       callback()
     } finally {
-      moment.now = originalNow
+      clock.runAll()
+      clock.restore()
     }
   }
 }

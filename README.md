@@ -93,39 +93,33 @@ When using the `local_date` helper, `I18n.t("date.formats.#{format}")`, `I18n.t(
 
 Note: The included strftime JavaScript implementation is not 100% complete. It supports the following directives: `%a %A %b %B %c %d %e %H %I %l %m %M %p %P %S %w %y %Y %Z`
 
-## Time ago helpers
-
-```erb
-<%= local_time_ago(time) %>
-```
-
-Displays the relative amount of time passed. With age, the descriptions transition from {quantity of seconds, minutes, or hours} to {date + time} to {date}. The `<time>` elements are updated every 60 seconds.
-
-Examples (in quotes):
-
-* Recent: "a second ago", "32 seconds ago", "an hour ago", "14 hours ago"
-* Yesterday: "yesterday at 5:22pm"
-* This week: "Tuesday at 12:48am"
-* This year: "on Nov 17"
-* Last year: "on Jan 31, 2012"
-
 ## Relative time helpers
 
-Preset time and date formats that vary with age. The available types are `date`, `time-ago`, `time-or-date`, and `weekday`. Like the `local_time` helper, `:type` can be passed a string or in an options hash.
+Preset time and date formats that vary with age. The available types are `relative`, `date`, `time-or-date`, and `weekday`. Like the `local_time` helper, `:type` can be passed a string or in an options hash.
 
 ```erb
-<%= local_relative_time(time, 'weekday') %>
-<%= local_relative_time(time, type: 'time-or-date') %>
+<%= local_relative_time(time) # uses the default `relative` format, same as `type: time-ago` %>
+<%= local_relative_time(time, future_prefix: "Ends", past_prefix: "Ended") %>
+<%= local_relative_time(time, "weekday") %>
+<%= local_relative_time(time, type: "time-or-date") %>
 ```
 
 **Available `:type` options**
 
+* `relative` (default) Displays relative amount passed or time remaining. With age, the past date descriptions transition from {quantity of seconds, minutes, or hours} to {date + time} to {date}. Example output:
+  - Recent: "a second ago", "32 seconds ago", "an hour ago", "14 hours ago"
+  - Future: "in a second", "32 seconds ago", "in an hour", "14 hours ago"
+  - Yesterday: "yesterday at 5:22pm"
+  - Tomorrow: "tomorrow at 5:22pm"
+  - This week: "Tuesday at 12:48am"
+  - This year: "on Nov 17"
+  - Last year: "on Jan 31, 2012"
+  - With prefixes: "ends in 3 hours", "ended an hour ago"
+* `time-ago` Alias for `relative`.
 * `date` Includes the year unless it's current. "Apr 11" or "Apr 11, 2013"
-* `time-ago` See above. `local_time_ago` calls `local_relative_time` with this `:type` option.
 * `time-or-date` Displays the time if it occurs today or the date if not. "3:26pm" or "Apr 11"
 * `weekday` Displays "Today", "Yesterday", or the weekday (e.g. Wednesday) if the time is within a week of today.
 * `weekday-or-date` Displays the weekday if it occurs within a week or the date if not. "Yesterday" or "Apr 11"
-
 
 ## Configuration
 
@@ -150,6 +144,16 @@ LocalTime.config.i18n["es"] = {
 
 LocalTime.config.locale = "es"
 ```
+
+### Update interval
+
+Configure how often relative times are updated with:
+
+```js
+LocalTime.config.timerInterval = 1000 // 1 second
+```
+
+Defaults to once ever minute.
 
 > [!NOTE]
 > The "default" keys in the i18n configuration object are used for translations in LocalTime's `RelativeTime` module. They are not used to determine which format is rendered when none is provided. See https://github.com/basecamp/local_time/issues/128 for details.
