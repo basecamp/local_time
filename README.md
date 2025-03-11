@@ -13,6 +13,9 @@ Local Time makes it easy to display times and dates to users in their local time
     ```js
     import LocalTime from "local-time"
     LocalTime.start()
+    document.addEventListener("turbo:morph", () => {
+      LocalTime.run()
+    })
     ```
 
 ### Webpacker
