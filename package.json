@@ -1,6 +1,6 @@
 {
   "name": "local-time",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Local <time> elements",
   "module": "app/assets/javascripts/local-time.es2017-esm.js",
   "main": "app/assets/javascripts/local-time.es2017-umd.js",

@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    local_time (3.0.2)
+    local_time (3.0.3)
 
 GEM
   remote: https://rubygems.org/
@@ -246,4 +246,4 @@ DEPENDENCIES
   rubocop-rake
 
 BUNDLED WITH
-   2.4.14
+   2.4.22
