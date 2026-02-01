@@ -10,7 +10,6 @@ Gem::Specification.new do |s|
   s.license = "MIT"
 
   s.files = Dir["app/**/*", "lib/local_time.rb", "lib/local_time/**/*", "MIT-LICENSE", "README.md"]
-  s.test_files = Dir["test/**/*"]
 
   s.add_development_dependency "rake", "~> 13.0"
   s.add_development_dependency "rails", "~> 7.0"
