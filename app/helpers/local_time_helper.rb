@@ -103,9 +103,25 @@ module LocalTimeHelper
 
     def ruby_time_or_date_format(name, prefer: :time)
       if prefer == :time
-        Time::DATE_FORMATS.with_indifferent_access[name] || Date::DATE_FORMATS.with_indifferent_access[name]
+        lookup_time_format(name) || lookup_date_format(name)
       else
-        Date::DATE_FORMATS.with_indifferent_access[name] || Time::DATE_FORMATS.with_indifferent_access[name]
+        lookup_date_format(name) || lookup_time_format(name)
+      end
+    end
+
+    def lookup_time_format(name)
+      if defined?(ActiveSupport::TimeFormats)
+        ActiveSupport::TimeFormats.lookup(name.to_sym)
+      else
+        Time::DATE_FORMATS.with_indifferent_access[name]
+      end
+    end
+
+    def lookup_date_format(name)
+      if defined?(ActiveSupport::DateFormats)
+        ActiveSupport::DateFormats.lookup(name.to_sym)
+      else
+        Date::DATE_FORMATS.with_indifferent_access[name]
       end
     end
 
