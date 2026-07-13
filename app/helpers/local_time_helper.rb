@@ -110,18 +110,18 @@ module LocalTimeHelper
     end
 
     def lookup_time_format(name)
-      if defined?(ActiveSupport::TimeFormats)
+      if ActiveSupport.const_defined?(:TimeFormats)
         ActiveSupport::TimeFormats.lookup(name.to_sym)
       else
-        Time::DATE_FORMATS.with_indifferent_access[name]
+        Time::DATE_FORMATS[name.to_sym]
       end
     end
 
     def lookup_date_format(name)
-      if defined?(ActiveSupport::DateFormats)
+      if ActiveSupport.const_defined?(:DateFormats)
         ActiveSupport::DateFormats.lookup(name.to_sym)
       else
-        Date::DATE_FORMATS.with_indifferent_access[name]
+        Date::DATE_FORMATS[name.to_sym]
       end
     end
 
