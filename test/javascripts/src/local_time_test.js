@@ -27,6 +27,32 @@ test("processed timestamp", () => {
   assert.ok(el.getAttribute("data-processed-at"))
 })
 
+testGroup("turbo morph", () => {
+  testAsync("re-localizes time elements after turbo:morph", (done) => {
+    const el = addTimeEl({ type: "time", format: "%Y", datetime: "2013-11-12T12:13:00Z" })
+    LocalTime.run()
+    assert.ok(el.getAttribute("data-localized"), "element is localized initially")
+    el.removeAttribute("data-localized")
+    triggerEvent("turbo:morph")
+    defer(() => {
+      assert.ok(el.getAttribute("data-localized"), "element is re-localized after turbo:morph")
+      done()
+    })
+  })
+
+  testAsync("re-localizes time elements after turbo:morph-element", (done) => {
+    const el = addTimeEl({ type: "time", format: "%Y", datetime: "2013-11-12T12:13:00Z" })
+    LocalTime.run()
+    assert.ok(el.getAttribute("data-localized"), "element is localized initially")
+    el.removeAttribute("data-localized")
+    triggerEvent("turbo:morph-element", el)
+    defer(() => {
+      assert.ok(el.getAttribute("data-localized"), "element is re-localized after turbo:morph-element")
+      done()
+    })
+  })
+})
+
 function assertLocalized(id, type = "time") {
   let compare, datetime, local, momentFormat
   switch (type) {
